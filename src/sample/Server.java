@@ -50,8 +50,16 @@ public class Server implements Runnable {
 
 
     public Server() throws IOException {
-        Esquema esquema=new Esquema("");
-        System.out.println(esquema.getFilas().getHead().getNodo());
+        Esquema esquema=new Esquema("Esquema1,dato1:STRING:6,dato2:INT:3");
+        esquema.añadirfila("dato1:perro,dato2:123");
+        esquema.añadirfila("dato1:gato,dato2:222");
+        esquemas.addLast(esquema);
+        System.out.println(esquema.getID());
+        Esquema esquema2=new Esquema("Esquema1,Dato1:STRING:6,Esquema1:JOIN:3");
+        esquema2.añadirfila("Dato1:raton,Esquema1:gato");
+        System.out.println(esquema.getFilas().getHead().getNodo()+","+esquema2.getFilas().buscar(0));
+
+
         Thread hilo = new Thread(this);
         hilo.start();
 

@@ -28,6 +28,54 @@ public class ListaTables {
         largo++;
     }
 
+    public Hashtable buscar (int n) {
+        Nodo<Hashtable> tmp = this.head;
+        while (n > 0) {
+            tmp = tmp.next;
+            n--;
+        }
+        return tmp.getNodo();
+    }
+
+    public boolean existe(String dato,String nombre){
+        Boolean existe=false;
+        int cont=0;
+        Nodo<Hashtable> tmp=this.head;
+        while (cont<this.largo){
+            System.out.println(tmp.getNodo().get(nombre)+","+convertir(dato,nombre));
+            if (tmp.getNodo().get(nombre).equals(convertir(dato,nombre))){
+                existe=true;
+                break;
+            }
+            tmp=tmp.next;
+            cont++;
+        }
+        return existe;
+    }
+
+    public Object convertir(String dato,String nombre){
+        Hashtable base=this.head.getNodo();
+        Object tipo=null;
+        if (base.get(nombre) instanceof String) {
+            tipo=dato;
+        }
+        else if (base.get(nombre) instanceof Integer) {
+            tipo=Integer.parseInt(dato);
+        }
+        else if (base.get(nombre) instanceof Double) {
+            tipo=Double.parseDouble(dato);
+        }
+        else if (base.get(nombre) instanceof Long) {
+            tipo=Long.parseLong(dato);
+        }
+        else if (base.get(nombre) instanceof Float) {
+            tipo=Float.parseFloat(dato);
+        }
+        System.out.print("el tipo que sale de convertir es: ");
+        System.out.println(tipo.getClass());
+        return tipo;
+    }
+
 
 
     public int getLargo() {

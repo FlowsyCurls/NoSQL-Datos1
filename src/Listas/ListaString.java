@@ -49,6 +49,7 @@ public class ListaString {
         Nodo<String>tmp=this.head;
         int n=0;
         while (n<this.largo){
+            System.out.println(tmp.getNodo()+","+string);
             if (tmp.getNodo().equals(string)){
                 contiene=true;
                 break;
@@ -56,6 +57,7 @@ public class ListaString {
             tmp=tmp.next;
             n++;
         }
+        System.out.println(contiene);
         return contiene;
     }
     

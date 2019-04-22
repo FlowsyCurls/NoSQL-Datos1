@@ -35,6 +35,21 @@ public class ListaTamaño {
         return tamaño;
     }
 
+    public Boolean contiene(String string){
+        Boolean contiene=false;
+        Nodo<Tamaño>tmp=this.head;
+        int n=0;
+        while (n<this.largo){
+            if (tmp.getNodo().getNombre().equals(string)){
+                contiene=true;
+                break;
+            }
+            tmp=tmp.next;
+            n++;
+        }
+        return contiene;
+    }
+
 
     public int getLargo() {
         return largo;

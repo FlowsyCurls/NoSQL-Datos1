@@ -7,16 +7,17 @@ import java.util.Hashtable;
 
 public class Esquema {
     private String nombre,ID;
-    private Boolean contiene;
+    private Boolean tiene_filas;
     private ListaTables filas=new ListaTables();
     private ListaTamaño tamaños=new ListaTamaño();
     private ListaString joins=new ListaString();
 
     public Esquema(String constructor) {
-        constructor="Esquema1,dato1:STRING:6,dato2:INT:3";
         String[] partes=constructor.split(",");
+        this.tiene_filas=false;
         this.nombre=partes[0];
         this.crearfila(partes);
+
     }
     private void crearfila(String[] partes){
         Hashtable fila=new Hashtable();
@@ -46,8 +47,10 @@ public class Esquema {
                 int i = 0;
                 while (i < Server.esquemas.getLargo()) {
                     Esquema esquema = Server.esquemas.buscar(i);
-                    if (nombre == esquema.nombre) {
+                    System.out.println(Server.esquemas.buscar(i).getNombre());
+                    if (nombre.equals( esquema.getNombre())) {
                         joins.addFirst(nombre);
+                        System.out.println(joins.head.getNodo());
                         fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
                         break;
                     }
@@ -61,30 +64,43 @@ public class Esquema {
     }
 
     public void añadirfila(String fila){
-        fila="{dato1:perro,dato2:123}";
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
         while (cont<datos.length){
-            String nombre=datos[0];
-            String dato=datos[1];
-            if (this.tamaños.buscartamaño(nombre)>=dato.length()){
-                if (base.get(nombre).equals(""))
-                base.replace(nombre,dato);
+            String nombre=datos[cont].split(":")[0];
+            String dato=datos[cont].split(":")[1];
+            if (this.tamaños.contiene(nombre)) {
+                System.out.println(this.tamaños.buscartamaño(nombre));
+                if (this.tamaños.buscartamaño(nombre) >= dato.length()) {
+                    System.out.println("voy a cambiar dato");
+                    base.replace(nombre, this.filas.convertir(dato, nombre));
+                }
+                else {}
             }
             else if(this.joins.contiene(nombre)){
-
+            Esquema esquema=Server.esquemas.buscar(nombre);
+            System.out.println(esquema.getFilas().getHead().getNodo());
+                if (esquema.existe(dato,esquema.getID())){
+                    System.out.println("voy a cambiar dato en join");
+                    base.replace(nombre,this.filas.convertir(dato,nombre));
+                }
+                else { }
             }
             else {}
             cont++;
         }
-        if (contiene){this.filas.head.setNodo(base);}
+        if (!tiene_filas){
+            this.filas.head.setNodo(base);
+            tiene_filas=true;
+        }
         else {this.filas.addLast(base);}
     }
 
-    public boolean existe(){
-    return true;
+    public Boolean existe(String dato,String nombre){
+        return this.filas.existe(dato,nombre);
     }
+
 
 
 
@@ -93,8 +109,8 @@ public class Esquema {
         return nombre;
     }
 
-    public Boolean getContiene() {
-        return contiene;
+    public Boolean getTiene_filas() {
+        return tiene_filas;
     }
 
     public ListaTables getFilas() {

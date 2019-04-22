@@ -6,7 +6,7 @@ public class ListaEsquemas {
 
 
     public void addLast (Esquema e){
-        if (this.head.getNodo()==null){
+        if (this.head==null){
             this.head= new Nodo(e);
             largo++;
         }
@@ -33,6 +33,21 @@ public class ListaEsquemas {
             n--;
         }
         return tmp.getNodo();
+    }
+
+    public Esquema buscar(String string){
+        Esquema esquema=null;
+        Nodo<Esquema>tmp=this.head;
+        int n=0;
+        while (n<this.largo){
+            if (tmp.getNodo().getNombre().equals(string)){
+                esquema=tmp.getNodo();
+                break;
+            }
+            tmp=tmp.next;
+            n++;
+        }
+        return esquema;
     }
 
     public int getLargo() {
