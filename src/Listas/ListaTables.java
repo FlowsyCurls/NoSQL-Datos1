@@ -37,12 +37,46 @@ public class ListaTables {
         return tmp.getNodo();
     }
 
+    public Hashtable buscar (String dato, String nombre){
+        Hashtable fila=null;
+        int cont=0;
+        Nodo<Hashtable> tmp=this.head;
+        while (cont<this.largo){
+            if (tmp.getNodo().get(nombre).equals(convertir(dato,nombre))){
+                fila=tmp.getNodo();
+                break;
+            }
+            tmp=tmp.next;
+            cont++;
+        }
+        return fila;
+    }
+    public void eliminar(String dato,String nombre){
+        Nodo <Hashtable> tmp= this.head;
+        if (tmp.getNodo().get(nombre).equals(convertir(dato,nombre))){
+            this.head=this.head.next;
+            largo-=1;
+        }
+        else{
+            while (tmp.next!=null){
+                if (tmp.next.getNodo().get(nombre).equals(convertir(dato,nombre))){
+                    tmp.next=tmp.next.next;
+                    largo-=1;
+                    break;
+                }
+                else {
+                    tmp=tmp.next;
+                }
+            }
+        }
+    }
+
+
     public boolean existe(String dato,String nombre){
         Boolean existe=false;
         int cont=0;
         Nodo<Hashtable> tmp=this.head;
         while (cont<this.largo){
-            System.out.println(tmp.getNodo().get(nombre)+","+convertir(dato,nombre));
             if (tmp.getNodo().get(nombre).equals(convertir(dato,nombre))){
                 existe=true;
                 break;
@@ -71,8 +105,6 @@ public class ListaTables {
         else if (base.get(nombre) instanceof Float) {
             tipo=Float.parseFloat(dato);
         }
-        System.out.print("el tipo que sale de convertir es: ");
-        System.out.println(tipo.getClass());
         return tipo;
     }
 

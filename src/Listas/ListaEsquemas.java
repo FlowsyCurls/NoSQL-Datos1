@@ -35,12 +35,12 @@ public class ListaEsquemas {
         return tmp.getNodo();
     }
 
-    public Esquema buscar(String string){
+    public Esquema buscar(String nombreesquema){
         Esquema esquema=null;
         Nodo<Esquema>tmp=this.head;
         int n=0;
         while (n<this.largo){
-            if (tmp.getNodo().getNombre().equals(string)){
+            if (tmp.getNodo().getNombre().equals(nombreesquema)){
                 esquema=tmp.getNodo();
                 break;
             }
@@ -48,6 +48,30 @@ public class ListaEsquemas {
             n++;
         }
         return esquema;
+    }
+    public void eliminar(String nombre){
+        Esquema esquema=this.buscar(nombre);
+        System.out.println(esquema);
+        if (esquema.existejoin()){}
+        else {
+            if (this.head.getNodo()==esquema){
+                this.head=this.head.next;
+                this.largo--;
+            }
+            else {
+                Nodo<Esquema>tmp=this.head;
+                while (tmp.next!=null){
+                    if (tmp.next.getNodo()==esquema){
+                        tmp.next=tmp.next.next;
+                        this.largo--;
+                        break;
+                    }
+                    else {
+                        tmp=tmp.next;
+                    }
+                }
+            }
+        }
     }
 
     public int getLargo() {
