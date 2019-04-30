@@ -1,6 +1,5 @@
 package Listas;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import sample.Server;
 
 
@@ -12,7 +11,7 @@ public class Esquema {
     private ListaTables filas=new ListaTables();
     private ListaTamaño tamaños=new ListaTamaño();
     private ListaString mijoins =new ListaString();
-    public ListaString joinsde= new ListaString();
+    public ListaString joinde = new ListaString();
 
     public Esquema(String constructor) {
         String[] partes=constructor.split(",");
@@ -52,7 +51,7 @@ public class Esquema {
                     System.out.println(Server.esquemas.buscar(i).getNombre());
                     if (nombre.equals( esquema.getNombre())) {
                         mijoins.addFirst(nombre);
-                        esquema.joinsde.addFirst(this.nombre);
+                        esquema.joinde.addFirst(this.nombre);
                         System.out.println(mijoins.head.getNodo());
                         fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
                         break;
@@ -126,6 +125,22 @@ public class Esquema {
         }
         return datos;
     }
+    public String buscardatosjoin(String join,String nombre,String dato){//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+        Esquema esquema=Server.esquemas.buscar(join);
+        String datos="";
+        int cont=0;
+        while (cont<this.filas.getLargo()){
+            Hashtable fila=filas.buscar(cont);
+            Hashtable filajoin=esquema.getFilas().buscar(fila.get(join).toString(),esquema.getID());
+            if (filajoin.get(nombre).toString().equals(dato)){
+                datos=datos.concat(this.crearstring(fila.get(this.ID).toString(),this.getID()));
+                datos=datos.concat(";");
+            }
+            cont++;
+        }
+        datos=datos.substring(0,datos.length()-1);
+        return datos;
+    }
 
     public String buscartodos(){
         String datos="";
@@ -161,14 +176,14 @@ public class Esquema {
 
     public Boolean existejoin(){
         Boolean existe =false;
-        if (this.joinsde.getLargo()>0){existe=true;}
+        if (this.joinde.getLargo()>0){existe=true;}
         return existe;
     }
     private Boolean datousado(String dato){
         Boolean usado=false;
         int cont=0;
-        while (cont< joinsde.largo) {
-            if (Server.esquemas.buscar(joinsde.buscar(cont)).existe(dato,this.nombre)){
+        while (cont< joinde.largo) {
+            if (Server.esquemas.buscar(joinde.buscar(cont)).existe(dato,this.nombre)){
                 usado=true;
                 break;
             }
@@ -203,11 +218,11 @@ public class Esquema {
         return ID;
     }
 
-    public ListaString getJoinsde() {
-        return joinsde;
+    public ListaString getJoinde() {
+        return joinde;
     }
 
-    public void setJoinsde(ListaString joinsde) {
-        this.joinsde = joinsde;
+    public void setJoinde(ListaString joinde) {
+        this.joinde = joinde;
     }
 }

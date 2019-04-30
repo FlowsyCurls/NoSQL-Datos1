@@ -36,18 +36,18 @@ public class ListaEsquemas {
     }
 
     public Esquema buscar(String nombreesquema){
-        Esquema esquema=null;
-        Nodo<Esquema>tmp=this.head;
-        int n=0;
-        while (n<this.largo){
-            if (tmp.getNodo().getNombre().equals(nombreesquema)){
-                esquema=tmp.getNodo();
-                break;
+            Esquema esquema=null;
+            Nodo<Esquema>tmp=this.head;
+            int n=0;
+            while (n<this.largo){
+                if (tmp.getNodo().getNombre().equals(nombreesquema)){
+                    esquema=tmp.getNodo();
+                    break;
+                }
+                tmp=tmp.next;
+                n++;
             }
-            tmp=tmp.next;
-            n++;
-        }
-        return esquema;
+            return esquema;
     }
     public void eliminar(String nombre){
         Esquema esquema=this.buscar(nombre);
@@ -72,6 +72,20 @@ public class ListaEsquemas {
                 }
             }
         }
+    }
+    public Boolean contiene(String string){
+        Boolean contiene=false;
+        Nodo<Esquema>tmp=this.head;
+        int n=0;
+        while (n<this.largo){
+            if (tmp.getNodo().getNombre().equals(string)){
+                contiene=true;
+                break;
+            }
+            tmp=tmp.next;
+            n++;
+        }
+        return contiene;
     }
 
     public int getLargo() {
