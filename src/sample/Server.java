@@ -78,8 +78,8 @@ public class Server implements Runnable {
 //        System.out.println(esquema.getFilas().getHead().getNodo()+","+esquema2.getFilas().buscar(0));
 //        System.out.println(esquemas.getLargo());
 //        System.out.println(esquemas.buscar("Esquema3").buscardatos("lobo","DAto1"));
-//        System.out.println(esquemas.buscar("Esquema1").buscardatos("222","dato2"));
-//        System.out.println(esquemas.buscar("Esquema3").buscartodos());
+//        System.out.println(esquemas.buscar("Esquema1").buscardatos("32","dato2"));
+//        System.out.println(esquemas.buscar("Esquema1").buscartodos()+"que");
 
         Thread hilo = new Thread(this);
         hilo.start();

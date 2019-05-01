@@ -87,7 +87,7 @@ public class ListaTables {
         return existe;
     }
 
-    public Object convertir(String dato,String nombre){
+    public Object convertir(String dato,String nombre)throws NumberFormatException{
         Hashtable base=this.head.getNodo();
         Object tipo=null;
         if (base.get(nombre) instanceof String) {

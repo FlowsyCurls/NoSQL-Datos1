@@ -18,12 +18,18 @@ public class Controller {
     ObjectMapper objectMapper=new ObjectMapper();
     public static Logger log = LoggerFactory.getLogger(Controller.class);
     public void hola(){
-        System.out.println("estoy en la funcion");
-        ObjectNode perro = objectMapper.createObjectNode();
-        perro.put("hola", 82).put("charanco","tornado");
-        perro.put("hola", "tornado");
-        System.out.println(perro);
-    }
+//        System.out.println("estoy en la funcion");
+//        ObjectNode perro = objectMapper.createObjectNode();
+//        perro.put("hola", 82).put("charanco","tornado");
+//        perro.put("hola", "tornado");
+//        System.out.println(perro);
+       try {
+           Integer.parseInt("23.4");
+       }
+       catch (NumberFormatException e){
+           e.getCause();
+       }
+}
 
     public void table() throws IOException {
 //        Hashtable hashtable= new Hashtable();

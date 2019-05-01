@@ -1,5 +1,7 @@
 package Listas;
 
+import Errores.DatosUsadosException;
+
 public class ListaEsquemas {
     int largo;
     Nodo<Esquema> head= null;
@@ -7,7 +9,7 @@ public class ListaEsquemas {
 
     public void addLast (Esquema e){
         if (this.head==null){
-            this.head= new Nodo(e);
+            this.head= new Nodo<Esquema>(e);
             largo++;
         }
         else {
@@ -49,10 +51,12 @@ public class ListaEsquemas {
             }
             return esquema;
     }
-    public void eliminar(String nombre){
+    public void eliminar(String nombre) throws DatosUsadosException {
         Esquema esquema=this.buscar(nombre);
         System.out.println(esquema);
-        if (esquema.existejoin()){}
+        if (esquema.existejoin()){
+            throw new DatosUsadosException();
+        }
         else {
             if (this.head.getNodo()==esquema){
                 this.head=this.head.next;

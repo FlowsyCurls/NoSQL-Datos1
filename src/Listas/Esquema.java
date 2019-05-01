@@ -1,5 +1,9 @@
 package Listas;
 
+import Errores.DatoNoExistenteException;
+import Errores.DatosUsadosException;
+import Errores.EsquemaNuloException;
+import Errores.TamañoException;
 import sample.Server;
 
 
@@ -13,14 +17,14 @@ public class Esquema {
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
 
-    public Esquema(String constructor) {
+    public Esquema(String constructor) throws EsquemaNuloException {
         String[] partes=constructor.split(",");
         this.tiene_filas=false;
         this.nombre=partes[0];
         this.crearfila(partes);
 
     }
-    private void crearfila(String[] partes){
+    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException {
         Hashtable fila=new Hashtable();
         int cont=1;
         this.ID=partes[cont].split(":")[0];
@@ -45,18 +49,15 @@ public class Esquema {
                 System.out.println(tamaños.largo);
             }
             if (tipo.equals("JOIN")) {
-                int i = 0;
-                while (i < Server.esquemas.getLargo()) {
-                    Esquema esquema = Server.esquemas.buscar(i);
-                    System.out.println(Server.esquemas.buscar(i).getNombre());
-                    if (nombre.equals( esquema.getNombre())) {
-                        mijoins.addFirst(nombre);
-                        esquema.joinde.addFirst(this.nombre);
-                        System.out.println(mijoins.head.getNodo());
-                        fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
-                        break;
-                    }
-                    i++;
+                Esquema esquema = Server.esquemas.buscar(nombre);
+                if (esquema==null){
+                    throw new EsquemaNuloException();
+                }
+                else {
+                    mijoins.addFirst(nombre);
+                    esquema.joinde.addFirst(this.nombre);
+                    System.out.println(mijoins.head.getNodo());
+                    fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
                 }
             }
             cont++;
@@ -65,7 +66,7 @@ public class Esquema {
         this.filas.addLast(fila);
     }
 
-    public void añadirfila(String fila){
+    public void añadirfila(String fila) throws TamañoException, DatoNoExistenteException, NumberFormatException {
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
@@ -78,7 +79,9 @@ public class Esquema {
                     System.out.println("voy a cambiar dato");
                     base.replace(nombre, this.filas.convertir(dato, nombre));
                 }
-                else {}
+                else {
+                    throw new TamañoException();
+                }
             }
             else if(this.mijoins.contiene(nombre)){
             Esquema esquema=Server.esquemas.buscar(nombre);
@@ -87,9 +90,10 @@ public class Esquema {
                     System.out.println("voy a cambiar dato en join");
                     base.replace(nombre,this.filas.convertir(dato,nombre));
                 }
-                else { }
+                else {
+                    throw new DatoNoExistenteException(nombre);
+                }
             }
-            else {}
             cont++;
         }
         if (!tiene_filas){
@@ -99,14 +103,21 @@ public class Esquema {
         else {this.filas.addLast(base);}
     }
 
-    public void eliminarfila(String dato){
-        if (this.datousado(dato)){}
+    public void eliminarfila(String dato) throws DatosUsadosException {
+        if (this.datousado(dato)){
+            throw new DatosUsadosException();
+        }
         else {
+            if (this.filas.getLargo()>1){
             this.filas.eliminar(dato,this.ID);
+            }
+            else{
+                this.tiene_filas=false;
+            }
         }
     }
 
-    public String buscardatos(String dato,String nombre){
+    public String buscardatos(String dato,String nombre)throws StringIndexOutOfBoundsException{
         String datos="";
         if (nombre.equals(this.ID)){
             if (this.filas.existe(dato,nombre)){datos = crearstring(dato,nombre);}
@@ -125,7 +136,7 @@ public class Esquema {
         }
         return datos;
     }
-    public String buscardatosjoin(String join,String nombre,String dato){//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+    public String buscardatosjoin(String join,String nombre,String dato) throws StringIndexOutOfBoundsException{//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
         Esquema esquema=Server.esquemas.buscar(join);
         String datos="";
         int cont=0;
@@ -142,16 +153,18 @@ public class Esquema {
         return datos;
     }
 
-    public String buscartodos(){
+    public String buscartodos() throws EsquemaNuloException {
         String datos="";
         int cont=0;
         while (cont<this.filas.getLargo()){
+            System.out.println("entro aca");
             Hashtable fila=this.filas.buscar(cont);
             datos=datos.concat(this.crearstring(fila.get(this.ID).toString(),this.getID()));
             datos=datos.concat(";");
             cont++;
         }
         datos=datos.substring(0,datos.length()-1);
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
         return datos;
     }
 
