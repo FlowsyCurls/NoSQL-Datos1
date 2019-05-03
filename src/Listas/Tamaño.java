@@ -1,10 +1,10 @@
 package Listas;
 
-public class Tamaño {
+public class Tamano {
     public String nombre;
     public int longitud;
 
-    public Tamaño(String nombre, int longitud) {
+    public Tamano(String nombre, int longitud) {
         this.nombre = nombre;
         this.longitud = longitud;
     }
