@@ -1,9 +1,10 @@
 package Listas;
 
 import Errores.DatoNoExistenteException;
+
 import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
-import Errores.TamañoException;
+import Errores.TamanoException;
 import sample.Server;
 
 
@@ -13,7 +14,7 @@ public class Esquema {
     private String nombre,ID;
     private Boolean tiene_filas;
     private ListaTables filas=new ListaTables();
-    private ListaTamaño tamaños=new ListaTamaño();
+    private ListaTamano tamanos=new ListaTamano();
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
 
@@ -31,7 +32,7 @@ public class Esquema {
         while (cont<partes.length) {
             String nombre = partes[cont].split(":")[0];
             String tipo = partes[cont].split(":")[1];
-            int tamaño = Math.abs(Integer.parseInt(partes[cont].split(":")[2]));
+            int tamano = Math.abs(Integer.parseInt(partes[cont].split(":")[2]));
             System.out.println(tipo);
             if (tipo.equals("STRING")) {
                 fila.put(nombre, "");
@@ -45,8 +46,8 @@ public class Esquema {
                 fila.put(nombre, (float) -1);
             }
             if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
-                this.tamaños.addLast(new Tamaño(nombre, tamaño));
-                System.out.println(tamaños.largo);
+                this.tamanos.addLast(new Tamano(nombre, tamano));
+                System.out.println(tamanos.largo);
             }
             if (tipo.equals("JOIN")) {
                 Esquema esquema = Server.esquemas.buscar(nombre);
@@ -66,21 +67,21 @@ public class Esquema {
         this.filas.addLast(fila);
     }
 
-    public void añadirfila(String fila) throws TamañoException, DatoNoExistenteException, NumberFormatException {
+    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException {
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
         while (cont<datos.length){
             String nombre=datos[cont].split(":")[0];
             String dato=datos[cont].split(":")[1];
-            if (this.tamaños.contiene(nombre)) {
-                System.out.println(this.tamaños.buscartamaño(nombre));
-                if (this.tamaños.buscartamaño(nombre) >= dato.length()) {
+            if (this.tamanos.contiene(nombre)) {
+                System.out.println(this.tamanos.buscartamano(nombre));
+                if (this.tamanos.buscartamano(nombre) >= dato.length()) {
                     System.out.println("voy a cambiar dato");
                     base.replace(nombre, this.filas.convertir(dato, nombre));
                 }
                 else {
-                    throw new TamañoException();
+                    throw new TamanoException();
                 }
             }
             else if(this.mijoins.contiene(nombre)){
@@ -219,8 +220,8 @@ public class Esquema {
         return filas;
     }
 
-    public ListaTamaño getTamaños() {
-        return tamaños;
+    public ListaTamano getTamanos() {
+        return tamanos;
     }
 
     public ListaString getMijoins() {
