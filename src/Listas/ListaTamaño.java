@@ -1,11 +1,11 @@
 package Listas;
 
-public class ListaTamaño {
+public class ListaTamano {
     int largo;
-    Nodo<Tamaño> head= null;
+    Nodo<Tamano> head= null;
 
 
-    public void addLast (Tamaño e){
+    public void addLast (Tamano e){
         if (this.head==null){
             this.head= new Nodo(e);
             largo++;
@@ -20,24 +20,24 @@ public class ListaTamaño {
         }
     }
 
-    public int buscartamaño (String s){
+    public int buscartamano (String s){
         int n=0;
-        int tamaño=-1;
-        Nodo<Tamaño>tmp=this.head;
+        int tamano=-1;
+        Nodo<Tamano>tmp=this.head;
         while (n<this.largo){
             if (tmp.getNodo().nombre.equals(s)){
-                tamaño=tmp.getNodo().longitud;
+                tamano=tmp.getNodo().longitud;
                 break;
             }
             tmp=tmp.next;
             n++;
         }
-        return tamaño;
+        return tamano;
     }
 
     public Boolean contiene(String string){
         Boolean contiene=false;
-        Nodo<Tamaño>tmp=this.head;
+        Nodo<Tamano>tmp=this.head;
         int n=0;
         while (n<this.largo){
             if (tmp.getNodo().getNombre().equals(string)){
