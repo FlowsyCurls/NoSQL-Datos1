@@ -2,12 +2,12 @@ package Errores;
 
 import java.io.IOException;
 
-public class TamañoException extends IOException {
+public class TamanoException extends IOException {
 
-    public TamañoException() {
+    public TamanoException() {
     }
 
-    public TamañoException(String message) {
+    public TamanoException(String message) {
         super(message);
     }
 }
