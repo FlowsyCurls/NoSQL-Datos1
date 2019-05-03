@@ -1,9 +1,10 @@
 package sample;
 
 import Errores.DatoNoExistenteException;
+
 import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
-import Errores.TamañoException;
+import Errores.TamanoException;
 import Listas.Esquema;
 
 public class Accionador {
@@ -32,7 +33,7 @@ public class Accionador {
         }
         System.out.println("se termina de crear esquema");
     }catch (NumberFormatException e){
-            datos.setRespuesta("el tamaño solo recibe enteros");
+            datos.setRespuesta("el tamano solo recibe enteros");
         } catch (EsquemaNuloException e) {
             datos.setRespuesta("No existe esquema de join indicado");
         }
@@ -51,10 +52,10 @@ public class Accionador {
     private Datos insertardatos(Datos datos){
         Esquema esquema=Server.esquemas.buscar(datos.getNombre());
         try {
-            esquema.añadirfila(datos.getDatos());
-            datos.setRespuesta("datos añadidos");
-        } catch (TamañoException e) {
-            datos.setRespuesta("tamaño invalido");
+            esquema.anadirfila(datos.getDatos());
+            datos.setRespuesta("datos anadidos");
+        } catch (TamanoException e) {
+            datos.setRespuesta("tamano invalido");
         } catch (DatoNoExistenteException e) {
             datos.setRespuesta("no existe dato en join");
             datos.setNombre_join(e.getMessage());
