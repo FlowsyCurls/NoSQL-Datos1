@@ -46,8 +46,8 @@ public class Esquema {
                 fila.put(nombre, (float) -1);
             }
             if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
-                this.tamanos.addLast(new Tamano(nombre, tamano));
-                System.out.println(tamanos.largo);
+                this.getTamanos().addLast(new Tamano(nombre, tamano));
+                System.out.println(getTamanos().largo);
             }
             if (tipo.equals("JOIN")) {
                 Esquema esquema = Server.esquemas.buscar(nombre);
@@ -55,9 +55,9 @@ public class Esquema {
                     throw new EsquemaNuloException();
                 }
                 else {
-                    mijoins.addFirst(nombre);
+                    getMijoins().addFirst(nombre);
                     esquema.joinde.addFirst(this.nombre);
-                    System.out.println(mijoins.head.getNodo());
+                    System.out.println(getMijoins().head.getNodo());
                     fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
                 }
             }
@@ -74,9 +74,9 @@ public class Esquema {
         while (cont<datos.length){
             String nombre=datos[cont].split(":")[0];
             String dato=datos[cont].split(":")[1];
-            if (this.tamanos.contiene(nombre)) {
-                System.out.println(this.tamanos.buscartamano(nombre));
-                if (this.tamanos.buscartamano(nombre) >= dato.length()) {
+            if (this.getTamanos().contiene(nombre)) {
+                System.out.println(this.getTamanos().buscartamano(nombre));
+                if (this.getTamanos().buscartamano(nombre) >= dato.length()) {
                     System.out.println("voy a cambiar dato");
                     base.replace(nombre, this.filas.convertir(dato, nombre));
                 }
@@ -84,7 +84,7 @@ public class Esquema {
                     throw new TamanoException();
                 }
             }
-            else if(this.mijoins.contiene(nombre)){
+            else if(this.getMijoins().contiene(nombre)){
             Esquema esquema=Server.esquemas.buscar(nombre);
             System.out.println(esquema.getFilas().getHead().getNodo());
                 if (esquema.existe(dato,esquema.getID())){
@@ -172,12 +172,12 @@ public class Esquema {
     private String crearstring(String dato,String nombre){
         Hashtable fila= this.filas.buscar(dato,nombre);
         String string=fila.toString();
-        if (this.mijoins.getLargo()!=0){
+        if (this.getMijoins().getLargo()!=0){
             int cont=0;
-            while (cont<mijoins.getLargo()){
-                Esquema esquema=Server.esquemas.buscar(mijoins.buscar(cont));
+            while (cont<getMijoins().getLargo()){
+                Esquema esquema=Server.esquemas.buscar(getMijoins().buscar(cont));
                 string=string.concat(":"+esquema.getNombre()+"=");
-                string=string.concat(esquema.buscardatos(fila.get(mijoins.buscar(cont)).toString(),esquema.getID()));
+                string=string.concat(esquema.buscardatos(fila.get(getMijoins().buscar(cont)).toString(),esquema.getID()));
                 cont++;
             }
         }
@@ -239,4 +239,11 @@ public class Esquema {
     public void setJoinde(ListaString joinde) {
         this.joinde = joinde;
     }
+	public void setMijoins(ListaString mijoins) {
+		this.mijoins = mijoins;
+	}
+	public void setTamanos(ListaTamano tamanos) {
+		this.tamanos = tamanos;
+	}
+    
 }

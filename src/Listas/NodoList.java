@@ -7,8 +7,8 @@ public class NodoList <T> {
 
 
     public void addLast (T e){
-        if (this.head.getNodo()==null){
-            this.head= new Nodo(e);
+        if (this.head==null){
+            this.head= new Nodo<T>(e);
             largo++;
         }
         else {

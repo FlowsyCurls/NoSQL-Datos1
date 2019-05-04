@@ -1,11 +1,13 @@
 package Listas;
 
+import java.util.ArrayList;
+
 import Errores.DatosUsadosException;
 
 public class ListaEsquemas {
     int largo;
     Nodo<Esquema> head= null;
-
+    private ArrayList<Esquema> buscados = new ArrayList<Esquema>();
 
     public void addLast (Esquema e){
         if (this.head==null){
@@ -51,6 +53,22 @@ public class ListaEsquemas {
             }
             return esquema;
     }
+    
+    public ArrayList<Esquema> buscarcoincidencias(String detalle){
+        Esquema esquema=null;
+        Nodo<Esquema>tmp=this.head;
+        int n=0;
+        while (n<this.largo){
+            if (tmp.getNodo().getNombre().contains(detalle)){
+                esquema=tmp.getNodo();
+                this.buscados.add(esquema);
+            }
+            tmp=tmp.next;
+            n++;
+        }
+        return this.buscados;
+    }
+    
     public void eliminar(String nombre) throws DatosUsadosException {
         Esquema esquema=this.buscar(nombre);
         System.out.println(esquema);
@@ -106,5 +124,9 @@ public class ListaEsquemas {
 
     public void setHead (Nodo<Esquema> head) {
         this.head = head;
+    }
+    
+    public void emptyList() {
+    	this.head = null; this.largo = 0;
     }
 }
