@@ -60,7 +60,7 @@ public class Accionador {
             datos.setRespuesta("tamano invalido");
         } catch (DatoNoExistenteException e) {
             datos.setRespuesta("no existe dato en join");
-            datos.setNombre_join(e.getMessage());
+            datos.setNombre(e.getMessage());
         }catch (NumberFormatException e){
             datos.setRespuesta("tipo incorrecto");
             datos.setDato(e.getMessage().substring(19,e.getMessage().length()-1));
@@ -92,7 +92,7 @@ public class Accionador {
     private Datos buscardatosporjoin(Datos datos){
         Esquema esquema=Server.esquemas.buscar(datos.getNombre());
         try {
-            datos.setDatos(esquema.buscardatosjoin(datos.getNombre_join(),datos.getColumna(),datos.getDato()));
+            datos.setDatos(esquema.buscardatosjoin(datos.getNombre_joins(),datos.getColumna(),datos.getDato()));
             datos.setRespuesta("datos enviados");
         }catch (StringIndexOutOfBoundsException e){
             datos.setRespuesta("no se encontraron datos");

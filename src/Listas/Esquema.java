@@ -139,13 +139,22 @@ public class Esquema {
         }
         return datos;
     }
-    public String buscardatosjoin(String join,String nombre,String dato) throws StringIndexOutOfBoundsException{//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
-        Esquema esquema=Server.esquemas.buscar(join);
+    public String buscardatosjoin(ListaString joins,String nombre,String dato) throws StringIndexOutOfBoundsException{//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+
         String datos="";
         int cont=0;
         while (cont<this.filas.getLargo()){
             Hashtable fila=filas.buscar(cont);
-            Hashtable filajoin=esquema.getFilas().buscar(fila.get(join).toString(),esquema.getID());
+            Hashtable filatmp=filas.buscar(cont);
+            int i=0;
+            Hashtable filajoin=null;
+            while (i<joins.getLargo()){//aqui se mueve desde el join más cercano hasta el join final donde se encuentra el nombre de la columna
+                Esquema esquema=Server.esquemas.buscar(joins.buscar(i));
+                filajoin=esquema.getFilas().buscar(filatmp.get(joins.buscar(i)).toString(),esquema.getID());
+                filatmp=filajoin;
+                i++;
+            }
+
             if (filajoin.get(nombre).toString().equals(dato)){
                 datos=datos.concat(this.crearstring(fila.get(this.ID).toString(),this.getID()));
                 datos=datos.concat(";");
