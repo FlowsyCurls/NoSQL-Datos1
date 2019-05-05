@@ -7,15 +7,15 @@ public class ListaTamano {
 
     public void addLast (Tamano e){
         if (this.head==null){
-            this.head= new Nodo(e);
+            this.head= new Nodo<Tamano>(e);
             largo++;
         }
         else {
-            Nodo tmp= this.head;
+            Nodo<Tamano> tmp= this.head;
             while (tmp.next!= null) {
                 tmp = tmp.next;
             }
-            tmp.next=new Nodo(e);
+            tmp.next=new Nodo<Tamano>(e);
             largo++;
         }
     }
@@ -34,6 +34,14 @@ public class ListaTamano {
         }
         return tamano;
     }
+    public String buscarnombre (int n){ 
+        Nodo<Tamano>tmp=this.head; 
+        while (n>0){ 
+            tmp=tmp.next; 
+            n--; 
+        } 
+        return tmp.getNodo().getNombre(); 
+    } 
 
     public Boolean contiene(String string){
         Boolean contiene=false;

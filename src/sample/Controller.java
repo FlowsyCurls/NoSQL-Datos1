@@ -53,8 +53,7 @@ public class Controller {
 	
 	
 	public ListaEsquemas listaEsquemas =new ListaEsquemas();
-	private ListaEsquemas seleccionEsquemas = new ListaEsquemas();
-	private ListaTamano categorylist = new ListaTamano();
+	private ArrayList<String> categorylist;
 	
 	public void datos() throws EsquemaNuloException {
 		listaEsquemas.emptyList();
@@ -80,6 +79,8 @@ public class Controller {
     @FXML // fx:id="choicebox"
     private ChoiceBox<String> choicebox = new ChoiceBox<String>();
 	private ObservableList<String> availableChoices = FXCollections.observableArrayList();
+	@FXML //fx:id="tableview"
+	private ObservableList<Esquema> descriptionEsquemas = FXCollections.observableArrayList();
 	@FXML // fx:id="screen"
 	private AnchorPane screen = new AnchorPane();
     @FXML // fx:id="search"
@@ -91,7 +92,7 @@ public class Controller {
 	private final Label nothing =new Label();
 	//objextmapper
     private ObjectMapper objectMapper=new ObjectMapper();
-	private ListaString joinlist;
+
     public static Logger log = LoggerFactory.getLogger(Controller.class);
 
     //initializer
@@ -104,46 +105,7 @@ public class Controller {
 		}
     }
     
-    //loadDiagramas.
-    private void loadDiagrams(String detail) throws IOException {
-    	this.datos();
-    	this.diagrams.removeAll(diagrams);
-    	if (detail!=null) { // si estoy buscando....
-    		this.loadDiagrams_buscaraux(detail);
-//			System.out.println("DIAGRAMAS cargados "+diagrams);
-			this.diagramsList.setItems(diagrams);
-			return;}
-    	this.addNamesOneByOne();
-//		System.out.println("DIAGRAMAS cargados "+diagrams);
-	    this.diagramsList.setItems(diagrams);
-    }
-    //buscar coincidencias para cargarlas.
-    private void loadDiagrams_buscaraux(String detail) {
-//		System.out.println("Entra en buscar");
-//		System.out.println(this.listaEsquemas.getLargo());
-    	ArrayList<Esquema> coincided = this.listaEsquemas.buscarcoincidencias(detail);
-    	if (coincided.isEmpty()) return;
-    	int a = coincided.size()-1; Esquema tmp = coincided.get(a);
-    	while (a!=-1) {
-    		tmp = coincided.get(a);
-    		if (tmp.getNombre()!=null) { //if coincidences...
-//			System.out.println("ESQUEMA encontrado :"+" |name "+tmp.getNombre()+" |id "+tmp.getID());
-			this.diagrams.add(tmp.getNombre()); //add coincidences...
-    		coincided.remove(a);
-			a--;
-    		continue;}}return;
-    }
-    //cargar todos los diagramas.
-	private void addNamesOneByOne() {
-			Nodo<Esquema>tmp = this.listaEsquemas.getHead();
-//			System.out.println("NODO ESQUEMA "+tmp);
-			while (tmp!=null){
-		    	this.diagrams.add(tmp.getNodo().getNombre());
-		    	tmp=tmp.next;
-		    }return;
-	}
-    
-	@FXML  //evento de anadir
+    @FXML  //evento de anadir
 	public void addButtonAction(ActionEvent event) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addingWindow.fxml"));
 		Parent addingWindow = (Parent) fxmlLoader.load();
@@ -174,6 +136,43 @@ public class Controller {
     	}this.loadDiagrams(detail);
     }
 
+	//loadDiagramas.
+    private void loadDiagrams(String detail) throws IOException {
+    	this.datos();
+    	this.diagrams.removeAll(diagrams);
+    	if (detail!=null) { // si estoy buscando....
+    		this.loadDiagrams_buscaraux(detail);
+//			System.out.println("DIAGRAMAS cargados "+diagrams);
+			this.diagramsList.setItems(diagrams);
+			return;}
+    	this.addNamesOneByOne();
+//		System.out.println("DIAGRAMAS cargados "+diagrams);
+	    this.diagramsList.setItems(diagrams);
+    }
+
+	//buscar coincidencias para cargarlas.
+    private void loadDiagrams_buscaraux(String detail) {
+//		System.out.println("Entra en buscar");
+//		System.out.println(this.listaEsquemas.getLargo());
+    	ArrayList<Esquema> coincided = this.listaEsquemas.buscarcoincidencias(detail);
+    	if (coincided.isEmpty()) return;
+    	for (int i=0; i<coincided.size(); i++){
+    		Esquema element =coincided.get(i);
+			System.out.println("ESQUEMA encontrado :"+" |name "+element.getNombre()+" |id "+element.getID());
+    		this.diagrams.add(element.getNombre()); //add coincidences...
+    	}coincided.removeAll(coincided);
+    }
+
+	//cargar todos los diagramas.
+	private void addNamesOneByOne() {
+			Nodo<Esquema>tmp = this.listaEsquemas.getHead();
+//			System.out.println("NODO ESQUEMA "+tmp);
+			while (tmp!=null){
+		    	this.diagrams.add(tmp.getNodo().getNombre());
+		    	tmp=tmp.next;
+		    }return;
+	}
+
 	//evento de seleccion de diagrama.
     public void displaySelectedDiagram(MouseEvent event) throws IOException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem();
@@ -190,18 +189,26 @@ public class Controller {
 		searchSTR.setPromptText(selectedDiagram); //set to watching.
 		Esquema e = this.listaEsquemas.buscar(selectedDiagram);
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA)
-		this.categorylist = e.getTamanos();
-		////
-		///
-		///
-		////
-		///
-		///
-		///
-		System.out.println("nodo: "+this.categorylist);
-		this.joinlist = e.getMijoins();
-		this.setChoiceBox(this.categorylist);
-//		this.setTableView(categoryllist); //this.setTableView(e);  cambiar por este cuando se pueda enviar el esquema que esta dentro de listaesquemas.
+		this.categorylist = e.getArraytamano();
+		System.out.println("array keys: "+this.categorylist);
+		this.setChoiceBox(e.obtenercolumnas()); 
+		this.setTableView(e);}
+	//acomodar los keys en choicebox.
+    private void setChoiceBox(ListaString categorylist2) { 
+		this.choicebox.getItems().clear();
+		int cont=0; 
+    	while (cont!= categorylist2.getLargo()) { 
+    	    String option=categorylist2.buscar(cont); 
+    		System.out.println("CURRENT CHOICE: "+option); 
+    		this.availableChoices.add(option);//.getNombre());  //para cuando pueda conseguir bien la lista con las categorias correspondientes. 
+    		cont++;
+    	} 
+		this.choicebox.setItems(availableChoices);
+		this.choicebox.getSelectionModel().select(0);}	
+    	//despues antes de hacer search... usar esto.. para obtener la opcion seleccionada como string. e ir a esa fila determinada.
+//    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem();
+    private void setTableView(Esquema esquema) throws EsquemaNuloException {
+    	this.descriptionEsquemas.addAll(esquema);
     }
 	//muestra que no se busca nada.
 	private void nothingMessage() {
@@ -211,81 +218,38 @@ public class Controller {
 		stack.setAlignment(Pos.CENTER); 
 		stack.getChildren().add(nothing);
 	    screen.getChildren().add(stack);
-    }
-	//acomodar los keys en choicebox.
-	private void setChoiceBox(ListaTamano categorylist2) {
-		this.choicebox.getItems().clear();
-    	Nodo<String> option = categorylist2.getHead();
-    	System.out.println("HEAD CHOICELIST: "+option.getNodo());
-    	while (option != null) {
-    		System.out.println("CURRENT CHOICE: "+option.getNodo());
-    		this.availableChoices.add(option.getNodo());//.getNombre());  //para cuando pueda conseguir bien la lista con las categorias correspondientes.
-    		option = option.getNext();
-    	}
-    	this.choicebox.setItems(availableChoices);    	
-    	this.choicebox.getSelectionModel().select(0);
-    	//despues antes de hacer search... usar esto.. para obtener la opcion seleccionada como string. e ir a esa fila determinada.
-//    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem();
 	}
-//    private void setTableView(Esquema esquema) throws EsquemaNuloException {
-//    	//get all category
-//    	this.getDiagram();
-//    	
-//	}
-    
-    
-//    ///clasee para poder probar la de abajo solo que con un string[] 
-//    //que manda los datos.
-//    private void getDiagram(String[] esquemaSeleccionado){
-//    	ObservableList<String> description = FXCollections.observableArrayList();
-//    	while
-////    	ObservableList<Esquema> description = FXCollections.observableArrayList();
-//    	description.addAll(esquemaSeleccionado);
-////    	description.add(e);
-//    }
-//    
-    private void getDiagram(ListaEsquemas seleccionEsquemas) throws EsquemaNuloException {
-    	///esto va en los atributos de controller
-    	ObservableList<Esquema> descriptionEsquemas = FXCollections.observableArrayList();
-    	Nodo<Esquema> e = seleccionEsquemas.getHead();
-    	while (e!=null) {
-    		descriptionEsquemas.add(e.getNodo());
-    		descriptionEsquemas.add(new Esquema("Esquema1,dato1:STRING:6,dato2:INT:3"));
-    		descriptionEsquemas.add(new Esquema("Esquema2,dato1:STRING:3,dato2:INT:8"));
-    		e = e.getNext();
-    	}
-    }
 
 	public void hola() throws IOException {
-//        System.out.println("estoy en la funcion");
-//        ObjectNode perro = objectMapper.createObjectNode();
-//        perro.put("hola", 82).put("charanco","tornado");
-//        perro.put("hola", "tornado");
-//        System.out.println(perro);
-       try {
-           Integer.parseInt("23.4");
-       }
-       catch (NumberFormatException e){
-           e.getCause();
-       }
-}
-
-    public void table() throws IOException {
-//        Hashtable hashtable= new Hashtable();
-//        hashtable.put("hello", "pico" );
-//        hashtable.put("Paco",85);
-//        hashtable.put("Paco",89);
-//        Hashtable holga = new Hashtable();
-//        holga= (Hashtable) hashtable.clone();
-//        System.out.println(objectMapper.readValue(objectMapper.writeValueAsString(holga),Hashtable.class));
-//
-//        System.out.println(holga);
-        Cliente cliente=new Cliente();
-        String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");
-        System.out.println(respuesta);
-//        DataInputStream datosentrada = new DataInputStream(client.getInputStream());
-//        log.debug("entrada se conecto");
-//        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class);
-//        log.debug("se creo objeto");
-    }
-}
+//	        System.out.println("estoy en la funcion");
+//	        ObjectNode perro = objectMapper.createObjectNode();
+//	        perro.put("hola", 82).put("charanco","tornado");
+//	        perro.put("hola", "tornado");
+//	        System.out.println(perro);
+	   try {
+	       Integer.parseInt("23.4");
+	       }
+	       catch (NumberFormatException e){
+	           e.getCause();
+	       }
+	}
+	
+	    public void table() throws IOException {
+//	        Hashtable hashtable= new Hashtable();
+//	        hashtable.put("hello", "pico" );
+//	        hashtable.put("Paco",85);
+//	        hashtable.put("Paco",89);
+//	        Hashtable holga = new Hashtable();
+//	        holga= (Hashtable) hashtable.clone();
+//	        System.out.println(objectMapper.readValue(objectMapper.writeValueAsString(holga),Hashtable.class));
+//	
+//	        System.out.println(holga);
+	    Cliente cliente=new Cliente();
+	    String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");
+	    System.out.println(respuesta);
+//	        DataInputStream datosentrada = new DataInputStream(client.getInputStream());
+//	        log.debug("entrada se conecto");
+//	        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class);
+//	        log.debug("se creo objeto");
+	    }
+	}

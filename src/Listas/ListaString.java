@@ -60,7 +60,13 @@ public class ListaString {
         System.out.println(contiene);
         return contiene;
     }
-    
+    public void concatenarlistas(ListaString listaString){ 
+        int cont=listaString.getLargo()-1; 
+        while (cont>=0){ 
+            this.addFirst(listaString.buscar(cont)); 
+            cont--; 
+        } 
+    } 
 
     public int getLargo() {
         return largo;
