@@ -20,7 +20,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader; 
 import javafx.geometry.Pos; 
 import javafx.scene.Parent; 
-import javafx.scene.Scene; 
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button; 
 import javafx.scene.control.ChoiceBox; 
 import javafx.scene.control.Label; 
@@ -29,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.layout.AnchorPane; 
 import javafx.scene.layout.Region; 
@@ -55,7 +57,6 @@ import java.util.ResourceBundle;
 public class Controller { 
 	
 	private ListaEsquemas listaEsquemas =new ListaEsquemas(); 
-	private ArrayList<String> categorylist; 
 	 
 	public void datos() throws EsquemaNuloException { 
 		listaEsquemas.emptyList(); 
@@ -85,7 +86,9 @@ public class Controller {
 	private TableView<Esquema> tableview = new TableView<Esquema>();
 	private ObservableList<Esquema> descriptionEsquemas = FXCollections.observableArrayList(); 
 	@FXML // fx:id="screen" 
-	private AnchorPane screen = new AnchorPane(); 
+	private AnchorPane screen = new AnchorPane();
+    @FXML // fx:id="textfieldFilas"
+    private TextField textfieldFilas; 
     @FXML // fx:id="search" 
     private TextField searchSTR =  new TextField(); 
     @FXML // fx:id="add" 
@@ -112,23 +115,52 @@ public class Controller {
      
     @FXML  //evento de anadir 
 	public void addButtonAction(ActionEvent event) throws IOException { 
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("addingWindow.fxml")); 
-		Parent addingWindow = (Parent) fxmlLoader.load(); 
-		Stage addingStage = new Stage(); 
-		addingStage.setScene(new Scene(addingWindow)); 
-		addingStage.show(); 
-	} 
- 
-	//	Stage addingStage = new Stage(); 
-//	Parent addingWindow; 
-//	FXMLLoader fxmloader = new FXMLLoader(getClass().getResource("new.fxml")); 
-//	root=loader.load(); 
-//	Controller controller= loader.getController(); 
-//	addingStage.setScene(new Scene(addingWindow));//me crea una nuevo escenario y me carga todo lo del fxml 
-//	addingStage.setResizable(false); 
-//	addingStage.show(); 
-//	primaryStage.close(); 
-//     
+    	String inputString = this.textfieldFilas.getText();
+    	if (inputString.isEmpty()) {this.textfieldFilas.clear(); return;}
+    	else if (!this.TryParse(inputString)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Advertencia");
+            alert.setContentText("Dato ingresado no es un numero:  "+inputString);
+            alert.showAndWait();
+            this.textfieldFilas.clear();
+            return;}
+    	this.textfieldFilas.clear();
+		int inputInt = Integer.parseInt(inputString);
+		if (inputInt==0) return;
+    	this.addWindow(inputInt);
+	}
+	private  boolean TryParse(String cadena){
+		try {
+			Integer.parseInt(cadena);
+			return true;
+			} 
+		catch (NumberFormatException e) {
+			return false;}
+	}
+	private void addWindow(int rows) {//cambia a la pantalla de fin del juego
+	    try {
+	        Stage addStage = new Stage();
+	        Parent root;
+	        FXMLLoader loader;
+	        loader = new FXMLLoader(getClass().getResource("add.fxml"));
+	        root=loader.load();
+	        ControllerAdd controller= loader.getController();
+	        addStage.setTitle("Add a Diagram");
+	        System.out.println("Llega hasta antes de enviar las filas");
+	        controller.drawing(rows);
+	        System.out.println("Pasa las filas");
+	        Scene scene = new Scene(root);
+	        addStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
+	        addStage.setResizable(false);
+	        addStage.getIcons().add(new Image("/Media/save.png"));
+	        addStage.show();
+	        Stage stage=(Stage) this.base.getScene().getWindow();
+	        stage.close();
+	    } catch (IOException e) {
+	        System.out.println("ERROROROR : "+e);//e.printStackTrace();
+	    }
+	}
+	
     @FXML //evento de buscar esquemas 
     public void searchButtonAction(ActionEvent event) throws IOException { 
 //    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem(); 
