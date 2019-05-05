@@ -60,7 +60,12 @@ public class Controller {
 	private ListaEsquemas listaEsquemas =new ListaEsquemas(); 
 	 
 	public void datos() throws EsquemaNuloException, DatosUsadosException {
-		listaEsquemas.emptyList(); 
+		listaEsquemas.emptyList();
+		for (int i=0; i!=11; i++){ 
+			String str = "E"+i+",Nombre"+i+":STRING"+":"+i+",Rango"+i+":INT"+":"+i;
+			System.out.println(str);
+			listaEsquemas.addLast(new Esquema(str));
+		}
 		listaEsquemas.addLast(new Esquema("Paraiso,Nombre:Narnia:1,Region:INT:1")); 
 		listaEsquemas.addLast(new Esquema("Tornado,Nombre:Nodico:3,Zona:INT:5,Clima:Seco:2,Rango de Humedad:INT:4,Gravedad:STRING:7,Velocidad:INT:7,Precauciones:STRING:4,Extras:INT:4")); 
 		listaEsquemas.addLast(new Esquema("Bosque Seco,Clima:Seco:2,Rango de Humedad:INT:4")); 
@@ -104,8 +109,9 @@ public class Controller {
 	private Socket client; 
  
     //initializer 
-    public void initialize(URL location, ResourceBundle resouces) { 
-    	try { 
+    public void initialize() {//URL location, ResourceBundle resouces) { 
+    	try {
+    		this.datos();
 			this.loadDiagrams(null); 
 		}  
     	catch (IOException e) { 
@@ -176,7 +182,6 @@ public class Controller {
  
 	//loadDiagramas. 
     private void loadDiagrams(String detail) throws IOException {
-    	this.datos(); 
     	this.diagrams.removeAll(diagrams);
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
@@ -245,7 +250,7 @@ public class Controller {
 		for (int i=0; i<arrayList.size(); i++){
 			String nombrecolumna = arrayList.get(i);
 			TableColumn<Esquema, String> a = new TableColumn<> (nombrecolumna);
-			a.setMinWidth(200);a.setMaxWidth(350);
+			a.setMinWidth(200);//a.setMaxWidth(350);
 			System.out.println("doooooooooo "+nombrecolumna);
 			a.setCellValueFactory(new PropertyValueFactory<Esquema, String>(nombrecolumna));
 			table.getColumns().add(a);
