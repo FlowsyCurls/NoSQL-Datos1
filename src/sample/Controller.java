@@ -189,26 +189,18 @@ public class Controller {
 		searchSTR.setPromptText(selectedDiagram); //set to watching.
 		Esquema e = this.listaEsquemas.buscar(selectedDiagram);
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA)
-		this.categorylist = e.getArraytamano();
-		System.out.println("array keys: "+this.categorylist);
-		this.setChoiceBox(e.obtenercolumnas()); 
-		this.setTableView(e);}
-	//acomodar los keys en choicebox.
-    private void setChoiceBox(ListaString categorylist2) { 
-		this.choicebox.getItems().clear();
-		int cont=0; 
-    	while (cont!= categorylist2.getLargo()) { 
-    	    String option=categorylist2.buscar(cont); 
-    		System.out.println("CURRENT CHOICE: "+option); 
-    		this.availableChoices.add(option);//.getNombre());  //para cuando pueda conseguir bien la lista con las categorias correspondientes. 
-    		cont++;
-    	} 
-		this.choicebox.setItems(availableChoices);
-		this.choicebox.getSelectionModel().select(0);}	
-    	//despues antes de hacer search... usar esto.. para obtener la opcion seleccionada como string. e ir a esa fila determinada.
-//    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem();
-    private void setTableView(Esquema esquema) throws EsquemaNuloException {
-    	this.descriptionEsquemas.addAll(esquema);
+		this.categorylist = e.getTamanos();
+		////
+		///
+		///
+		////
+		///
+		///
+		///
+		System.out.println("nodo: "+this.categorylist);
+		this.joinlist = e.getMijoins();
+		this.setChoiceBox(e.obtenercolumnas());
+//		this.setTableView(categoryllist); //this.setTableView(e);  cambiar por este cuando se pueda enviar el esquema que esta dentro de listaesquemas.
     }
 	//muestra que no se busca nada.
 	private void nothingMessage() {
@@ -218,6 +210,20 @@ public class Controller {
 		stack.setAlignment(Pos.CENTER); 
 		stack.getChildren().add(nothing);
 	    screen.getChildren().add(stack);
+    }
+	//acomodar los keys en choicebox.
+	private void setChoiceBox(ListaString categorylist2) {
+		this.choicebox.getItems().clear();
+		int cont=0;
+    	while (cont!= categorylist2.getLargo()) {
+    	    String option=categorylist2.buscar(cont);
+    		System.out.println("CURRENT CHOICE: "+option);
+    		this.availableChoices.add(option);//.getNombre());  //para cuando pueda conseguir bien la lista con las categorias correspondientes.
+    	}
+    	this.choicebox.setItems(availableChoices);    	
+    	this.choicebox.getSelectionModel().select(0);
+    	//despues antes de hacer search... usar esto.. para obtener la opcion seleccionada como string. e ir a esa fila determinada.
+//    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem();
 	}
 
 	public void hola() throws IOException {

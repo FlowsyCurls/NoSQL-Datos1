@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="base" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #27357e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="-23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Make your new Diagrams" VBox.vgrow="SOMETIMES">
+               <font>
+                  <Font name="Berlin Sans FB Demi Bold" size="44.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

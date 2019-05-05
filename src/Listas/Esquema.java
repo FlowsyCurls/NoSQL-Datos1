@@ -207,39 +207,21 @@ public class Esquema {
         }
         return usado;
     }
-    
-    public ArrayList<String> getArraytamano(){
-    	ArrayList<String> array = new ArrayList<String>();
-    	
-    	return array;
+    public ListaString obtenercolumnas(){
+        ListaString listaString=new ListaString();
+        int cont=this.mijoins.getLargo()-1;
+        while (cont<=0){
+            String nombreesquema=this.mijoins.buscar(cont);
+            listaString.concatenarlistas(Server.esquemas.buscar(nombreesquema).obtenercolumnas());
+            listaString.addFirst(nombreesquema);
+        }
+        cont=this.tamanos.getLargo()-1;
+        while (cont>=0){
+            listaString.addFirst(this.tamanos.buscarnombre(cont));
+            cont--;
+        }
+        return listaString;
     }
-    
-    public ArrayList<Esquema> getArrayesquemas(ListaEsquemas esquemas) {
-    	///esto va en los atributos de controller
-    	ArrayList<Esquema> array = new ArrayList<Esquema>();
-    	Nodo<Esquema> e = esquemas.getHead();
-    	while (e!=null) {
-    		array.add(e.getNodo());
-    		e = e.getNext();
-    		continue;
-    	}
-		return array;
-    }
-    public ListaString obtenercolumnas(){ 
-        ListaString listaString=new ListaString(); 
-        int cont=this.mijoins.getLargo()-1; 
-        while (cont<=0){ 
-            String nombreesquema=this.mijoins.buscar(cont); 
-            listaString.concatenarlistas(Server.esquemas.buscar(nombreesquema).obtenercolumnas()); 
-            listaString.addFirst(nombreesquema); 
-        } 
-        cont=this.tamanos.getLargo()-1; 
-        while (cont>=0){ 
-            listaString.addFirst(this.tamanos.buscarnombre(cont)); 
-            cont--; 
-        } 
-        return listaString; 
-    } 
 
 
     public String getNombre() {

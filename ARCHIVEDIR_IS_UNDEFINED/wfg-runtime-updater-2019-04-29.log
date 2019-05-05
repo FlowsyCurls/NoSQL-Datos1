@@ -1,0 +1,9 @@
+2019-04-29 23:13:27 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-04-29 23:13:27 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-04-29 23:13:27 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-04-29 23:14:57 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-04-29 23:14:57 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-04-29 23:14:57 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-04-29 23:15:39 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-04-29 23:15:39 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-04-29 23:15:39 [Thread-0] DEBUG sample.Server - se recibio objeto

@@ -34,14 +34,14 @@ public class ListaTamano {
         }
         return tamano;
     }
-    public String buscarnombre (int n){ 
-        Nodo<Tamano>tmp=this.head; 
-        while (n>0){ 
-            tmp=tmp.next; 
-            n--; 
-        } 
-        return tmp.getNodo().getNombre(); 
-    } 
+    public String buscarnombre (int n){
+        Nodo<Tamano>tmp=this.head;
+        while (n>0){
+            tmp=tmp.next;
+            n--;
+        }
+        return tmp.getNodo().getNombre();
+    }
 
     public Boolean contiene(String string){
         Boolean contiene=false;
