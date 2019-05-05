@@ -69,34 +69,36 @@ public class Esquema {
         this.filas.addLast(fila);
     }
 
-    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException {
+    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException {
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
         while (cont<datos.length){
             String nombre=datos[cont].split(":")[0];
             String dato=datos[cont].split(":")[1];
-            if (this.getTamanos().contiene(nombre)) {
-                System.out.println(this.getTamanos().buscartamano(nombre));
-                if (this.getTamanos().buscartamano(nombre) >= dato.length()) {
-                    System.out.println("voy a cambiar dato");
-                    base.replace(nombre, this.filas.convertir(dato, nombre));
-                }
-                else {
-                    throw new TamanoException();
+            if (!nombre.equals(this.ID) && !this.filas.existe(dato,nombre)) {
+                if (this.getTamanos().contiene(nombre)) {
+                    System.out.println(this.getTamanos().buscartamano(nombre));
+                    if (this.getTamanos().buscartamano(nombre) >= dato.length()) {
+                        if (!nombre.equals(this.ID)) {
+                            System.out.println("voy a cambiar dato");
+                            base.replace(nombre, this.filas.convertir(dato, nombre));
+                        }
+                    } else {
+                        throw new TamanoException();
+                    }
+                } else if (this.getMijoins().contiene(nombre)) {
+                    Esquema esquema = Server.esquemas.buscar(nombre);
+                    System.out.println(esquema.getFilas().getHead().getNodo());
+                    if (esquema.existe(dato, esquema.getID())) {
+                        System.out.println("voy a cambiar dato en join");
+                        base.replace(nombre, this.filas.convertir(dato, nombre));
+                    } else {
+                        throw new DatoNoExistenteException(nombre);
+                    }
                 }
             }
-            else if(this.getMijoins().contiene(nombre)){
-            Esquema esquema=Server.esquemas.buscar(nombre);
-            System.out.println(esquema.getFilas().getHead().getNodo());
-                if (esquema.existe(dato,esquema.getID())){
-                    System.out.println("voy a cambiar dato en join");
-                    base.replace(nombre,this.filas.convertir(dato,nombre));
-                }
-                else {
-                    throw new DatoNoExistenteException(nombre);
-                }
-            }
+            else {throw new  DatosUsadosException();}
             cont++;
         }
         if (!tiene_filas){

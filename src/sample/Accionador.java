@@ -64,6 +64,8 @@ public class Accionador {
         }catch (NumberFormatException e){
             datos.setRespuesta("tipo incorrecto");
             datos.setDato(e.getMessage().substring(19,e.getMessage().length()-1));
+        } catch (DatosUsadosException e) {
+            datos.setRespuesta("El dato del ID ya existe");
         }
         return datos;
     }
