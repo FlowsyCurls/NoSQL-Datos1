@@ -80,6 +80,7 @@ public class Server implements Runnable {
         System.out.println(esquemas.buscar("Esquema3").buscardatos("lobo","DAto1"));
 //        System.out.println(esquemas.buscar("Esquema1").buscardatos("32","dato2"));
         System.out.println(esquemas.buscar("Esquema1").buscartodos()+"que");
+        System.out.println(esquemas.buscar("Esquema2").obtenercolumnas().getLargo());
 
         Thread hilo = new Thread(this);
         hilo.start();

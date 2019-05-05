@@ -219,6 +219,7 @@ public class Controller {
     	    String option=categorylist2.buscar(cont);
     		System.out.println("CURRENT CHOICE: "+option);
     		this.availableChoices.add(option);//.getNombre());  //para cuando pueda conseguir bien la lista con las categorias correspondientes.
+    		cont++;
     	}
     	this.choicebox.setItems(availableChoices);    	
     	this.choicebox.getSelectionModel().select(0);

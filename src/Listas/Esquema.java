@@ -210,10 +210,11 @@ public class Esquema {
     public ListaString obtenercolumnas(){
         ListaString listaString=new ListaString();
         int cont=this.mijoins.getLargo()-1;
-        while (cont<=0){
+        while (cont>=0){
             String nombreesquema=this.mijoins.buscar(cont);
             listaString.concatenarlistas(Server.esquemas.buscar(nombreesquema).obtenercolumnas());
             listaString.addFirst(nombreesquema);
+            cont--;
         }
         cont=this.tamanos.getLargo()-1;
         while (cont>=0){
