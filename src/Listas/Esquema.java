@@ -5,11 +5,9 @@ import Errores.DatoNoExistenteException;
 import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
 import Errores.TamanoException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import sample.Server;
 
-import java.util.ArrayList;
+
 import java.util.Hashtable;
 
 public class Esquema {
@@ -20,14 +18,14 @@ public class Esquema {
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
 
-    public Esquema(String constructor) throws EsquemaNuloException {
+    public Esquema(String constructor) throws EsquemaNuloException, DatosUsadosException {
         String[] partes=constructor.split(",");
         this.tiene_filas=false;
         this.nombre=partes[0];
         this.crearfila(partes);
 
     }
-    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException {
+    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
         int cont=1;
         this.ID=partes[cont].split(":")[0];
@@ -36,33 +34,35 @@ public class Esquema {
             String tipo = partes[cont].split(":")[1];
             int tamano = Math.abs(Integer.parseInt(partes[cont].split(":")[2]));
             System.out.println(tipo);
-            if (tipo.equals("STRING")) {
-                fila.put(nombre, "");
-            } else if (tipo.equals("INT")) {
-                fila.put(nombre, -1);
-            } else if (tipo.equals("DOUBLE")) {
-                fila.put(nombre, (double) -1);
-            } else if (tipo.equals("LONG")) {
-                fila.put(nombre, (long) -1);
-            } else if (tipo.equals("FLOAT")) {
-                fila.put(nombre, (float) -1);
-            }
-            if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
-                this.getTamanos().addLast(new Tamano(nombre, tamano));
-                System.out.println(getTamanos().largo);
-            }
-            if (tipo.equals("JOIN")) {
-                Esquema esquema = Server.esquemas.buscar(nombre);
-                if (esquema==null){
-                    throw new EsquemaNuloException();
+            if (!fila.containsKey(nombre)) {
+                if (tipo.equals("STRING")) {
+                    fila.put(nombre, "");
+                } else if (tipo.equals("INT")) {
+                    fila.put(nombre, -1);
+                } else if (tipo.equals("DOUBLE")) {
+                    fila.put(nombre, (double) -1);
+                } else if (tipo.equals("LONG")) {
+                    fila.put(nombre, (long) -1);
+                } else if (tipo.equals("FLOAT")) {
+                    fila.put(nombre, (float) -1);
                 }
-                else {
-                    getMijoins().addFirst(nombre);
-                    esquema.joinde.addFirst(this.nombre);
-                    System.out.println(getMijoins().head.getNodo());
-                    fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
+                if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
+                    this.getTamanos().addLast(new Tamano(nombre, tamano));
+                    System.out.println(getTamanos().largo);
+                }
+                if (tipo.equals("JOIN")) {
+                    Esquema esquema = Server.esquemas.buscar(nombre);
+                    if (esquema == null) {
+                        throw new EsquemaNuloException();
+                    } else {
+                        getMijoins().addFirst(nombre);
+                        esquema.joinde.addFirst(this.nombre);
+                        System.out.println(getMijoins().head.getNodo());
+                        fila.put(nombre, esquema.filas.getHead().getNodo().get(esquema.getID()));
+                    }
                 }
             }
+            else {throw new DatosUsadosException();}
             cont++;
         }
         System.out.println(fila);
@@ -139,13 +139,22 @@ public class Esquema {
         }
         return datos;
     }
-    public String buscardatosjoin(String join,String nombre,String dato) throws StringIndexOutOfBoundsException{//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
-        Esquema esquema=Server.esquemas.buscar(join);
+    public String buscardatosjoin(ListaString joins,String nombre,String dato) throws StringIndexOutOfBoundsException{//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+
         String datos="";
         int cont=0;
         while (cont<this.filas.getLargo()){
             Hashtable fila=filas.buscar(cont);
-            Hashtable filajoin=esquema.getFilas().buscar(fila.get(join).toString(),esquema.getID());
+            Hashtable filatmp=filas.buscar(cont);
+            int i=0;
+            Hashtable filajoin=null;
+            while (i<joins.getLargo()){//aqui se mueve desde el join más cercano hasta el join final donde se encuentra el nombre de la columna
+                Esquema esquema=Server.esquemas.buscar(joins.buscar(i));
+                filajoin=esquema.getFilas().buscar(filatmp.get(joins.buscar(i)).toString(),esquema.getID());
+                filatmp=filajoin;
+                i++;
+            }
+
             if (filajoin.get(nombre).toString().equals(dato)){
                 datos=datos.concat(this.crearstring(fila.get(this.ID).toString(),this.getID()));
                 datos=datos.concat(";");
@@ -223,6 +232,7 @@ public class Esquema {
         }
         return listaString;
     }
+
 
 
     public String getNombre() {

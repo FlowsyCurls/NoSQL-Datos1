@@ -1,6 +1,7 @@
 package sample; 
  
-import com.fasterxml.jackson.core.JsonProcessingException; 
+import Errores.DatosUsadosException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode; 
 import com.fasterxml.jackson.databind.ObjectMapper; 
 import com.fasterxml.jackson.databind.node.ObjectNode; 
@@ -58,7 +59,7 @@ public class Controller {
 	
 	private ListaEsquemas listaEsquemas =new ListaEsquemas(); 
 	 
-	public void datos() throws EsquemaNuloException { 
+	public void datos() throws EsquemaNuloException, DatosUsadosException {
 		listaEsquemas.emptyList(); 
 		listaEsquemas.addLast(new Esquema("Paraiso,Nombre:Narnia:1,Region:INT:1")); 
 		listaEsquemas.addLast(new Esquema("Tornado,Nombre:Nodico:3,Zona:INT:5,Clima:Seco:2,Rango de Humedad:INT:4,Gravedad:STRING:7,Velocidad:INT:7,Precauciones:STRING:4,Extras:INT:4")); 
@@ -306,7 +307,7 @@ public class Controller {
 	    String respuesta5=cliente.insertardatos("Esquema1", "STRING");
 	    Datos respuesta6=cliente.buscardatos("Esquema1", "STRING", "0");
 	    Datos respuesta7=cliente.buscardatosporindice("Esquema1", "STRING", "0", "2");
-	    Datos respuesta8=cliente.buscardatosporjoin("Esquema1", "STRING", "0", "no se");
+	    Datos respuesta8=cliente.buscardatosporjoin("Esquema1", "STRING", "0", null);
 	    System.out.println(respuesta);
 //	        DataInputStream datosentrada = new DataInputStream(client.getInputStream()); 
 //	        log.debug("entrada se conecto"); 
@@ -324,6 +325,6 @@ public class Controller {
 	    else if (accion=="insertardatos"){String respuesta=cliente.insertardatos("Esquema1", "STRING");System.out.println(respuesta);}
 	    else if (accion=="buscardatos"){Datos respuesta=cliente.buscardatos("Esquema1", "STRING", "0");System.out.println(respuesta);}
 	    else if (accion=="buscardatosporindice"){Datos respuesta=cliente.buscardatosporindice("Esquema1", "STRING", "0", "2");System.out.println(respuesta);}
-	    else if (accion=="buscardatosporjoin"){Datos respuesta=cliente.buscardatosporjoin("Esquema1", "STRING", "0", "no se");System.out.println(respuesta);}
+	    else if (accion=="buscardatosporjoin"){Datos respuesta=cliente.buscardatosporjoin("Esquema1", "STRING", "0", null);System.out.println(respuesta);}
     }
 }

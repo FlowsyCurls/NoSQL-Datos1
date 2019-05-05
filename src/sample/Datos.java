@@ -1,9 +1,12 @@
 package sample;
 
+import Listas.ListaString;
+
 public class Datos {
     private String accion,respuesta;
     private String nombre,columna,dato,datos;
-    private String indice,nombre_join;
+    private String indice;
+    private ListaString nombre_joins;
 
     public String getAccion() {
         return accion;
@@ -61,11 +64,11 @@ public class Datos {
         this.indice = indice;
     }
 
-    public String getNombre_join() {
-        return nombre_join;
+    public ListaString getNombre_joins() {
+        return nombre_joins;
     }
 
-    public void setNombre_join(String nombre_join) {
-        this.nombre_join = nombre_join;
+    public void setNombre_joins(ListaString nombre_joins) {
+        this.nombre_joins = nombre_joins;
     }
 }
