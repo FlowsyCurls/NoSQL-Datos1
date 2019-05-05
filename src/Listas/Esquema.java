@@ -223,6 +223,18 @@ public class Esquema {
         }
         return listaString;
     }
+    
+    public ArrayList<Esquema> getArrayesquemas(ListaEsquemas esquemas) {
+    	///esto va en los atributos de controller
+    	ArrayList<Esquema> array = new ArrayList<Esquema>();
+    	Nodo<Esquema> e = esquemas.getHead();
+    	while (e!=null) {
+    		array.add(e.getNodo());
+    		e = e.getNext();
+    		continue;
+    	}
+		return array;
+    }
 
 
     public String getNombre() {
