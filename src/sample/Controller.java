@@ -24,8 +24,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button; 
 import javafx.scene.control.ChoiceBox; 
 import javafx.scene.control.Label; 
-import javafx.scene.control.ListView; 
-import javafx.scene.control.TextField; 
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.layout.AnchorPane; 
 import javafx.scene.layout.Region; 
@@ -50,15 +53,14 @@ import java.util.List;
 import java.util.ResourceBundle; 
  
 public class Controller { 
-	 
-	 
-	public ListaEsquemas listaEsquemas =new ListaEsquemas(); 
+	
+	private ListaEsquemas listaEsquemas =new ListaEsquemas(); 
 	private ArrayList<String> categorylist; 
 	 
 	public void datos() throws EsquemaNuloException { 
 		listaEsquemas.emptyList(); 
 		listaEsquemas.addLast(new Esquema("Paraiso,Nombre:Narnia:1,Region:INT:1")); 
-		listaEsquemas.addLast(new Esquema("Tornado,Nombre:Nodico:3,Rango:INT:5,Clima:Seco:2,Rango de Humedad:INT:4,DATA:STRING:7,dat7:INT:7,AC:STRING:4,dat4:INT:4")); 
+		listaEsquemas.addLast(new Esquema("Tornado,Nombre:Nodico:3,Zona:INT:5,Clima:Seco:2,Rango de Humedad:INT:4,Gravedad:STRING:7,Velocidad:INT:7,Precauciones:STRING:4,Extras:INT:4")); 
 		listaEsquemas.addLast(new Esquema("Bosque Seco,Clima:Seco:2,Rango de Humedad:INT:4")); 
 		listaEsquemas.addLast(new Esquema("Ragos4,AC:STRING:4,dat4:INT:4")); 
 		listaEsquemas.addLast(new Esquema("Yeso5,BN:STRING:5,dat5:INT:5")); 
@@ -79,7 +81,8 @@ public class Controller {
     @FXML // fx:id="choicebox" 
     private ChoiceBox<String> choicebox = new ChoiceBox<String>(); 
 	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
-	@FXML //fx:id="tableview" 
+	@FXML //fx:id="tableview"
+	private TableView<Esquema> tableview = new TableView<Esquema>();
 	private ObservableList<Esquema> descriptionEsquemas = FXCollections.observableArrayList(); 
 	@FXML // fx:id="screen" 
 	private AnchorPane screen = new AnchorPane(); 
@@ -93,7 +96,8 @@ public class Controller {
 	//objextmapper 
     private ObjectMapper objectMapper=new ObjectMapper(); 
  
-    public static Logger log = LoggerFactory.getLogger(Controller.class); 
+    public static Logger log = LoggerFactory.getLogger(Controller.class);
+	private Socket client; 
  
     //initializer 
     public void initialize(URL location, ResourceBundle resouces) { 
@@ -138,9 +142,9 @@ public class Controller {
     } 
  
 	//loadDiagramas. 
-    private void loadDiagrams(String detail) throws IOException { 
+    private void loadDiagrams(String detail) throws IOException {
     	this.datos(); 
-    	this.diagrams.removeAll(diagrams); 
+    	this.diagrams.removeAll(diagrams);
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
 //			System.out.println("DIAGRAMAS cargados "+diagrams); 
@@ -148,7 +152,7 @@ public class Controller {
 			return;} 
     	this.addNamesOneByOne(); 
 //		System.out.println("DIAGRAMAS cargados "+diagrams); 
-	    this.diagramsList.setItems(diagrams); 
+	    this.diagramsList.setItems(diagrams);
     } 
  
 	//buscar coincidencias para cargarlas. 
@@ -190,26 +194,42 @@ public class Controller {
 		searchSTR.setPromptText(selectedDiagram); //set to watching. 
 		Esquema e = this.listaEsquemas.buscar(selectedDiagram); 
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA) 
-//		System.out.println("array keys: "+this.categorylist); 
-		this.setChoiceBox(e.obtenercolumnas());  
-		this.setTableView(e);} 
+		this.setChoiceBox(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));  
+		this.doTable(e , e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));} 
 	//acomodar los keys en choicebox. 
-    private void setChoiceBox(ListaString categorylist2) {  
-		this.choicebox.getItems().clear(); 
-		int cont=0;  
-    	while (cont!= categorylist2.getLargo()) {  
-    	    String option=categorylist2.buscar(cont);  
-    		System.out.println("CURRENT CHOICE: "+option);  
-    		this.availableChoices.add(option);//.getNombre());  //para cuando pueda conseguir bien la lista con las categorias correspondientes.  
-    		cont++; 
-    	}  
+    private void setChoiceBox(ArrayList<String> arrayList) {  
+		this.choicebox.getItems().clear();
+		this.availableChoices.add("Other Diagram...");
+    	this.availableChoices.addAll(arrayList);
 		this.choicebox.setItems(availableChoices); 
 		this.choicebox.getSelectionModel().select(0);}	 
     	//despues antes de hacer search... usar esto.. para obtener la opcion seleccionada como string. e ir a esa fila determinada. 
 //    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem(); 
-    private void setTableView(Esquema esquema) throws EsquemaNuloException { 
-    	this.descriptionEsquemas.addAll(esquema); 
-    } 
+    private void doTable(Esquema e, ArrayList<String> arrayList) {
+		TableView<Esquema> table = new TableView<Esquema>();
+		table.setItems((this.getInfo(e)));
+    	this.tableview.getItems().clear();
+		for (int i=0; i<arrayList.size(); i++){
+			String nombrecolumna = arrayList.get(i);
+			TableColumn<Esquema, String> a = new TableColumn<> (nombrecolumna);
+			a.setMinWidth(200);a.setMaxWidth(350);
+			System.out.println("doooooooooo "+nombrecolumna);
+			a.setCellValueFactory(new PropertyValueFactory<Esquema, String>(nombrecolumna));
+			table.getColumns().add(a);
+			table.setEditable(true);
+		}
+		//drawing
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		table.prefWidthProperty().bind(screen.widthProperty());
+		table.prefHeightProperty().bind(screen.heightProperty());  
+		screen.getChildren().add(table); 
+		log.debug("TableColumns Finished --> "+"sale del for"); 	
+    }
+    private ObservableList<Esquema> getInfo(Esquema e){
+    	this.descriptionEsquemas.addAll(e);
+		return this.descriptionEsquemas;
+    }
+
 	//muestra que no se busca nada. 
 	private void nothingMessage() { 
 		nothing.setText("Nothing Displayed"); nothing.setTextFill(Color.GRAY); nothing.setFont(new Font("Arial", 25)); 
@@ -234,7 +254,8 @@ public class Controller {
 	       } 
 	} 
 	 
-	    public void table() throws IOException { 
+    @SuppressWarnings("unused")
+	public void table() throws IOException { 
 //	        Hashtable hashtable= new Hashtable(); 
 //	        hashtable.put("hello", "pico" ); 
 //	        hashtable.put("Paco",85); 
@@ -245,11 +266,32 @@ public class Controller {
 //	 
 //	        System.out.println(holga); 
 	    Cliente cliente=new Cliente(); 
-	    String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3"); 
-	    System.out.println(respuesta); 
+	    String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");
+	    String respuesta1=cliente.crearindice("Esquema1", "0", "1");
+	    String respuesta2=cliente.eliminardatos("Esquema1", "ID");
+	    String respuesta3=cliente.eliminarEsquema("Esquema1");
+	    String respuesta4=cliente.eliminarindice("Esquema1", "0", "1");
+	    String respuesta5=cliente.insertardatos("Esquema1", "STRING");
+	    Datos respuesta6=cliente.buscardatos("Esquema1", "STRING", "0");
+	    Datos respuesta7=cliente.buscardatosporindice("Esquema1", "STRING", "0", "2");
+	    Datos respuesta8=cliente.buscardatosporjoin("Esquema1", "STRING", "0", "no se");
+	    System.out.println(respuesta);
 //	        DataInputStream datosentrada = new DataInputStream(client.getInputStream()); 
 //	        log.debug("entrada se conecto"); 
 //	        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class); 
 //	        log.debug("se creo objeto"); 
-	    } 
-	} 
+	    }
+    
+    public void acciones(String accion, ListaEsquemas lista, Esquema e)throws IOException{
+	    Cliente cliente=new Cliente();
+	    if (accion=="crearesquema"){String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");System.out.println(respuesta);}
+	    else if (accion=="crearindice"){String respuesta=cliente.crearindice("Esquema1", "0", "1");System.out.println(respuesta);}
+	    else if (accion=="eliminardatos"){String respuesta=cliente.eliminardatos("Esquema1", "ID");System.out.println(respuesta);}
+	    else if (accion=="eliminarEsquema"){String respuesta=cliente.eliminarEsquema("Esquema1");System.out.println(respuesta);}
+	    else if (accion=="eliminarindice"){String respuesta=cliente.eliminarindice("Esquema1", "0", "1");System.out.println(respuesta);}
+	    else if (accion=="insertardatos"){String respuesta=cliente.insertardatos("Esquema1", "STRING");System.out.println(respuesta);}
+	    else if (accion=="buscardatos"){Datos respuesta=cliente.buscardatos("Esquema1", "STRING", "0");System.out.println(respuesta);}
+	    else if (accion=="buscardatosporindice"){Datos respuesta=cliente.buscardatosporindice("Esquema1", "STRING", "0", "2");System.out.println(respuesta);}
+	    else if (accion=="buscardatosporjoin"){Datos respuesta=cliente.buscardatosporjoin("Esquema1", "STRING", "0", "no se");System.out.println(respuesta);}
+    }
+}

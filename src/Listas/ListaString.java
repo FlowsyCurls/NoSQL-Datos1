@@ -1,5 +1,6 @@
 package Listas;
 
+import java.util.ArrayList;
 
 public class ListaString {
     int largo;
@@ -67,7 +68,16 @@ public class ListaString {
             cont--;
         }
     }
-    
+    public ArrayList<String> getArraycolumnas(ListaString string){
+    	ArrayList<String> array =  new ArrayList<>();
+    	Nodo<String> e = string.getHead();
+    	while (e!=null) {
+    		array.add(e.getNodo());
+    		e = e.getNext();
+    		continue;
+    	}
+		return array;
+    }
 
     public int getLargo() {
         return largo;

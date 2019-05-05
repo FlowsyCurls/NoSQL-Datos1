@@ -129,4 +129,14 @@ public class ListaEsquemas {
     public void emptyList() {
     	this.head = null; this.largo = 0;
     }
+	public ArrayList<Esquema> getArrayesquemas(ListaEsquemas le) {
+    	ArrayList<Esquema> array =  new ArrayList<>();
+    	Nodo<Esquema> e = le.getHead();
+    	while (e!=null) {
+    		array.add(e.getNodo());
+    		e = e.getNext();
+    		continue;
+    	}
+		return array;
+    }
 }
