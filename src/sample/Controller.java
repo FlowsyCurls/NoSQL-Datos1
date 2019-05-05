@@ -38,7 +38,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane; 
 import javafx.scene.paint.Color; 
 import javafx.scene.text.Font; 
-import sample.Main; 
+import sample.Main;
+import javafx.stage.Modality;
 import javafx.stage.Stage; 
  
 import org.slf4j.Logger; 
@@ -81,7 +82,7 @@ public class Controller {
 	 
 	//FXML// 
 	@FXML // fx:id="base" 
-	public  AnchorPane base= new AnchorPane(); 
+	public  AnchorPane baseSample= new AnchorPane(); 
 	@FXML // fx:id="diagramsList" 
 	private ListView<String> diagramsList = new ListView<String>(); 
 	private ObservableList<String> diagrams = FXCollections.observableArrayList(); 
@@ -118,7 +119,7 @@ public class Controller {
 			System.out.println("Dio este error |||| "+e); 
 			log.debug("error");
 		} 
-    } 
+    }
      
     @FXML  //evento de anadir 
 	public void addButtonAction(ActionEvent event) throws IOException { 
@@ -144,27 +145,26 @@ public class Controller {
 		catch (NumberFormatException e) {
 			return false;}
 	}
-	private void addWindow(int rows) {//cambia a la pantalla de fin del juego
+	private void addWindow(int columns) {//cambia a la pantalla de fin del juego
 	    try {
 	        Stage addStage = new Stage();
 	        Parent root;
 	        FXMLLoader loader;
 	        loader = new FXMLLoader(getClass().getResource("add.fxml"));
 	        root=loader.load();
-	        ControllerAdd controller= loader.getController();
 	        addStage.setTitle("Add a Diagram");
-	        System.out.println("Llega hasta antes de enviar las filas");
-	        controller.drawing(rows);
-	        System.out.println("Pasa las filas");
-	        Scene scene = new Scene(root);
+//	        ControllerAdd controller= loader.getController();
+//	        controller.drawing(columns);
+	        Scene scene = new Scene(root,1200,800);
 	        addStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
 	        addStage.setResizable(false);
 	        addStage.getIcons().add(new Image("/Media/save.png"));
 	        addStage.show();
-	        Stage stage=(Stage) this.base.getScene().getWindow();
+//	        addStage.initModality(Modality.WINDOW_MODAL);
+	        Stage stage=(Stage) this.baseSample.getScene().getWindow();
 	        stage.close();
 	    } catch (IOException e) {
-	        System.out.println("ERROROROR : "+e);//e.printStackTrace();
+	        System.out.println("No abre : "+e);//e.printStackTrace();
 	    }
 	}
 	

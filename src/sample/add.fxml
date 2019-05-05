@@ -2,14 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #27357e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: #27357e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerAdd">
    <children>
       <VBox prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -23,17 +26,86 @@
                         <Font name="Berlin Sans FB Demi Bold" size="47.0" />
                      </font>
                   </Text>
+                  <Label fx:id="columnslabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="rows" textAlignment="CENTER" textFill="#152844" wrapText="true">
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="35.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets right="1009.0" />
+                     </StackPane.margin>
+                  </Label>
                </children>
             </StackPane>
-            <AnchorPane prefHeight="930.0" prefWidth="400.0" style="-fx-background-color: #4D6FAC;" VBox.vgrow="SOMETIMES" />
+            <AnchorPane prefHeight="930.0" prefWidth="400.0" VBox.vgrow="SOMETIMES">
+               <children>
+                  <VBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="589.0" prefWidth="164.0" style="-fx-background-color: #27357e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="938.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Region VBox.vgrow="SOMETIMES" />
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+                           <children>
+                              <RadioButton mnemonicParsing="false" selected="true" text="STRING" textFill="WHITE">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="22.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="27.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="INTEGER" textFill="WHITE">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="27.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="DOUBLE" textFill="WHITE">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="27.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="LONG" textFill="WHITE">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="27.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="FLOAT" textFill="WHITE">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="27.0" />
+                                 </VBox.margin>
+                              </RadioButton>
+                              <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addcolumn" prefHeight="27.0" text=" Add Column" VBox.vgrow="SOMETIMES">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="3.0" left="37.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
+                        <Region VBox.vgrow="SOMETIMES" />
+                     </children>
+                  </VBox>
+                  <AnchorPane fx:id="screen" layoutX="162.0" prefHeight="589.0" prefWidth="935.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>
-                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="100.0" text="Cancel">
+                <Button fx:id="cancel" alignment="CENTER" cancelButton="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancel" prefHeight="27.0" prefWidth="100.0" text="Cancel">
                      <font>
                         <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="55.0" prefWidth="100.0" text="Submit">
+                  <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="100.0" text="Submit">
                      <font>
                         <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                      </font>
