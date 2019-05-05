@@ -36,6 +36,8 @@ public class Accionador {
             datos.setRespuesta("el tamano solo recibe enteros");
         } catch (EsquemaNuloException e) {
             datos.setRespuesta("No existe esquema de join indicado");
+        } catch (DatosUsadosException e) {
+            datos.setRespuesta("Hay columnas repetidas");
         }
         return datos;
     }

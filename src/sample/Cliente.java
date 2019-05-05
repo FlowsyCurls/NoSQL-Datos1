@@ -15,9 +15,14 @@ public class Cliente {
     private static Logger log = LoggerFactory.getLogger(Controller.class);
     private ObjectMapper objectMapper=new ObjectMapper();
     private int puerto=9500;
-    private InetAddress IP=InetAddress.getLocalHost();
+    private InetAddress IP;
     private Datos datos=new Datos();
-    public Cliente() throws UnknownHostException {
+    public Cliente() {
+        try {
+            IP=InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
 
