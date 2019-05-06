@@ -23,8 +23,27 @@ public class Esquema {
         this.tiene_filas=false;
         this.nombre=partes[0];
         this.crearfila(partes);
-
     }
+
+
+    public Esquema (String constructor,Boolean cliente) {
+        String[] partes = constructor.split(",");
+        int cont = 1;
+        this.ID = partes[cont].split(":")[0];
+        while (cont < partes.length) {
+            String nombre = partes[cont].split(":")[0];
+            String tipo = partes[cont].split(":")[1];
+            int tamano = Math.abs(Integer.parseInt(partes[cont].split(":")[2]));
+            if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
+                this.getTamanos().addLast(new Tamano(nombre, tamano));
+                System.out.println(getTamanos().largo);
+            } else {
+                getMijoins().addFirst(nombre);
+            }
+            cont++;
+        }
+    }
+
     private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
         int cont=1;
@@ -76,14 +95,12 @@ public class Esquema {
         while (cont<datos.length){
             String nombre=datos[cont].split(":")[0];
             String dato=datos[cont].split(":")[1];
-            if (!nombre.equals(this.ID) && !this.filas.existe(dato,nombre)) {
+            if (!nombre.equals(this.ID) || !this.filas.existe(dato,nombre)) {
                 if (this.getTamanos().contiene(nombre)) {
                     System.out.println(this.getTamanos().buscartamano(nombre));
                     if (this.getTamanos().buscartamano(nombre) >= dato.length()) {
-                        if (!nombre.equals(this.ID)) {
-                            System.out.println("voy a cambiar dato");
-                            base.replace(nombre, this.filas.convertir(dato, nombre));
-                        }
+                        System.out.println("voy a cambiar dato");
+                        base.replace(nombre, this.filas.convertir(dato, nombre));
                     } else {
                         throw new TamanoException();
                     }
@@ -234,7 +251,56 @@ public class Esquema {
         }
         return listaString;
     }
+    public void cambiarnombrecolumna(String nombre, String nuevonombre){
+        int cont=0;
+        while (cont<this.filas.getLargo()){
+            Hashtable fila=this.filas.buscar(cont);
+            Object dato=fila.get(nombre);
+            fila.remove(nombre);
+            System.out.println(dato);
+            fila.put(nuevonombre,dato);
+            cont++;
+        }
+    }
 
+    public String crearconstructor(){
+        String constructor="";
+        constructor.concat(this.nombre+",");
+        int cont=0;
+        while (cont<this.tamanos.getLargo()){
+            String nombre=this.tamanos.buscarnombre(cont);
+            constructor.concat(nombre+":"+obtenertipo(nombre)+":"+ this.tamanos.buscartamano(nombre)+",");
+            cont++;
+        }
+        cont=this.mijoins.getLargo()-1;
+        while (cont>=0){
+            String nombre=this.mijoins.buscar(cont);
+            constructor.concat(nombre+":"+"JOIN"+":"+ this.tamanos.buscartamano(nombre)+",");
+        }
+        constructor.substring(0,constructor.length()-1);
+            return constructor;
+    }
+
+    private String obtenertipo(String nombre){
+        String tipo="";
+        Object base=this.filas.getHead().getNodo().get(nombre);
+        if (base instanceof String) {
+            tipo="String";
+        }
+        else if (base instanceof Integer) {
+            tipo="INT";
+        }
+        else if (base instanceof Double) {
+            tipo="DOUBLE";
+        }
+        else if (base instanceof Long) {
+            tipo="LONG";
+        }
+        else if (base instanceof Float) {
+            tipo="FLOAT";
+        }
+        return tipo;
+    }
 
 
     public String getNombre() {
@@ -274,5 +340,8 @@ public class Esquema {
 	public void setTamanos(ListaTamano tamanos) {
 		this.tamanos = tamanos;
 	}
-    
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

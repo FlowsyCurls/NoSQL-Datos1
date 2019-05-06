@@ -20,6 +20,7 @@ public class Accionador {
         else if (accion.equals("buscar datos por indice")){datos=this.buscardatosporindice(datos);}
         else if (accion.equals("crear indice")){datos=this.crearindice(datos);}
         else if (accion.equals("eliminar indice")){datos=this.eliminarindice(datos);}
+        else if (accion.equals("Cambiar nombre de Esquema")){datos=this.cambiarnombreesquema(datos);}
         return datos;
     }
     private Datos crearEsquema(Datos datos) {
@@ -99,6 +100,9 @@ public class Accionador {
         }catch (StringIndexOutOfBoundsException e){
             datos.setRespuesta("no se encontraron datos");
         }
+        return datos;
+    }
+    private Datos cambiarnombreesquema(Datos datos){
         return datos;
     }
     private Datos buscardatosporindice(Datos datos){

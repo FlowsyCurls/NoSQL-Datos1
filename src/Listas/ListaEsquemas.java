@@ -110,6 +110,34 @@ public class ListaEsquemas {
         return contiene;
     }
 
+    public ListaString obtenerconstructores(){
+        ListaString constructores=new ListaString();
+        int cont=this.largo-1;
+        while (cont>=0){
+            String constructor=this.buscar(cont).crearconstructor();
+            constructores.addFirst(constructor);
+        }
+        return constructores;
+    }
+    public void cambiarnombreEsquema(String nombre, String nuevonombre){
+        this.buscar(nombre).setNombre(nuevonombre);
+        int cont=0;
+        while (cont<this.largo){
+            Esquema esquema=this.buscar(cont);
+            if (esquema.getMijoins().contiene(nombre)){
+                esquema.getMijoins().eliminar(nombre);
+                esquema.getMijoins().addFirst(nuevonombre);
+                if (esquema.getFilas().getLargo()!=0){
+                    esquema.cambiarnombrecolumna(nombre,nuevonombre);
+                }
+            }
+            cont++;
+        }
+
+
+    }
+
+
     public int getLargo() {
         return largo;
     }
