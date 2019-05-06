@@ -10,14 +10,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -32,16 +39,18 @@ public class ControllerAdd {
     @FXML
     private AnchorPane screen = new AnchorPane();
     @FXML
+    private ScrollPane scrollpane = new ScrollPane();
+    @FXML
     private Button cancel = new Button();
     @FXML
     private Label columnslabel = new Label();
 	private boolean typessetted = false;
-    
+
     public static Logger log = LoggerFactory.getLogger(ControllerAdd.class);
  
     //initializer 
     public void initialize() throws IOException {
-    	int columnasrecibidasdelotrocontroller = 10;
+    	int columnasrecibidasdelotrocontroller = 70;
 		this.drawing(columnasrecibidasdelotrocontroller);
 		this.setlabel();
     }
@@ -67,12 +76,17 @@ public class ControllerAdd {
     		this.columns=columns;
     		this.setChoiceBoxWithLabel(true);
     		this.drawing(this.columns);
+    		this.scrollpane.setContent(screen);
+    	    this.scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+    	    this.scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    	    this.scrollpane.setPannable(true);
     		}
 		while (columns!=0) {
 			this.setChoiceBoxWithLabel(false);
 			columns--;
 		}
     }
+    
     
     private final void setChoiceBoxWithLabel(boolean name) {
 		if (name) {
@@ -111,6 +125,9 @@ public class ControllerAdd {
 			this.posy+=40;
 			if (this.posy+100 > 760) {
 				this.posx+=285; this.posy=40;
+				if (this.posx>923) {
+					this.screen.setPrefWidth(this.posx+270);
+				}
 			}
 		}
 	}
@@ -118,9 +135,11 @@ public class ControllerAdd {
     public void addcolumn(ActionEvent event) throws IOException {
     	this.drawing(1); this.columns++;
     	this.setlabel();
+    	this.scrollpane.setHvalue((Double) this.screen.getPrefWidth() );
     }
     public void setlabel() {
 		this.columnslabel.setText(""+this.columns);
+		
     }
 
     @FXML
