@@ -6,6 +6,7 @@ import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
 import Errores.TamanoException;
 import Listas.Esquema;
+import Listas.ListaString;
 
 public class Accionador {
 
@@ -21,6 +22,9 @@ public class Accionador {
         else if (accion.equals("crear indice")){datos=this.crearindice(datos);}
         else if (accion.equals("eliminar indice")){datos=this.eliminarindice(datos);}
         else if (accion.equals("Cambiar nombre de Esquema")){datos=this.cambiarnombreesquema(datos);}
+        else if (accion.equals("cambiar dato")){datos=this.cambiardato(datos);}
+        else if (accion.equals("enviar esquemas")){datos=this.enviarEsquemas(datos);}
+        else if (accion.equals("guardar datos")){datos=this.guardarDatos(datos);}
         return datos;
     }
     private Datos crearEsquema(Datos datos) {
@@ -103,8 +107,34 @@ public class Accionador {
         return datos;
     }
     private Datos cambiarnombreesquema(Datos datos){
+        Server.esquemas.cambiarnombreEsquema(datos.getNombre(),datos.getCambio());
+        datos.setRespuesta("Nombre cambiado");
         return datos;
     }
+    private Datos cambiardato(Datos datos){
+        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
+        try {
+            if (!datos.getDato().equals(datos.getColumna())) {
+                esquema.cambiardato(datos.getDato(), datos.getColumna(), datos.getCambio());
+                datos.setRespuesta("dato cambiado");
+            }
+            else {datos.setRespuesta("no se puede cambiar el ID");}
+        } catch (DatoNoExistenteException e) {
+            datos.setRespuesta("la fila no existe");
+        }
+        return datos;
+    }
+    private Datos enviarEsquemas(Datos datos){
+        datos.setConstructores(Server.esquemas.crearlistaconstructores());
+        datos.setRespuesta("constructores enviados");
+        return datos;
+    }
+    private Datos guardarDatos(Datos datos){
+        ListaString constructer=Server.esquemas.crearlistaconstructores();
+        ListaString listadatos=Server.esquemas.crearlistadatos();
+        return datos;
+    }
+
     private Datos buscardatosporindice(Datos datos){
         return datos;
     }

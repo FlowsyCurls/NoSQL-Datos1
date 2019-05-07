@@ -131,10 +131,31 @@ public class ListaEsquemas {
                     esquema.cambiarnombrecolumna(nombre,nuevonombre);
                 }
             }
+            if (esquema.getJoinde().contiene(nombre)){
+                esquema.getJoinde().eliminar(nombre);
+                esquema.getJoinde().addFirst(nuevonombre);
+            }
             cont++;
         }
+    }
 
+    public ListaString crearlistaconstructores(){
+        ListaString lista= new ListaString();
+        int cont=this.largo-1;
+        while (cont>=0){
+            lista.addFirst(this.buscar(cont).crearconstructor());
+        }
+        return lista;
+    }
 
+    public ListaString crearlistadatos(){
+        ListaString lista= new ListaString();
+        int cont=this.largo-1;
+        while (cont>=0){
+            lista.concatenarlistas(this.buscar(cont).crearconstructoresdatos());
+            lista.addFirst(this.buscar(cont).getNombre());
+        }
+        return lista;
     }
 
 

@@ -70,6 +70,28 @@ public class Cliente {
         this.armarobjetodatos("eliminar indice",nombre_esquema,"",columna,indice,null);
         return this.conectar().getRespuesta();
     }
+    public String cambiarnombreesquema(String Nombre, String nuevoNombre){
+        this.datos.setAccion("Cambiar nombre de Esquema");
+        this.datos.setNombre(Nombre);
+        this.datos.setCambio(nuevoNombre);
+        return conectar().getRespuesta();
+    }
+    public String cambiardato(String Nombre_esquema,String ID,String Columna, String Nuevodato){
+        this.datos.setAccion("cambiar dato");
+        this.datos.setNombre(Nombre_esquema);
+        this.datos.setDato(ID);
+        this.datos.setColumna(Columna);
+        this.datos.setCambio(Nuevodato);
+        return conectar().getRespuesta();
+    }
+    public Datos recibirEsquemas(Datos datos){
+        this.datos.setAccion("enviar esquemas");
+        return conectar();
+    }
+    public String guardarDatos(){
+        this.datos.setAccion("guardar datos");
+        return conectar().getRespuesta();
+    }
 
     private void armarobjetodatos(String accion,String nombre,String dato,String columna, String indice, ListaString joins){
         this.datos.setAccion(accion);

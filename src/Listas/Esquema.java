@@ -28,6 +28,7 @@ public class Esquema {
 
     public Esquema (String constructor,Boolean cliente) {
         String[] partes = constructor.split(",");
+        this.nombre=partes[0];
         int cont = 1;
         this.ID = partes[cont].split(":")[0];
         while (cont < partes.length) {
@@ -263,6 +264,23 @@ public class Esquema {
         }
     }
 
+    public void cambiardato(String ID, String columna, String nuevodato) throws DatoNoExistenteException {
+        Hashtable fila=this.filas.buscar(ID,this.ID);
+        if (this.getMijoins().contiene(columna)) {
+            Esquema esquema = Server.esquemas.buscar(columna);
+            System.out.println(esquema.getFilas().getHead().getNodo());
+            if (esquema.existe(nuevodato, esquema.getID())) {
+                System.out.println("voy a cambiar dato en join");
+                fila.replace(columna, this.filas.convertir(nuevodato, columna));
+            }else {
+                throw new DatoNoExistenteException(nombre);}
+        }else {
+            fila.replace(columna, this.filas.convertir(nuevodato, columna));
+        }
+    }
+
+
+
     public String crearconstructor(){
         String constructor="";
         constructor.concat(this.nombre+",");
@@ -280,12 +298,36 @@ public class Esquema {
         constructor.substring(0,constructor.length()-1);
             return constructor;
     }
+    public ListaString crearconstructoresdatos(){
+        ListaString constructores=new ListaString();
+        if (this.tiene_filas){
+            int cont=0;
+            while (cont<this.filas.getLargo()){
+                String constructor="";
+                Hashtable fila=this.filas.buscar(cont);
+                int n=0;
+                while (n<this.tamanos.getLargo()) {
+                    constructor.concat(this.tamanos.buscarnombre(n) + ":" + fila.get(this.tamanos.buscarnombre(n)) + ",");
+                    n++;
+                }
+                n=0;
+                while (n<this.mijoins.getLargo()){
+                    constructor.concat(this.mijoins.buscar(n) + ":" + fila.get(this.mijoins.buscar(n)) + ",");
+                    n++;
+                }
+                constructores.addFirst(constructor.substring(0,constructor.length()-1));
+                cont++;
+            }
+        }
+        return constructores;
+    }
+
 
     private String obtenertipo(String nombre){
         String tipo="";
         Object base=this.filas.getHead().getNodo().get(nombre);
         if (base instanceof String) {
-            tipo="String";
+            tipo="STRING";
         }
         else if (base instanceof Integer) {
             tipo="INT";
