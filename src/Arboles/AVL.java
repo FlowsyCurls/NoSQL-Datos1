@@ -1,3 +1,5 @@
+package Arboles;
+
 import Arboles.NodoArbol;
 
 public class AVL<t extends Comparable<t>> {

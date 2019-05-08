@@ -5,51 +5,87 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #27357e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerAdd">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerAdd">
    <children>
       <VBox prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <StackPane prefHeight="0.0" prefWidth="1000.0" VBox.vgrow="SOMETIMES">
+            <StackPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="1000.0" style="-fx-background-color: black;" VBox.vgrow="SOMETIMES">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <children>
-                  <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Add your Diagram" textAlignment="CENTER">
+                  <Text fill="WHITE" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a Diagram" textAlignment="CENTER">
                      <font>
                         <Font name="Berlin Sans FB Demi Bold" size="47.0" />
                      </font>
                   </Text>
-                  <Label fx:id="columnslabel" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" text="rows" textAlignment="CENTER" textFill="#152844" wrapText="true">
-                     <font>
-                        <Font name="Berlin Sans FB Demi Bold" size="35.0" />
-                     </font>
-                     <StackPane.margin>
-                        <Insets right="1009.0" />
-                     </StackPane.margin>
-                  </Label>
                </children>
             </StackPane>
             <AnchorPane prefHeight="930.0" prefWidth="400.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <VBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="589.0" prefWidth="164.0" style="-fx-background-color: #27357e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="938.0" AnchorPane.topAnchor="0.0">
+                  <Text fontSmoothingType="LCD" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0" text="ID" textAlignment="CENTER" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="18.0">
+                     <font>
+                        <Font name="Century Gothic" size="30.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="115.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.leftAnchor="105.0" AnchorPane.topAnchor="20.0">
+                     <image>
+                        <Image url="@../Media/convert.png" />
+                     </image>
+                  </ImageView>
+                  <TextField layoutX="74.0" layoutY="30.0" promptText="id" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="22.0">
+                     <font>
+                        <Font name="Century Gothic" size="15.0" />
+                     </font>
+                  </TextField>
+                  <Text fontSmoothingType="LCD" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0" text="Name" textAlignment="CENTER" AnchorPane.rightAnchor="650.0" AnchorPane.topAnchor="18.0">
+                     <font>
+                        <Font name="Century Gothic" size="30.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="628.0" AnchorPane.leftAnchor="565.0" AnchorPane.topAnchor="20.0">
+                     <image>
+                        <Image url="@../Media/convert.png" />
+                     </image>
+                  </ImageView>
+                  <TextField layoutX="615.0" layoutY="22.0" promptText="name" AnchorPane.leftAnchor="615.0" AnchorPane.topAnchor="22.0">
+                     <font>
+                        <Font name="Century Gothic" size="15.0" />
+                     </font>
+                  </TextField>
+                  <Label fx:id="columnslabel" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="1053.0" nodeOrientation="LEFT_TO_RIGHT" text="0" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS" wrapText="true" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font name="Berlin Sans FB Demi Bold" size="36.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Media/circle.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <AnchorPane layoutX="96.0" layoutY="154.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="1160.0" style="-fx-background-color: #d95030;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
                      <children>
-                        <Region VBox.vgrow="SOMETIMES" />
-                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="17.0">
+                        <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="90.0" prefHeight="444.0" prefWidth="145.0" spacing="15.0" style="-fx-background-color: #d95030;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="990.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <RadioButton mnemonicParsing="false" selected="true" text="STRING" textFill="WHITE">
                                  <font>
                                     <Font name="Berlin Sans FB Demi Bold" size="22.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="27.0" />
+                                    <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
                               <RadioButton mnemonicParsing="false" text="INTEGER" textFill="WHITE">
@@ -57,7 +93,7 @@
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="27.0" />
+                                    <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
                               <RadioButton mnemonicParsing="false" text="DOUBLE" textFill="WHITE">
@@ -65,7 +101,7 @@
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="27.0" />
+                                    <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
                               <RadioButton mnemonicParsing="false" text="LONG" textFill="WHITE">
@@ -73,7 +109,7 @@
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="27.0" />
+                                    <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
                               <RadioButton mnemonicParsing="false" text="FLOAT" textFill="WHITE">
@@ -81,7 +117,7 @@
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets left="27.0" />
+                                    <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
                               <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addcolumn" prefHeight="27.0" text=" Add Column" VBox.vgrow="SOMETIMES">
@@ -89,18 +125,18 @@
                                     <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                                  </font>
                                  <VBox.margin>
-                                    <Insets bottom="3.0" left="37.0" />
+                                    <Insets bottom="3.0" left="30.0" />
                                  </VBox.margin>
                               </Button>
                            </children>
                         </VBox>
-                        <Region VBox.vgrow="SOMETIMES" />
-                     </children>
-                  </VBox>
-                  <ScrollPane fx:id="scrollpane" layoutX="162.0" style="-fx-background: #626575; -fx-border-color: #27357e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
-                     <content>
-                        <AnchorPane fx:id="screen" prefHeight="680.0" prefWidth="1014.0" style="-fx-background-color: #626575;" />
-                     </content></ScrollPane>
+                        <ScrollPane fx:id="scrollpane" layoutX="175.0" style="-fx-background: #d95030; -fx-border-color: #d95030;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <content>
+                              <AnchorPane fx:id="screen" minHeight="-Infinity" prefHeight="580.0" prefWidth="981.0" style="-fx-background-color: #d95030;" />
+                           </content>
+                        </ScrollPane>
+                        <Line endX="170.0" endY="601.0" fill="GREY" startX="170.0" stroke="GREY" strokeWidth="5.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
                </children></AnchorPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                <children>

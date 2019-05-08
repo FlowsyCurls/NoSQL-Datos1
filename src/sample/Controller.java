@@ -23,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent; 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button; 
 import javafx.scene.control.ChoiceBox; 
 import javafx.scene.control.Label; 
@@ -86,20 +87,22 @@ public class Controller {
 	@FXML // fx:id="diagramsList" 
 	private ListView<String> diagramsList = new ListView<String>(); 
 	private ObservableList<String> diagrams = FXCollections.observableArrayList(); 
-    @FXML // fx:id="choicebox" 
-    private ChoiceBox<String> choicebox = new ChoiceBox<String>(); 
-	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
 	@FXML //fx:id="tableview"
 	private TableView<Esquema> tableview = new TableView<Esquema>();
 	private ObservableList<Esquema> descriptionEsquemas = FXCollections.observableArrayList(); 
 	@FXML // fx:id="screen" 
 	private AnchorPane screen = new AnchorPane();
     @FXML // fx:id="textfieldFilas"
-    private TextField textfieldFilas; 
+    private ChoiceBox<String> choiceboxEdit = new ChoiceBox<String>(); 
+	private ObservableList<String> availableType = FXCollections.observableArrayList();
+    @FXML
+    private ChoiceBox<String> choiceboxSearch = new ChoiceBox<String>(); 
+	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
+    @FXML private TextField textfieldFilas;
+    @FXML private TextField textfieldEdit;
+    
     @FXML // fx:id="search" 
     private TextField searchSTR =  new TextField(); 
-    @FXML // fx:id="add" 
-    private Button add =  new Button(); 
     //FMLX nothingMessage 
 	private final StackPane stack = new StackPane(); 
 	private final Label nothing =new Label(); 
@@ -113,24 +116,24 @@ public class Controller {
     public void initialize() {//URL location, ResourceBundle resouces) { 
     	try {
     		this.datos();
-			this.loadDiagrams(null); 
+    		this.setChoiceBoxEdit();
+			this.loadDiagrams(null);
 		}  
     	catch (IOException e) { 
 			System.out.println("Dio este error |||| "+e); 
 			log.debug("error");
 		} 
     }
-     
+    
     @FXML  //evento de anadir 
 	public void addButtonAction(ActionEvent event) throws IOException { 
     	String inputString = this.textfieldFilas.getText();
     	if (inputString.isEmpty()) {this.textfieldFilas.clear(); return;}
     	else if (!this.TryParse(inputString)) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Advertencia");
-            alert.setContentText("Dato ingresado no es un numero:  "+inputString);
-            alert.showAndWait();
-            this.textfieldFilas.clear();
+    		UserMessage message = new UserMessage(AlertType.ERROR,
+    				inputString,"Data entered is not a integer number");
+    		message.showAndWait();
+    		this.textfieldFilas.clear();
             return;}
     	this.textfieldFilas.clear();
 		int inputInt = Integer.parseInt(inputString);
@@ -161,14 +164,77 @@ public class Controller {
 	        addStage.getIcons().add(new Image("/Media/save.png"));
 	        addStage.show();
 //	        addStage.initModality(Modality.WINDOW_MODAL);
-	        Stage stage=(Stage) this.baseSample.getScene().getWindow();
-	        stage.close();
+	        Stage currentstage=(Stage) this.baseSample.getScene().getWindow();
+	        currentstage.close();
 	    } catch (IOException e) {
 	        System.out.println("No abre : "+e);//e.printStackTrace();
 	    }
 	}
 	
-    @FXML //evento de buscar esquemas 
+	@FXML //evento de editar esquemas 
+	public void editButtonAction(ActionEvent event) throws IOException { 
+    	String detail = this.textfieldEdit.getText();
+    	if (detail.isEmpty())return;
+    	String selectedChoice = this.choiceboxEdit.getSelectionModel().getSelectedItem();
+    	System.out.println("detail: "+detail);
+    	System.out.println("selectedChoice: "+selectedChoice);
+    	if (selectedChoice == "ID") {return;}
+    	else if (selectedChoice == "Name") {
+    		this.listaEsquemas.buscar(selectedChoice);
+    		return;}
+    	else if (selectedChoice == "Index") {
+    		if (!this.TryParse(detail)) {
+    			UserMessage message = new UserMessage(AlertType.ERROR,
+    					detail,"The written index is not a whole number");
+    			message.showAndWait();
+    			this.textfieldEdit.clear();
+    			return;}
+    		int inputInt = Integer.parseInt(detail);
+    		Esquema e = this.listaEsquemas.buscar(inputInt);
+    		if (e==null) {
+    			UserMessage message = new UserMessage(AlertType.INFORMATION,
+    					detail,"Your diagram was not found");
+    			message.showAndWait();
+    			return;}
+        	this.editWindow(e);
+    		System.out.println("esquema: "+e.getNombre()+" ,id: "+e.getID());
+    		return;}
+	}
+	//setChoiceBoxEdit de editbuttonaction.
+		private void setChoiceBoxEdit() {
+	//		this.choiceboxEdit.getItems().clear();
+	    	this.availableType.addAll("ID","Name","Index");
+			this.choiceboxEdit.setItems(availableType); 
+			this.choiceboxEdit.getSelectionModel().select(2);
+			//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
+	//		this.availableChoices.add("Other Diagram..."); this.choiceboxSearch.setItems(availableChoices); 
+	//		this.choiceboxSearch.getSelectionModel().select(0);
+		}
+
+	private void editWindow(Esquema e) {
+	    try {
+	        Stage editStage = new Stage();
+	        Parent root;
+	        FXMLLoader loader;
+	        loader = new FXMLLoader(getClass().getResource("edit.fxml"));
+	        root=loader.load();
+	        editStage.setTitle("Edit Diagram");
+//	        ControllerAdd controller= loader.getController();
+//	        controller.drawing(e);
+	        Scene scene = new Scene(root,1200,800);
+	        editStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
+	        editStage.setResizable(false);
+	        editStage.getIcons().add(new Image("/Media/edit.png"));
+	        editStage.show();
+//	        editStage.initModality(Modality.WINDOW_MODAL);
+	        Stage currentstage=(Stage) this.baseSample.getScene().getWindow();
+	        currentstage.close();
+	    } catch (IOException error) {
+	        System.out.println("No abre : "+error);//e.printStackTrace();
+	    }
+	}
+
+	@FXML //evento de buscar esquemas 
     public void searchButtonAction(ActionEvent event) throws IOException { 
 //    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem(); 
 //    	System.out.print(selectedChoice); 
@@ -230,19 +296,19 @@ public class Controller {
 		screen.getChildren().clear(); //clean 
 		//nombre general del esquema (CURSO, PROFESOR, EDIFICIO...) 
 		searchSTR.setPromptText(selectedDiagram); //set to watching. 
+    	for (int i=0; i< 10; i++){
+    		System.out.println(descriptionEsquemas.get(i));}
 		Esquema e = this.listaEsquemas.buscar(selectedDiagram); 
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA) 
 		this.setChoiceBox(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));  
 		this.doTable(e , e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));} 
 	//acomodar los keys en choicebox. 
     private void setChoiceBox(ArrayList<String> arrayList) {  
-		this.choicebox.getItems().clear();
+		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("Other Diagram...");
     	this.availableChoices.addAll(arrayList);
-		this.choicebox.setItems(availableChoices); 
-		this.choicebox.getSelectionModel().select(0);}	 
-    	//despues antes de hacer search... usar esto.. para obtener la opcion seleccionada como string. e ir a esa fila determinada. 
-//    	String selectedChoice = choicebox.getSelectionModel().getSelectedItem(); 
+		this.choiceboxSearch.setItems(availableChoices); 
+		this.choiceboxSearch.getSelectionModel().select(0);} 
     private void doTable(Esquema e, ArrayList<String> arrayList) {
 		TableView<Esquema> table = new TableView<Esquema>();
 		table.setItems((this.getInfo(e)));
@@ -261,7 +327,7 @@ public class Controller {
 		table.prefWidthProperty().bind(screen.widthProperty());
 		table.prefHeightProperty().bind(screen.heightProperty());  
 		screen.getChildren().add(table); 
-		log.debug("TableColumns Finished --> "+"sale del for"); 	
+		log.debug("TableColumns Finished --> "+"table cargado..."); 	
     }
     private ObservableList<Esquema> getInfo(Esquema e){
     	this.descriptionEsquemas.addAll(e);
@@ -271,7 +337,7 @@ public class Controller {
 	//muestra que no se busca nada. 
 	private void nothingMessage() { 
 		nothing.setText("Nothing Displayed"); nothing.setTextFill(Color.GRAY); nothing.setFont(new Font("Arial", 25)); 
-		stack.prefWidthProperty().bind(screen.widthProperty());  
+//		stack.prefWidthProperty().bind(screen.widthProperty());  
 		stack.prefHeightProperty().bind(screen.heightProperty());  
 		stack.setAlignment(Pos.CENTER);  
 		stack.getChildren().add(nothing); 

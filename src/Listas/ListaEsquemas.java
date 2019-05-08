@@ -33,6 +33,7 @@ public class ListaEsquemas {
     public Esquema buscar (int n){
         Nodo<Esquema>tmp=this.head;
         while (n>0){
+        	if (tmp.next == null)return null;
             tmp=tmp.next;
             n--;
         }

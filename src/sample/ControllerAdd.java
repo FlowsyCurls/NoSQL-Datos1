@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,6 +22,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -31,117 +33,71 @@ import javafx.stage.Stage;
 
 
 public class ControllerAdd {
-	
-    @FXML // fx:id="choicebox" 
-    private ChoiceBox<String> choicebox = new ChoiceBox<String>(); 
-	private ObservableList<String> types = FXCollections.observableArrayList(); 
-	int posx = 25, posy = 40, columns=0;
-    @FXML
-    private AnchorPane screen = new AnchorPane();
-    @FXML
-    private ScrollPane scrollpane = new ScrollPane();
-    @FXML
-    private Button cancel = new Button();
-    @FXML
-    private Label columnslabel = new Label();
-	private boolean typessetted = false;
 
+	//fxml
+    @FXML private AnchorPane screen = new AnchorPane();
+    @FXML private Button cancel = new Button();
+    @FXML private Label columnslabel = new Label();
+    @FXML private ScrollPane scrollpane = new ScrollPane();
+    @FXML private ChoiceBox<String> choicebox = new ChoiceBox<String>(); 
+	private ObservableList<String> types = FXCollections.observableArrayList(); 
+
+	//variables
+	private int posx = 5, posy = 5, columns=0;
+	private boolean typessetted = false;
+	
+	//statics
     public static Logger log = LoggerFactory.getLogger(ControllerAdd.class);
  
+    
+    
     //initializer 
     public void initialize() throws IOException {
-    	int columnasrecibidasdelotrocontroller = 70;
+    	int columnasrecibidasdelotrocontroller = 5;
 		this.drawing(columnasrecibidasdelotrocontroller);
-		this.setlabel();
     }
-    private void doTable() {
-//		TableView<Esquema> table = new TableView<Esquema>();
-//		for (int i=0; i<arrayList.size(); i++){
-//			TableColumn<Esquema, String> a = new TableColumn<> (nombrecolumna);
-//			a.setMinWidth(200);//a.setMaxWidth(350);
-//			System.out.println("doooooooooo "+nombrecolumna);
-//			a.setCellValueFactory(new PropertyValueFactory<Esquema, String>(nombrecolumna));
-//			table.getColumns().add(a);
-//			table.setEditable(true);}
-//		//drawing
-//		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//		table.prefWidthProperty().bind(screen.widthProperty());
-//		table.prefHeightProperty().bind(screen.heightProperty());  
-//		screen.getChildren().add(table); 
-//		log.debug("TableColumns Finished --> "+"sale del for"); 	
-    }
-    
     public void drawing(int columns) throws IOException {
-    	if (this.columns==0) {
-    		this.columns=columns;
-    		this.setChoiceBoxWithLabel(true);
-    		this.drawing(this.columns);
-    		this.scrollpane.setContent(screen);
-    	    this.scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
-    	    this.scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    	    this.scrollpane.setPannable(true);
-    		}
+		if (this.columns==0) {
+			this.columns=columns;
+			this.drawing(this.columns);
+//			this.scrollpane.setContent(screen);
+		    this.scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+		    this.scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		    this.scrollpane.setPannable(true);
+		    return;}
 		while (columns!=0) {
-			this.setChoiceBoxWithLabel(false);
+			this.setAll();
 			columns--;
-		}
-    }
-    
-    
-    private final void setChoiceBoxWithLabel(boolean name) {
-		if (name) {
-			//nombre
-			Label nombrelab= new Label(),idlab= new Label();
-			TextField nombretext=new TextField(), idtext=new TextField();
-			nombrelab.setTranslateX(posx); nombrelab.setTranslateY(posy);  nombrelab.setText("D's Name"); 
-			nombrelab.setTextFill(Color.BLACK); nombrelab.setFont(new Font("Berlin Sans FB Demi", 21));
-			nombrelab.setStyle("-fx-font-weight: bold");
-			nombretext.setTranslateX(posx+110); nombretext.setTranslateY(posy); nombretext.setMaxWidth(145); nombretext.setPromptText("diagram's name");
-			this.posy+=40;
-			//id
-			idlab.setTranslateX(posx); idlab.setTranslateY(posy);  idlab.setText("D's ID"); 
-			idlab.setTextFill(Color.BLACK); idlab.setFont(new Font("Berlin Sans FB Demi", 21));
-			idlab.setStyle("-fx-font-weight: bold");
-			idtext.setTranslateX(posx+110); idtext.setTranslateY(posy); idtext.setMaxWidth(145); idtext.setPromptText("diagram's id");
-			this.posy+=40;
-			//add id y nombre
-			screen.getChildren().addAll(nombretext,nombrelab,idlab,idtext);
-			
-		}
-		else {
-	    	//text
-			TextField key = new TextField ();
-			key.setTranslateX(posx+110); key.setTranslateY(posy); key.setMaxWidth(145); key.setPromptText("set key");
-			//choicekey
-			choicebox = new ChoiceBox<String>();
-			choicebox.setTranslateX(posx); choicebox.setTranslateY(posy);
-			if (!this.typessetted) {
-		    	types.addAll("STRING","INT","DOUBLE","LONG","FLOAT");
-				this.typessetted = true;
-			}
-			choicebox.setItems(types);
-			choicebox.getSelectionModel().select(0);
-			screen.getChildren().addAll(choicebox, key);
-			this.posy+=40;
-			if (this.posy+100 > 760) {
-				this.posx+=285; this.posy=40;
-				if (this.posx>923) {
-					this.screen.setPrefWidth(this.posx+270);
-				}
+		}this.setlabel();
+	}
+	@FXML
+	public void addcolumn(ActionEvent event) throws IOException {
+		this.drawing(1); this.columns++;
+		this.setlabel();
+		this.scrollpane.setHvalue((Double) this.screen.getPrefWidth() );
+	}
+	private void setlabel() {this.columnslabel.setText(""+this.columns);}
+	private final void setAll() {
+		TextField key = new TextField ();
+		key.setTranslateX(posx+110); key.setTranslateY(posy); key.setMaxWidth(145); key.setPromptText("set key");
+		//choicekey
+		choicebox = new ChoiceBox<String>();
+		choicebox.setTranslateX(posx); choicebox.setTranslateY(posy);
+		if (!this.typessetted) {
+	    	types.addAll("STRING","INT","DOUBLE","LONG","FLOAT");
+			this.typessetted = true;}
+		choicebox.setItems(types);
+		choicebox.getSelectionModel().select(0);
+		screen.getChildren().addAll(choicebox, key);
+		this.posy+=49;
+		if (this.posy+20 > this.screen.getPrefHeight()) {
+			this.posx+=285; this.posy=5;
+			if (this.posx>923) {
+				this.screen.setPrefWidth(this.posx+270);
 			}
 		}
 	}
-	@FXML
-    public void addcolumn(ActionEvent event) throws IOException {
-    	this.drawing(1); this.columns++;
-    	this.setlabel();
-    	this.scrollpane.setHvalue((Double) this.screen.getPrefWidth() );
-    }
-    public void setlabel() {
-		this.columnslabel.setText(""+this.columns);
-		
-    }
-
+	
     @FXML
     public void cancel(ActionEvent event) {
 	    try {
@@ -164,6 +120,15 @@ public class ControllerAdd {
 
     @FXML
     public void submit(ActionEvent event) {
-
+    	int index = this.screen.getChildren().size();
+    	for ( int i=0; i<index; i++ ){
+    		Node child = this.screen.getChildren().get(i);
+    		System.out.println(child);
+    		
+    	}clean();
+    }
+    private void clean() {
+    	this.types.clear();
+    	this.screen.getChildren().clear();
     }
 }

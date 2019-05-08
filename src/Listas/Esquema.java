@@ -7,7 +7,7 @@ import Errores.EsquemaNuloException;
 import Errores.TamanoException;
 import sample.Server;
 
-
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Esquema {
@@ -252,6 +252,18 @@ public class Esquema {
         }
         return listaString;
     }
+    
+    public ArrayList<String> getMijoinsArray() {
+    	ArrayList<String> array = new ArrayList<String>();
+    	Nodo<String> tmp = this.mijoins.getHead();
+    	for (int i=0; i<this.mijoins.getLargo(); i++) {
+    		array.add(tmp.getNodo());
+    		tmp = tmp.getNext();
+    	}
+		return array;
+    }
+    
+    
     public void cambiarnombrecolumna(String nombre, String nuevonombre){
         int cont=0;
         while (cont<this.filas.getLargo()){
@@ -265,6 +277,9 @@ public class Esquema {
     }
 
     public void cambiardato(String ID, String columna, String nuevodato) throws DatoNoExistenteException {
+    	System.out.println("ID por editar : " +ID);
+    	System.out.println("COLUMNA por editar : " +columna);
+    	System.out.println("NUEVODATO por editar : " +nuevodato);
         Hashtable fila=this.filas.buscar(ID,this.ID);
         if (this.getMijoins().contiene(columna)) {
             Esquema esquema = Server.esquemas.buscar(columna);
@@ -348,6 +363,10 @@ public class Esquema {
     public String getNombre() {
         return nombre;
     }
+    
+    public String Nombre0() {
+        return "Nombre0";
+    }
 
     public Boolean getTiene_filas() {
         return tiene_filas;
@@ -364,6 +383,7 @@ public class Esquema {
     public ListaString getMijoins() {
         return mijoins;
     }
+
 
     public String getID() {
         return ID;

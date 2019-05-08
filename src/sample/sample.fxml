@@ -51,7 +51,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="NEVER">
+            <HBox prefHeight="150.0" prefWidth="1100.0" VBox.vgrow="NEVER">
                <children>
                   <Region prefHeight="100.0" prefWidth="0.0" HBox.hgrow="SOMETIMES" />
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="227.0" HBox.hgrow="SOMETIMES">
@@ -77,21 +77,35 @@
                      </children>
                   </StackPane>
                   <Region maxWidth="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="115.0" HBox.hgrow="SOMETIMES" />
-                  <ChoiceBox fx:id="choicebox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+                  <VBox spacing="10.0">
                      <HBox.margin>
-                        <Insets right="7.0" top="55.0" />
+                        <Insets right="7.0" top="60.0" />
                      </HBox.margin>
-                     <tooltip>
-                        <Tooltip opacity="0.8" text="choose category before searching" />
-                     </tooltip>
-                  </ChoiceBox>
-                  <VBox alignment="CENTER_LEFT" prefWidth="150.0" spacing="8.0" HBox.hgrow="NEVER">
+                     <children>
+                        <ChoiceBox fx:id="choiceboxEdit" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+                           <tooltip>
+                              <Tooltip opacity="0.8" text="choose category before searching" />
+                           </tooltip>
+                        </ChoiceBox>
+                        <ChoiceBox fx:id="choiceboxSearch" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+                           <tooltip>
+                              <Tooltip opacity="0.8" text="choose category before searching" />
+                           </tooltip>
+                        </ChoiceBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefWidth="150.0" spacing="10.0" HBox.hgrow="NEVER">
                      <children>
                         <TextField fx:id="textfieldFilas" onAction="#addButtonAction" promptText="rows number" style="-fx-background-color: lightyellow;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="only integer numbers" />
                            </tooltip></TextField>
-                        <TextField fx:id="searchSTR" onAction="#searchButtonAction" promptText="diagram detail" style="-fx-background-color: lightyellow;">
+                        <TextField fx:id="textfieldEdit" onAction="#editButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow;">
+                           <tooltip>
+                              <Tooltip fx:id="editTooltip" opacity="0.8" text="only letters" />
+                           </tooltip>
+                        </TextField>
+                        <TextField fx:id="searchSTR" onAction="#searchButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="only letters" />
                            </tooltip></TextField>
@@ -113,6 +127,18 @@
                               <ImageView fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Media/save.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#editButtonAction" style="-fx-background-color: #192251;" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Media/edit.png" />
                                  </image>
                               </ImageView>
                            </graphic>
