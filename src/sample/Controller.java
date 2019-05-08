@@ -2,19 +2,19 @@ package sample;
  
 import Errores.DatosUsadosException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode; 
-import com.fasterxml.jackson.databind.ObjectMapper; 
-import com.fasterxml.jackson.databind.node.ObjectNode; 
- 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import Errores.EsquemaNuloException; 
 import Listas.Esquema; 
-import Listas.ListaEsquemas; 
-import Listas.ListaString; 
-import Listas.ListaTables; 
-import Listas.ListaTamano; 
-import Listas.Nodo; 
-import Listas.NodoList; 
-import javafx.collections.FXCollections; 
+import Listas.ListaEsquemas;
+import Listas.ListaString;
+import Listas.ListaTables;
+import Listas.ListaTamano;
+import Listas.Nodo;
+import Listas.NodoList;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList; 
 import javafx.event.ActionEvent; 
 import javafx.fxml.FXML; 
@@ -33,33 +33,33 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent; 
-import javafx.scene.layout.AnchorPane; 
-import javafx.scene.layout.Region; 
-import javafx.scene.layout.StackPane; 
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color; 
-import javafx.scene.text.Font; 
+import javafx.scene.text.Font;
 import sample.Main;
 import javafx.stage.Modality;
-import javafx.stage.Stage; 
+import javafx.stage.Stage;
  
 import org.slf4j.Logger; 
-import org.slf4j.LoggerFactory; 
- 
-import java.io.DataInputStream; 
-import java.io.DataOutputStream; 
-import java.io.IOException; 
-import java.net.InetAddress; 
-import java.net.Socket; 
-import java.net.URL; 
-import java.util.ArrayList; 
-import java.util.Hashtable; 
-import java.util.List; 
-import java.util.ResourceBundle; 
- 
+import org.slf4j.LoggerFactory;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.ResourceBundle;
+
 public class Controller { 
 	
-	private ListaEsquemas listaEsquemas =new ListaEsquemas(); 
-	 
+	private ListaEsquemas listaEsquemas =new ListaEsquemas();
+
 	public void datos() throws EsquemaNuloException, DatosUsadosException {
 		listaEsquemas.emptyList();
 		for (int i=0; i!=11; i++){ 
@@ -305,16 +305,20 @@ public class Controller {
 //	        System.out.println(holga); 
 	    Cliente cliente=new Cliente(); 
 	    String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");
-	    String respuesta1=cliente.crearindice("Esquema1", "0", "1");
-	    String respuesta2=cliente.eliminardatos("Esquema1", "ID");
-	    String respuesta3=cliente.eliminarEsquema("Esquema1");
-	    String respuesta4=cliente.eliminarindice("Esquema1", "0", "1");
-	    String respuesta5=cliente.insertardatos("Esquema1", "STRING");
-	    Datos respuesta6=cliente.buscardatos("Esquema1", "STRING", "0");
-	    Datos respuesta7=cliente.buscardatosporindice("Esquema1", "STRING", "0", "2");
-	    Datos respuesta8=cliente.buscardatosporjoin("Esquema1", "STRING", "0", null);
-	    System.out.println(respuesta);
-//	        DataInputStream datosentrada = new DataInputStream(client.getInputStream()); 
+		String respuesta2=cliente.insertardatos("Esquema1", "dato1:perro,dato2:222");
+		String respuesta3=cliente.insertardatos("Esquema1", "dato1:gato,dato2:222");
+		Datos respuesta6=cliente.buscardatos("Esquema1", "222", "dato2");
+		String respuesta4=cliente.eliminardatos("Esquema1", "perro");
+//	    Datos respuesta7=cliente.buscardatosporjoin("Esquema1", "STRING", "0", null);
+		String respuesta5=cliente.eliminarEsquema("Esquema1");
+		System.out.println(respuesta);
+		System.out.println(respuesta2);
+		System.out.println(respuesta3);
+		System.out.println(respuesta6.getRespuesta()+": "+respuesta6.getDatos());
+		System.out.println(respuesta4);
+		System.out.println(respuesta5);
+
+//	        DataInputStream datosentrada = new DataInputStream(client.getInputStream());
 //	        log.debug("entrada se conecto"); 
 //	        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class); 
 //	        log.debug("se creo objeto"); 
