@@ -264,7 +264,7 @@ public class Esquema {
         }
     }
 
-    public void cambiardato(String ID, String columna, String nuevodato) throws DatoNoExistenteException {
+    public void cambiardato(String ID, String columna, String nuevodato) throws DatoNoExistenteException, NumberFormatException {
         Hashtable fila=this.filas.buscar(ID,this.ID);
         if (this.getMijoins().contiene(columna)) {
             Esquema esquema = Server.esquemas.buscar(columna);

@@ -1,4 +1,6 @@
-import Arboles.NodoArbol;
+package Arboles;
+
+
 
 public class AVL<t extends Comparable<t>> {
 	private NodoArbol<t> root=null;

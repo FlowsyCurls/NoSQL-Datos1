@@ -13,10 +13,14 @@ public class pruebas {
 		ejemplo.insert(1,aldo1);
 		ejemplo.insert(2,aldo2);
 		ejemplo.insert(3,aldo3);
-		
+		System.out.println("primer print 3,2,1");
 		System.out.print(ejemplo.buscarDato(3)+"\n");
 		System.out.print(ejemplo.buscarDato(2)+"\n");
+		System.out.print(ejemplo.buscarDato(1)+"\n");
+		System.out.println("un segundo print de 3,2,1");
 		System.out.print(ejemplo.buscarDato(3)+"\n");
+		System.out.print(ejemplo.buscarDato(2)+"\n");
+		System.out.print(ejemplo.buscarDato(1)+"\n");
 		
 		System.out.print("Original:"+aldo1+"\n");
 		System.out.print("Original:"+aldo2+"\n");

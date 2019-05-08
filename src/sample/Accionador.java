@@ -121,7 +121,9 @@ public class Accionador {
             else {datos.setRespuesta("no se puede cambiar el ID");}
         } catch (DatoNoExistenteException e) {
             datos.setRespuesta("la fila no existe");
-        }
+        }catch (NumberFormatException e){
+            datos.setRespuesta("tipo incorrecto");
+            datos.setDato(e.getMessage().substring(19,e.getMessage().length()-1));}
         return datos;
     }
     private Datos enviarEsquemas(Datos datos){
