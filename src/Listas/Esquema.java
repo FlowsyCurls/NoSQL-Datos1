@@ -315,7 +315,9 @@ public class Esquema {
 
     public String crearconstructor(){
         String constructor="";
-        constructor.concat(this.nombre+",");
+        constructor=constructor.concat(this.nombre+","); 
+        System.out.println(this.nombre); 
+        System.out.println(constructor); 
         int cont=0;
         while (cont<this.tamanos.getLargo()){
             String nombre=this.tamanos.buscarnombre(cont);
@@ -325,10 +327,12 @@ public class Esquema {
         cont=this.mijoins.getLargo()-1;
         while (cont>=0){
             String nombre=this.mijoins.buscar(cont);
-            constructor.concat(nombre+":"+"JOIN"+":"+ this.tamanos.buscartamano(nombre)+",");
+            constructor=constructor.concat(nombre+":"+"JOIN"+":"+ this.tamanos.buscartamano(nombre)+","); 
+            cont--; 
         }
-        constructor.substring(0,constructor.length()-1);
-            return constructor;
+        System.out.println(constructor); 
+        constructor=constructor.substring(0,constructor.length()-1);
+        return constructor;
     }
     public ListaString crearconstructoresdatos(){
         ListaString constructores=new ListaString();

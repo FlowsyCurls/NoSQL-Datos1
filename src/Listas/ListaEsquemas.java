@@ -117,6 +117,7 @@ public class ListaEsquemas {
         while (cont>=0){
             String constructor=this.buscar(cont).crearconstructor();
             constructores.addFirst(constructor);
+            cont--; 
         }
         return constructores;
     }
@@ -145,6 +146,7 @@ public class ListaEsquemas {
         int cont=this.largo-1;
         while (cont>=0){
             lista.addFirst(this.buscar(cont).crearconstructor());
+            cont--; 
         }
         return lista;
     }
@@ -155,6 +157,7 @@ public class ListaEsquemas {
         while (cont>=0){
             lista.concatenarlistas(this.buscar(cont).crearconstructoresdatos());
             lista.addFirst(this.buscar(cont).getNombre());
+            cont--; 
         }
         return lista;
     }

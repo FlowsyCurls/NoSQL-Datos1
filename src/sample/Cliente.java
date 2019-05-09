@@ -126,10 +126,7 @@ public class Cliente {
     }
     public String acciones(Cliente cliente, Esquema e, String accion, String newvalue, String columna, int index)throws IOException{
     	String i= String.valueOf(index);
-    	if (accion=="recibiresquemas") {
-    		Datos respuesta=cliente.recibirEsquemas();
-	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
-    	else if (accion=="crearesquema"){
+    	if (accion=="crearesquema"){
     		String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");//newValue
     		System.out.println(respuesta);return respuesta;}
 	    else if (accion=="crearindice"){
@@ -147,15 +144,6 @@ public class Cliente {
 	    else if (accion=="insertardatos"){
 	    	String respuesta=cliente.insertardatos(e.getNombre(), newvalue);
 	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="buscardatos"){
-	    	Datos respuesta=cliente.buscardatos(e.getNombre(), newvalue, columna);
-	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
-	    else if (accion=="buscardatosporindice"){
-	    	Datos respuesta=cliente.buscardatosporindice(e.getNombre(), newvalue, columna, i);
-	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
-	    else if (accion=="buscardatosporjoin"){
-	    	Datos respuesta=cliente.buscardatosporjoin(e.getNombre(), newvalue, columna, e.getJoinde());
-	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
 	    else if (accion=="cambiarnombreesquema"){
 	    	String respuesta=cliente.cambiarnombreesquema(e.getNombre(), newvalue);
 	    	System.out.println(respuesta);return respuesta;}
@@ -163,7 +151,21 @@ public class Cliente {
 	    	String respuesta=cliente.cambiardato(e.getNombre(), e.getID(), columna, newvalue);
 	    	System.out.println(respuesta);return respuesta;}
 		return null;
-    }private Datos acciones_aux(Datos respuesta) {
-    	return respuesta;
+    }
+    
+    public Datos acciones(Cliente cliente, Esquema e, String accion, String newvalue, String columna, String index)throws IOException{
+    	if (accion=="recibiresquemas") {
+    		Datos respuesta=cliente.recibirEsquemas();
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="buscardatos"){
+	    	Datos respuesta=cliente.buscardatos(e.getNombre(), newvalue, columna);
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="buscardatosporindice"){
+	    	Datos respuesta=cliente.buscardatosporindice(e.getNombre(), newvalue, columna, index);
+	    	System.out.println(respuesta); return respuesta;}
+	    else if (accion=="buscardatosporjoin"){
+	    	Datos respuesta=cliente.buscardatosporjoin(e.getNombre(), newvalue, columna, e.getJoinde());
+	    	System.out.println(respuesta); return respuesta;}
+    	return null;
     }
 }

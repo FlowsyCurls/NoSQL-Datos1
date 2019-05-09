@@ -163,11 +163,11 @@
                   </VBox>
                </children>
             </HBox>
-            <SplitPane dividerPositions="0.1830601092896175" minHeight="400.0" prefHeight="700.0" prefWidth="800.0" VBox.vgrow="SOMETIMES">
+            <SplitPane dividerPositions="0.17" minHeight="400.0" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES" >
               <items>
                 <AnchorPane maxWidth="400.0" minHeight="400.0" minWidth="150.0" prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: black;">
                      <children>
-                        <ListView fx:id="diagramsList" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#displaySelectedDiagram" prefHeight="698.0" prefWidth="400.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ListView fx:id="diagramsList" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#displaySelectedDiagram" prefHeight="698.0" prefWidth="400.0" style="-fx-background-color: #d2b11d; -fx-border-color: #d2b11d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <contextMenu>
                               <ContextMenu opacity="0.95" style="-fx-background-color: #8e9598;">
                                 <items>
@@ -183,9 +183,9 @@
                         </ListView>
                      </children>
                   </AnchorPane>
-                  <ScrollPane fx:id="scrollpane" style="-fx-background-color: red; -fx-border-color: red;">
+                  <ScrollPane fx:id="scrollpane" style="-fx-background-color: gray; -fx-border-color: lightgray;">
                      <content>
-                        <AnchorPane fx:id="screen" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" style="-fx-background-color: cyan;">
+                        <AnchorPane fx:id="screen" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" style="-fx-background-color: black;">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
