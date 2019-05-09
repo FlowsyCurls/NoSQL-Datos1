@@ -14,6 +14,7 @@ import Listas.ListaTables;
 import Listas.ListaTamano;
 import Listas.Nodo;
 import Listas.NodoList;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList; 
 import javafx.event.ActionEvent; 
@@ -28,10 +29,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox; 
 import javafx.scene.control.Label; 
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent; 
 import javafx.scene.layout.AnchorPane;
@@ -88,8 +91,8 @@ public class Controller {
 	private ListView<String> diagramsList = new ListView<String>(); 
 	private ObservableList<String> diagrams = FXCollections.observableArrayList(); 
 	@FXML //fx:id="tableview"
-	private TableView<Esquema> tableview = new TableView<Esquema>();
-	private ObservableList<Esquema> descriptionEsquemas = FXCollections.observableArrayList(); 
+	private TableView<String[]> tableview = new TableView<String[]>();
+	private ObservableList<String[]> datosObservable;
 	@FXML // fx:id="screen" 
 	private AnchorPane screen = new AnchorPane();
     @FXML // fx:id="textfieldFilas"
@@ -98,9 +101,11 @@ public class Controller {
     @FXML
     private ChoiceBox<String> choiceboxSearch = new ChoiceBox<String>(); 
 	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
+	@FXML private ScrollPane scrollpane = new ScrollPane();
     @FXML private TextField textfieldFilas;
     @FXML private TextField textfieldEdit;
-    
+    public ArrayList<String[]> jdata = new ArrayList<String[]>(); //Here is the dat
+    private String[] c;
     @FXML // fx:id="search" 
     private TextField searchSTR =  new TextField(); 
     //FMLX nothingMessage 
@@ -110,7 +115,8 @@ public class Controller {
     private ObjectMapper objectMapper=new ObjectMapper(); 
  
     public static Logger log = LoggerFactory.getLogger(Controller.class);
-	private Socket client; 
+	private Socket client;
+	 
  
     //initializer 
     public void initialize() {//URL location, ResourceBundle resouces) { 
@@ -139,16 +145,14 @@ public class Controller {
 		int inputInt = Integer.parseInt(inputString);
 		if (inputInt==0) return;
     	this.addWindow(inputInt);
-	}
-	private  boolean TryParse(String cadena){
+	}private  boolean TryParse(String cadena){
 		try {
 			Integer.parseInt(cadena);
 			return true;
 			} 
 		catch (NumberFormatException e) {
 			return false;}
-	}
-	private void addWindow(int columns) {//cambia a la pantalla de fin del juego
+	}private void addWindow(int columns) {//cambia a la pantalla de fin del juego
 	    try {
 	        Stage addStage = new Stage();
 	        Parent root;
@@ -167,8 +171,7 @@ public class Controller {
 	        Stage currentstage=(Stage) this.baseSample.getScene().getWindow();
 	        currentstage.close();
 	    } catch (IOException e) {
-	        System.out.println("No abre : "+e);//e.printStackTrace();
-	    }
+	        e.printStackTrace();}
 	}
 	
 	@FXML //evento de editar esquemas 
@@ -199,19 +202,15 @@ public class Controller {
         	this.editWindow(e);
     		System.out.println("esquema: "+e.getNombre()+" ,id: "+e.getID());
     		return;}
-	}
-	//setChoiceBoxEdit de editbuttonaction.
-		private void setChoiceBoxEdit() {
-	//		this.choiceboxEdit.getItems().clear();
-	    	this.availableType.addAll("ID","Name","Index");
-			this.choiceboxEdit.setItems(availableType); 
-			this.choiceboxEdit.getSelectionModel().select(2);
-			//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
-	//		this.availableChoices.add("Other Diagram..."); this.choiceboxSearch.setItems(availableChoices); 
-	//		this.choiceboxSearch.getSelectionModel().select(0);
-		}
-
-	private void editWindow(Esquema e) {
+	}private void setChoiceBoxEdit() { //setChoiceBoxEdit de editbuttonaction.
+//		this.choiceboxEdit.getItems().clear();
+    	this.availableType.addAll("ID","Name","Index");
+		this.choiceboxEdit.setItems(availableType); 
+		this.choiceboxEdit.getSelectionModel().select(2);
+		//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
+//		this.availableChoices.add("Other Diagram..."); this.choiceboxSearch.setItems(availableChoices); 
+//		this.choiceboxSearch.getSelectionModel().select(0);
+	}private void editWindow(Esquema e) {
 	    try {
 	        Stage editStage = new Stage();
 	        Parent root;
@@ -226,12 +225,10 @@ public class Controller {
 	        editStage.setResizable(false);
 	        editStage.getIcons().add(new Image("/Media/edit.png"));
 	        editStage.show();
-//	        editStage.initModality(Modality.WINDOW_MODAL);
 	        Stage currentstage=(Stage) this.baseSample.getScene().getWindow();
 	        currentstage.close();
 	    } catch (IOException error) {
-	        System.out.println("No abre : "+error);//e.printStackTrace();
-	    }
+	    	error.printStackTrace();}
 	}
 
 	@FXML //evento de buscar esquemas 
@@ -244,10 +241,7 @@ public class Controller {
     		detail=null; 
     		System.out.println("detail: "+detail); 
     	}this.loadDiagrams(detail); 
-    } 
- 
-	//loadDiagramas. 
-    private void loadDiagrams(String detail) throws IOException {
+    }private void loadDiagrams(String detail) throws IOException { //loadDiagramas. 
     	this.diagrams.removeAll(diagrams);
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
@@ -257,10 +251,7 @@ public class Controller {
     	this.addNamesOneByOne(); 
 //		System.out.println("DIAGRAMAS cargados "+diagrams); 
 	    this.diagramsList.setItems(diagrams);
-    } 
- 
-	//buscar coincidencias para cargarlas. 
-    private void loadDiagrams_buscaraux(String detail) { 
+    }private void loadDiagrams_buscaraux(String detail) { //buscar coincidencias para cargarlas. 
 //		System.out.println("Entra en buscar"); 
 //		System.out.println(this.listaEsquemas.getLargo()); 
     	ArrayList<Esquema> coincided = this.listaEsquemas.buscarcoincidencias(detail); 
@@ -270,20 +261,16 @@ public class Controller {
 			System.out.println("ESQUEMA encontrado :"+" |name "+element.getNombre()+" |id "+element.getID()); 
     		this.diagrams.add(element.getNombre()); //add coincidences... 
     	}coincided.removeAll(coincided); 
-    } 
- 
-	//cargar todos los diagramas. 
-	private void addNamesOneByOne() { 
+    }private void addNamesOneByOne() { //cargar todos los diagramas. 
 			Nodo<Esquema>tmp = this.listaEsquemas.getHead(); 
 //			System.out.println("NODO ESQUEMA "+tmp); 
 			while (tmp!=null){ 
 		    	this.diagrams.add(tmp.getNodo().getNombre()); 
 		    	tmp=tmp.next; 
-		    }return; 
-	} 
+		    }return; } 
  
 	//evento de seleccion de diagrama. 
-    public void displaySelectedDiagram(MouseEvent event) throws IOException { 
+    public void displaySelectedDiagram(MouseEvent event) throws IOException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
 		if (selectedDiagram == null) { 
@@ -293,56 +280,92 @@ public class Controller {
 			this.nothingMessage();//mensaje visual. 
 			return; 
 		} 
-		screen.getChildren().clear(); //clean 
+		this.clean();
 		//nombre general del esquema (CURSO, PROFESOR, EDIFICIO...) 
-		searchSTR.setPromptText(selectedDiagram); //set to watching. 
-    	for (int i=0; i< 10; i++){
-    		System.out.println(descriptionEsquemas.get(i));}
+		searchSTR.setPromptText(selectedDiagram); //set to watching.
+    	for (int i=0; i< this.jdata.size(); i++){
+    		System.out.println(this.datosObservable.get(i));}
 		Esquema e = this.listaEsquemas.buscar(selectedDiagram); 
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA) 
-		this.setChoiceBox(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));  
-		this.doTable(e , e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));} 
-	//acomodar los keys en choicebox. 
-    private void setChoiceBox(ArrayList<String> arrayList) {  
+		this.setCxF(e);
+	}private void setCxF(Esquema e){
+		this.setChoiceBox(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));
+    	this.c = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
+		/* aqui va la logica 
+		 * de agarrar 
+		 * el esquema 
+		 * y conseguir 
+		 * sus datos 
+		 * en un String[]*/
+		String[] d = new String[5];
+		String[] a = new String[5];
+		String[] b = new String[5];
+		String[] c = new String[5];
+    	a[0] = "a"; a[1] = "b"; a[2] = "c"; a[3] = "d"; a[4] = "e"; 
+    	b[0] = "1"; b[1] = null; b[2] = "3"; b[3] = "4"; b[4] = "5";
+    	d[0] = "X"; d[1] = "Z"; d[2] = "V"; d[3] = "G"; d[4] = "U";
+    	jdata.add(a);
+    	jdata.add(b);
+		jdata.add(d);
+		jdata.add(c);
+		/* aqui va la logica 
+		 * de agarrar 
+		 * el esquema 
+		 * y conseguir 
+		 * sus datos 
+		 * en un String[]*/
+		showTable();
+    }private void setChoiceBox(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("Other Diagram...");
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 
-		this.choiceboxSearch.getSelectionModel().select(0);} 
-    private void doTable(Esquema e, ArrayList<String> arrayList) {
-		TableView<Esquema> table = new TableView<Esquema>();
-		table.setItems((this.getInfo(e)));
-    	this.tableview.getItems().clear();
-		for (int i=0; i<arrayList.size(); i++){
-			String nombrecolumna = arrayList.get(i);
-			TableColumn<Esquema, String> a = new TableColumn<> (nombrecolumna);
-			a.setMinWidth(200);//a.setMaxWidth(350);
-			System.out.println("doooooooooo "+nombrecolumna);
-			a.setCellValueFactory(new PropertyValueFactory<Esquema, String>(nombrecolumna));
-			table.getColumns().add(a);
-			table.setEditable(true);
-		}
-		//drawing
-		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		table.prefWidthProperty().bind(screen.widthProperty());
-		table.prefHeightProperty().bind(screen.heightProperty());  
-		screen.getChildren().add(table); 
-		log.debug("TableColumns Finished --> "+"table cargado..."); 	
-    }
-    private ObservableList<Esquema> getInfo(Esquema e){
-    	this.descriptionEsquemas.addAll(e);
-		return this.descriptionEsquemas;
-    }
-
-	//muestra que no se busca nada. 
-	private void nothingMessage() { 
+		this.choiceboxSearch.getSelectionModel().select(0);
+    }private void showTable() {
+        int size = this.c.length; //number of the columns
+        for (int i = 0; i < size; i++) {
+            TableColumn<String[], String> firstNameCol = new TableColumn<>(this.c[i]);
+            int index = i ;
+            
+            firstNameCol.setCellValueFactory(cellData -> {
+                String[] rowData = cellData.getValue();
+                if (index >= rowData.length) {return new ReadOnlyStringWrapper("");} 
+                else {String cellValue = rowData[index];return new ReadOnlyStringWrapper(cellValue);}});
+            firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+            firstNameCol.setOnEditCommit(event -> {String[] row = event.getRowValue();row[index] = event.getNewValue();});
+            firstNameCol.setMinWidth(200);
+            firstNameCol.setStyle("-fx-alignment: CENTER;");
+            this.tableview.getColumns().add(firstNameCol);}
+        this.datosObservable = FXCollections.observableList(this.jdata);
+        this.tableview.getItems().addAll(this.datosObservable);
+        this.tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);//.CONSTRAINED_RESIZE_POLICY);
+        this.tableview.prefWidthProperty().bind(this.scrollpane.widthProperty());
+        this.tableview.prefHeightProperty().bind(this.scrollpane.heightProperty());
+        this.tableview.setEditable(true);
+		this.screen.getChildren().add(tableview); 
+		log.debug("TableColumns Finished --> "+"table cargado..."); 
+		System.out.println("jdata " +jdata.size());
+		System.out.println("diagrams " +diagrams.size());
+		System.out.println("datos observalble "+this.datosObservable.size());
+		System.out.println("c "+ this.c.length);
+		System.out.println("tableview "+ this.tableview.getItems().size());
+		System.out.println("tableview "+ this.tableview.getColumns());
+		for (int i=0; i>this.tableview.getColumns().size(); i++) {
+			System.out.println("tableview "+ this.tableview.getColumns().get(i));}		
+		
+    }private void nothingMessage() { 	//muestra que no se busca nada. 
 		nothing.setText("Nothing Displayed"); nothing.setTextFill(Color.GRAY); nothing.setFont(new Font("Arial", 25)); 
-//		stack.prefWidthProperty().bind(screen.widthProperty());  
+		stack.prefWidthProperty().bind(screen.widthProperty());  
 		stack.prefHeightProperty().bind(screen.heightProperty());  
 		stack.setAlignment(Pos.CENTER);  
 		stack.getChildren().add(nothing); 
 	    screen.getChildren().add(stack); 
-	} 
+	}private void clean() {
+		this.screen.getChildren().clear();
+		this.tableview.getItems().clear();
+		this.tableview.getColumns().clear();
+		this.jdata.clear();
+	}
  
 	public void hola() throws IOException { 
 //	        System.out.println("estoy en la funcion"); 

@@ -200,7 +200,20 @@ public class Esquema {
         return datos;
     }
 
-    private String crearstring(String dato,String nombre){
+    public ArrayTuple getDatosArray() throws EsquemaNuloException{
+    	ArrayTuple tuple = new ArrayTuple();
+    	ArrayList<String> keys = this.obtenercolumnas().getArraycolumnas(this.obtenercolumnas());
+		String[] cadena = this.buscartodos().split(",");
+		for (int i=0; i<cadena.length; i++) {
+            String nombre = keys.get(0);
+            String dato=cadena[i].split(":")[0];
+            tuple.addAll(nombre, dato);
+		}
+		return tuple;
+	}
+
+
+	private String crearstring(String dato,String nombre){
         Hashtable fila= this.filas.buscar(dato,nombre);
         String string=fila.toString();
         if (this.getMijoins().getLargo()!=0){
@@ -239,6 +252,7 @@ public class Esquema {
     public ListaString obtenercolumnas(){
         ListaString listaString=new ListaString();
         int cont=this.mijoins.getLargo()-1;
+
         while (cont>=0){
             String nombreesquema=this.mijoins.buscar(cont);
             listaString.concatenarlistas(Server.esquemas.buscar(nombreesquema).obtenercolumnas());
@@ -250,6 +264,7 @@ public class Esquema {
             listaString.addFirst(this.tamanos.buscarnombre(cont));
             cont--;
         }
+        listaString.addFirst("ID("+this.getNombre()+")");
         return listaString;
     }
     
@@ -358,7 +373,6 @@ public class Esquema {
         }
         return tipo;
     }
-
 
     public String getNombre() {
         return nombre;

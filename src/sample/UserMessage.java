@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,8 +17,9 @@ public class UserMessage extends Alert{
 			this.image = new Image("/Media/confirm.png");
 			ImageView imageView = new ImageView(image);
 			this.setHeaderText(null);
-			this.setContentText(content+" : "+message);
+			this.setContentText(content+" "+message+"'s editation?");
 			this.setGraphic(imageView);
+			this.getButtonTypes().set(0, ButtonType.YES);
 			return;
 		}
 		ImageView imageView = new ImageView(image);

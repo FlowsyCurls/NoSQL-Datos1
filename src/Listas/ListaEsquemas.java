@@ -158,6 +158,16 @@ public class ListaEsquemas {
         }
         return lista;
     }
+    private ArrayList<String> crearlistadatosArray(ListaString lista) {
+    	ArrayList<String> array =  new ArrayList<>();
+        Nodo<String> str = lista.getHead();
+    	while (str!=null) {
+    		array.add(str.getNodo());
+    		str = str.getNext();
+    		continue;
+    	}
+		return array;
+    }
 
 
     public int getLargo() {

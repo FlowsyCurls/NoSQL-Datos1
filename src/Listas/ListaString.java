@@ -95,5 +95,19 @@ public class ListaString {
         this.head = head;
     }
 
+	public String[] getStringArraycolumnas(ListaString string) {
+		String[] c = new String[string.largo];
+    	Nodo<String> e = string.getHead();
+    	String str = "";
+    	for (int i=0; i<string.largo; i++) {
+    		c[i]= e.getNodo();
+    		e = e.getNext();
+    		str= str+","+c[i];
+    		continue;
+    	}
+		System.out.println("array "+str);
+		return c;		
+	}
+
 }
 
