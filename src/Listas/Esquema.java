@@ -10,7 +10,7 @@ import sample.Server;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
+
 public class Esquema {
     private String nombre,ID;
     private Boolean tiene_filas;
@@ -315,24 +315,24 @@ public class Esquema {
 
     public String crearconstructor(){
         String constructor="";
-        constructor=constructor.concat(this.nombre+","); 
-        System.out.println(this.nombre); 
-        System.out.println(constructor); 
+        constructor=constructor.concat(this.nombre+",");
+        System.out.println(this.nombre);
+        System.out.println(constructor);
         int cont=0;
         while (cont<this.tamanos.getLargo()){
             String nombre=this.tamanos.buscarnombre(cont);
-            constructor.concat(nombre+":"+obtenertipo(nombre)+":"+ this.tamanos.buscartamano(nombre)+",");
+            constructor=constructor.concat(nombre+":"+obtenertipo(nombre)+":"+ this.tamanos.buscartamano(nombre)+",");
             cont++;
         }
         cont=this.mijoins.getLargo()-1;
         while (cont>=0){
             String nombre=this.mijoins.buscar(cont);
-            constructor=constructor.concat(nombre+":"+"JOIN"+":"+ this.tamanos.buscartamano(nombre)+","); 
-            cont--; 
+            constructor=constructor.concat(nombre+":"+"JOIN"+":"+ this.tamanos.buscartamano(nombre)+",");
+            cont--;
         }
-        System.out.println(constructor); 
+        System.out.println(constructor);
         constructor=constructor.substring(0,constructor.length()-1);
-        return constructor;
+            return constructor;
     }
     public ListaString crearconstructoresdatos(){
         ListaString constructores=new ListaString();
@@ -343,12 +343,12 @@ public class Esquema {
                 Hashtable fila=this.filas.buscar(cont);
                 int n=0;
                 while (n<this.tamanos.getLargo()) {
-                    constructor.concat(this.tamanos.buscarnombre(n) + ":" + fila.get(this.tamanos.buscarnombre(n)) + ",");
+                    constructor=constructor.concat(this.tamanos.buscarnombre(n) + ":" + fila.get(this.tamanos.buscarnombre(n)) + ",");
                     n++;
                 }
                 n=0;
                 while (n<this.mijoins.getLargo()){
-                    constructor.concat(this.mijoins.buscar(n) + ":" + fila.get(this.mijoins.buscar(n)) + ",");
+                    constructor=constructor.concat(this.mijoins.buscar(n) + ":" + fila.get(this.mijoins.buscar(n)) + ",");
                     n++;
                 }
                 constructores.addFirst(constructor.substring(0,constructor.length()-1));
