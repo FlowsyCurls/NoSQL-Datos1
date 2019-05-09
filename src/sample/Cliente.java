@@ -1,16 +1,19 @@
 package sample;
 
-import Listas.ListaString;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Listas.Esquema;
+import Listas.ListaString;
 
 public class Cliente {
     private static Logger log = LoggerFactory.getLogger(Controller.class);
@@ -84,7 +87,7 @@ public class Cliente {
         this.datos.setCambio(Nuevodato);
         return conectar().getRespuesta();
     }
-    public Datos recibirEsquemas(Datos datos){
+    public Datos recibirEsquemas(){
         this.datos.setAccion("enviar esquemas");
         return conectar();
     }
@@ -120,5 +123,47 @@ public class Cliente {
             datosrecibidos.setRespuesta("error al conectar");
         }
         return datosrecibidos;
+    }
+    public String acciones(Cliente cliente, Esquema e, String accion, String newvalue, String columna, int index)throws IOException{
+    	String i= String.valueOf(index);
+    	if (accion=="recibiresquemas") {
+    		Datos respuesta=cliente.recibirEsquemas();
+	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
+    	else if (accion=="crearesquema"){
+    		String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");//newValue
+    		System.out.println(respuesta);return respuesta;}
+	    else if (accion=="crearindice"){
+	    	String respuesta=cliente.crearindice(e.getNombre(), columna, i);
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="eliminardatos"){
+	    	String respuesta=cliente.eliminardatos(e.getNombre(), e.getID());
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="eliminarEsquema"){
+	    	String respuesta=cliente.eliminarEsquema(e.getNombre());
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="eliminarindice"){
+	    	String respuesta=cliente.eliminarindice(e.getNombre(), columna, i);
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="insertardatos"){
+	    	String respuesta=cliente.insertardatos(e.getNombre(), newvalue);
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="buscardatos"){
+	    	Datos respuesta=cliente.buscardatos(e.getNombre(), newvalue, columna);
+	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
+	    else if (accion=="buscardatosporindice"){
+	    	Datos respuesta=cliente.buscardatosporindice(e.getNombre(), newvalue, columna, i);
+	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
+	    else if (accion=="buscardatosporjoin"){
+	    	Datos respuesta=cliente.buscardatosporjoin(e.getNombre(), newvalue, columna, e.getJoinde());
+	    	System.out.println(respuesta);this.acciones_aux(respuesta);return null;}
+	    else if (accion=="cambiarnombreesquema"){
+	    	String respuesta=cliente.cambiarnombreesquema(e.getNombre(), newvalue);
+	    	System.out.println(respuesta);return respuesta;}
+	    else if (accion=="cambiardato"){
+	    	String respuesta=cliente.cambiardato(e.getNombre(), e.getID(), columna, newvalue);
+	    	System.out.println(respuesta);return respuesta;}
+		return null;
+    }private Datos acciones_aux(Datos respuesta) {
+    	return respuesta;
     }
 }

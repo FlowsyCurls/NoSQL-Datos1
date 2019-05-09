@@ -50,7 +50,7 @@
                         <Image url="@../Media/convert.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="newnameText" promptText="new name" AnchorPane.leftAnchor="615.0" AnchorPane.topAnchor="22.0" />
+                  <TextField fx:id="newnameText" onAction="#editNameText" promptText="new name" AnchorPane.leftAnchor="615.0" AnchorPane.topAnchor="22.0" />
                   <AnchorPane fx:id="screen" layoutX="96.0" layoutY="154.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #d2b11d;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0" />
                </children></AnchorPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">

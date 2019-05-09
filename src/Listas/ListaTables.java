@@ -2,12 +2,15 @@ package Listas;
 
 import java.util.Hashtable;
 
+@SuppressWarnings("rawtypes")
 public class ListaTables {
     int largo;
-    Nodo<Hashtable> head= null;
+    
+	Nodo<Hashtable> head= null;
 
 
-    public void addLast (Hashtable e){
+    @SuppressWarnings("unchecked")
+	public void addLast (Hashtable e){
         if (this.head==null){
             this.head= new Nodo(e);
             largo++;

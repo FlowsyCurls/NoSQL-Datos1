@@ -17,7 +17,7 @@ public class UserMessage extends Alert{
 			this.image = new Image("/Media/confirm.png");
 			ImageView imageView = new ImageView(image);
 			this.setHeaderText(null);
-			this.setContentText(content+" "+message+"'s editation?");
+			this.setContentText(content);
 			this.setGraphic(imageView);
 			this.getButtonTypes().set(0, ButtonType.YES);
 			return;

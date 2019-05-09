@@ -3,7 +3,12 @@ package Errores;
 import java.io.IOException;
 
 public class EsquemaNuloException extends IOException {
-    public EsquemaNuloException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public EsquemaNuloException() {
     }
 
     public EsquemaNuloException(String message) {

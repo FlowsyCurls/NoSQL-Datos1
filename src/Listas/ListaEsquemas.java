@@ -158,7 +158,9 @@ public class ListaEsquemas {
         }
         return lista;
     }
-    private ArrayList<String> crearlistadatosArray(ListaString lista) {
+    
+    @SuppressWarnings("unused")
+	private ArrayList<String> crearlistadatosArray(ListaString lista) {
     	ArrayList<String> array =  new ArrayList<>();
         Nodo<String> str = lista.getHead();
     	while (str!=null) {

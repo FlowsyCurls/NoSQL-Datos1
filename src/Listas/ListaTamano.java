@@ -67,11 +67,11 @@ public class ListaTamano {
         this.largo = largo;
     }
 
-    public Nodo getHead() {
+    public Nodo<Tamano> getHead() {
         return head;
     }
 
-    public void setHead(Nodo head) {
+    public void setHead(Nodo<Tamano> head) {
         this.head = head;
     }
 

@@ -1,87 +1,52 @@
 package sample; 
  
-import Errores.DatosUsadosException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Hashtable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import Errores.EsquemaNuloException; 
-import Listas.Esquema; 
+import Listas.Esquema;
 import Listas.ListaEsquemas;
-import Listas.ListaString;
-import Listas.ListaTables;
-import Listas.ListaTamano;
 import Listas.Nodo;
-import Listas.NodoList;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList; 
-import javafx.event.ActionEvent; 
-import javafx.fxml.FXML; 
-import javafx.fxml.FXMLLoader; 
-import javafx.geometry.Pos; 
-import javafx.scene.Parent; 
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button; 
-import javafx.scene.control.ChoiceBox; 
-import javafx.scene.control.Label; 
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent; 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color; 
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import sample.Main;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
- 
-import org.slf4j.Logger; 
-import org.slf4j.LoggerFactory;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class Controller { 
 	
 	private ListaEsquemas listaEsquemas =new ListaEsquemas();
-
-	public void datos() throws EsquemaNuloException, DatosUsadosException {
-		listaEsquemas.emptyList();
-		for (int i=0; i!=11; i++){ 
-			String str = "E"+i+",Nombre"+i+":STRING"+":"+i+",Rango"+i+":INT"+":"+i;
-			System.out.println(str);
-			listaEsquemas.addLast(new Esquema(str));
-		}
-		listaEsquemas.addLast(new Esquema("Paraiso,Nombre:Narnia:1,Region:INT:1")); 
-		listaEsquemas.addLast(new Esquema("Tornado,Nombre:Nodico:3,Zona:INT:5,Clima:Seco:2,Rango de Humedad:INT:4,Gravedad:STRING:7,Velocidad:INT:7,Precauciones:STRING:4,Extras:INT:4")); 
-		listaEsquemas.addLast(new Esquema("Bosque Seco,Clima:Seco:2,Rango de Humedad:INT:4")); 
-		listaEsquemas.addLast(new Esquema("Ragos4,AC:STRING:4,dat4:INT:4")); 
-		listaEsquemas.addLast(new Esquema("Yeso5,BN:STRING:5,dat5:INT:5")); 
-		listaEsquemas.addLast(new Esquema("Nononosi6,SI:STRING:6,dat6:INT:6")); 
-		listaEsquemas.addLast(new Esquema("NoSQ7,DATA:STRING:7,dat7:INT:7")); 
-		listaEsquemas.addLast(new Esquema("Pea8,RUNNER:STRING:8,dat8:INT:8")); 
-		listaEsquemas.addLast(new Esquema("Oie9,DRIVE:STRING:9,dat9:INT:9")); 
-		System.out.println("cargados...."); 
-	} 
 //	private ArrayList<String> array = new ArrayList<String>(); 
 	 
 	//FXML// 
@@ -115,20 +80,22 @@ public class Controller {
     private ObjectMapper objectMapper=new ObjectMapper(); 
  
     public static Logger log = LoggerFactory.getLogger(Controller.class);
-	private Socket client;
+	private Cliente cliente = new Cliente();
 	 
  
     //initializer 
-    public void initialize() {//URL location, ResourceBundle resouces) { 
+    public void initialize() throws IOException {//URL location, ResourceBundle resouces) { 
+    	//cargar esquemas del servidor.
     	try {
-    		this.datos();
-    		this.setChoiceBoxEdit();
-			this.loadDiagrams(null);
-		}  
-    	catch (IOException e) { 
-			System.out.println("Dio este error |||| "+e); 
-			log.debug("error");
-		} 
+    		String respuesta = this.cliente.acciones(this.cliente, null, "recibiresquemas", null, null, 0);
+    		if (respuesta!="constructores enviados") {
+    			System.out.println("NO CARGOOOOOO MIIIIIIIEEEEERRRRRDAAAA"); return;}
+        	this.setChoiceBoxEdit();
+    		this.loadDiagrams(null);}
+    	catch (IOException m) { System.out.println("NO FUNCOOOOO MIIIIIIIEEEEERRRRRDAAAA");
+    		m.printStackTrace();
+    		log.debug("error"); return;
+    	}
     }
     
     @FXML  //evento de anadir 
@@ -160,9 +127,11 @@ public class Controller {
 	        loader = new FXMLLoader(getClass().getResource("add.fxml"));
 	        root=loader.load();
 	        addStage.setTitle("Add a Diagram");
-//	        ControllerAdd controller= loader.getController();
-//	        controller.drawing(columns);
+	        ControllerAdd controller= loader.getController();
+	        controller.drawing(columns);
 	        Scene scene = new Scene(root,1200,800);
+	        scene.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+	            if (KeyCode.ESCAPE == event.getCode()) {addStage.close();}});
 	        addStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
 	        addStage.setResizable(false);
 	        addStage.getIcons().add(new Image("/Media/save.png"));
@@ -218,8 +187,8 @@ public class Controller {
 	        loader = new FXMLLoader(getClass().getResource("edit.fxml"));
 	        root=loader.load();
 	        editStage.setTitle("Edit Diagram");
-//	        ControllerAdd controller= loader.getController();
-//	        controller.drawing(e);
+	        ControllerEdit controller= loader.getController();
+	        controller.getEsquema(e, this.cliente);
 	        Scene scene = new Scene(root,1200,800);
 	        editStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
 	        editStage.setResizable(false);
@@ -366,13 +335,15 @@ public class Controller {
 		this.tableview.getColumns().clear();
 		this.jdata.clear();
 	}
+	
+
  
 	public void hola() throws IOException { 
-//	        System.out.println("estoy en la funcion"); 
-//	        ObjectNode perro = objectMapper.createObjectNode(); 
-//	        perro.put("hola", 82).put("charanco","tornado"); 
-//	        perro.put("hola", "tornado"); 
-//	        System.out.println(perro); 
+	        System.out.println("estoy en la funcion"); 
+	        ObjectNode perro = objectMapper.createObjectNode(); 
+	        perro.put("hola", 82).put("charanco","tornado"); 
+	        perro.put("hola", "tornado"); 
+	        System.out.println(perro); 
 	   try { 
 	       Integer.parseInt("23.4"); 
 	       } 
@@ -381,48 +352,20 @@ public class Controller {
 	       } 
 	} 
 	 
-    @SuppressWarnings("unused")
+	@SuppressWarnings({ "rawtypes", "unchecked", "resource", "unused" })
 	public void table() throws IOException { 
-//	        Hashtable hashtable= new Hashtable(); 
-//	        hashtable.put("hello", "pico" ); 
-//	        hashtable.put("Paco",85); 
-//	        hashtable.put("Paco",89); 
-//	        Hashtable holga = new Hashtable(); 
-//	        holga= (Hashtable) hashtable.clone(); 
-//	        System.out.println(objectMapper.readValue(objectMapper.writeValueAsString(holga),Hashtable.class)); 
-//	 
-//	        System.out.println(holga); 
-	    Cliente cliente=new Cliente(); 
-	    String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");
-		String respuesta2=cliente.insertardatos("Esquema1", "dato1:perro,dato2:222");
-		String respuesta3=cliente.insertardatos("Esquema1", "dato1:gato,dato2:222");
-		Datos respuesta6=cliente.buscardatos("Esquema1", "222", "dato2");
-		String respuesta4=cliente.eliminardatos("Esquema1", "perro");
-//	    Datos respuesta7=cliente.buscardatosporjoin("Esquema1", "STRING", "0", null);
-		String respuesta5=cliente.eliminarEsquema("Esquema1");
-		System.out.println(respuesta);
-		System.out.println(respuesta2);
-		System.out.println(respuesta3);
-		System.out.println(respuesta6.getRespuesta()+": "+respuesta6.getDatos());
-		System.out.println(respuesta4);
-		System.out.println(respuesta5);
-
-//	        DataInputStream datosentrada = new DataInputStream(client.getInputStream());
-//	        log.debug("entrada se conecto"); 
-//	        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class); 
-//	        log.debug("se creo objeto"); 
+	        Hashtable hashtable= new Hashtable(); 
+	        hashtable.put("hello", "pico" ); 
+	        hashtable.put("Paco",85); 
+	        hashtable.put("Paco",89); 
+	        Hashtable holga = new Hashtable(); 
+	        holga= (Hashtable) hashtable.clone(); 
+	        System.out.println(objectMapper.readValue(objectMapper.writeValueAsString(holga),Hashtable.class)); 
+	        System.out.println(holga); 
+	        Socket client = new Socket(InetAddress.getLocalHost(), 9500);
+	        DataInputStream datosentrada = new DataInputStream(client.getInputStream());
+	        log.debug("entrada se conecto"); 
+	        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class); 
+	        log.debug("se creo objeto"); 
 	    }
-    
-    public void acciones(String accion, ListaEsquemas lista, Esquema e)throws IOException{
-	    Cliente cliente=new Cliente();
-	    if (accion=="crearesquema"){String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");System.out.println(respuesta);}
-	    else if (accion=="crearindice"){String respuesta=cliente.crearindice("Esquema1", "0", "1");System.out.println(respuesta);}
-	    else if (accion=="eliminardatos"){String respuesta=cliente.eliminardatos("Esquema1", "ID");System.out.println(respuesta);}
-	    else if (accion=="eliminarEsquema"){String respuesta=cliente.eliminarEsquema("Esquema1");System.out.println(respuesta);}
-	    else if (accion=="eliminarindice"){String respuesta=cliente.eliminarindice("Esquema1", "0", "1");System.out.println(respuesta);}
-	    else if (accion=="insertardatos"){String respuesta=cliente.insertardatos("Esquema1", "STRING");System.out.println(respuesta);}
-	    else if (accion=="buscardatos"){Datos respuesta=cliente.buscardatos("Esquema1", "STRING", "0");System.out.println(respuesta);}
-	    else if (accion=="buscardatosporindice"){Datos respuesta=cliente.buscardatosporindice("Esquema1", "STRING", "0", "2");System.out.println(respuesta);}
-	    else if (accion=="buscardatosporjoin"){Datos respuesta=cliente.buscardatosporjoin("Esquema1", "STRING", "0", null);System.out.println(respuesta);}
-    }
 }

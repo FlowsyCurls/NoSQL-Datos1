@@ -1,7 +1,5 @@
 package Arboles;
 
-import java.util.ArrayList;
-
 public class pruebas {
 	public static void main(String[]args) {
 		persona aldo1=new persona(1,"aldo");

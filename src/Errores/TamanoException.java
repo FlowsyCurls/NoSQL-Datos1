@@ -4,7 +4,12 @@ import java.io.IOException;
 
 public class TamanoException extends IOException {
 
-    public TamanoException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public TamanoException() {
     }
 
     public TamanoException(String message) {

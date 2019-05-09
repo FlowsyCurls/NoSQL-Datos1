@@ -10,6 +10,7 @@ import sample.Server;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class Esquema {
     private String nombre,ID;
     private Boolean tiene_filas;
@@ -45,7 +46,8 @@ public class Esquema {
         }
     }
 
-    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
+    
+	private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
         int cont=1;
         this.ID=partes[cont].split(":")[0];

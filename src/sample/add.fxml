@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -80,15 +81,29 @@
                      <children>
                         <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="90.0" prefHeight="444.0" prefWidth="145.0" spacing="15.0" style="-fx-background-color: #d95030;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="990.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" selected="true" text="STRING" textFill="WHITE">
+                              <RadioButton fx:id="b1" mnemonicParsing="false" selected="true" text="STRING" textFill="WHITE">
                                  <font>
                                     <Font name="Berlin Sans FB Demi Bold" size="22.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets left="20.0" />
                                  </VBox.margin>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="togglegroup" />
+                                 </toggleGroup>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="INTEGER" textFill="WHITE">
+                              <RadioButton fx:id="b2" mnemonicParsing="false" text="INTEGER" textFill="WHITE" toggleGroup="$togglegroup">
+                                 <font>
+                                    <Font name="Berlin Sans FB Demi Bold" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                              </RadioButton>
+                              <RadioButton fx:id="b3" mnemonicParsing="false" text="DOUBLE" textFill="WHITE" toggleGroup="$togglegroup">
                                  <font>
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
@@ -96,7 +111,7 @@
                                     <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="DOUBLE" textFill="WHITE">
+                              <RadioButton fx:id="b3" mnemonicParsing="false" text="LONG" textFill="WHITE" toggleGroup="$togglegroup">
                                  <font>
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
@@ -104,15 +119,7 @@
                                     <Insets left="20.0" />
                                  </VBox.margin>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="LONG" textFill="WHITE">
-                                 <font>
-                                    <Font name="Berlin Sans FB Demi Bold" size="21.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="20.0" />
-                                 </VBox.margin>
-                              </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="FLOAT" textFill="WHITE">
+                              <RadioButton fx:id="b4" mnemonicParsing="false" text="FLOAT" textFill="WHITE" toggleGroup="$togglegroup">
                                  <font>
                                     <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                  </font>
