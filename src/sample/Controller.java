@@ -182,7 +182,7 @@ public class Controller {
 		this.choiceboxEdit.setItems(availableType); 
 		this.choiceboxEdit.getSelectionModel().select(2);
 		//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
-//		this.availableChoices.add("Other Diagram..."); this.choiceboxSearch.setItems(availableChoices); 
+//		this.availableChoices.add("Other..."); this.choiceboxSearch.setItems(availableChoices); 
 //		this.choiceboxSearch.getSelectionModel().select(0);
 	}private void editWindow(Esquema e) {
 	    try {
@@ -208,53 +208,88 @@ public class Controller {
     public void searchButtonAction(ActionEvent event) throws IOException { 
     	String detail = searchSTR.getText();
     	System.out.println("detail: "+detail); 
-    	if (detail.isEmpty()){
-    		detail=null;
-    		System.out.println("Escrito en detail --->>  "+detail);}
-    	
+    	if (detail.isEmpty() || (detail.trim().isEmpty())){
+    		detail=null; this.searchSTR.clear();
+    		System.out.println("Escrito en detail --->>  "+detail);
+    	}
     	//analizando escogencia....
     	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem(); 
-    	System.out.print("Seleccionado en el Choices --->> "+selectedChoice); 
-    	if (selectedChoice == "Other Diagrams..."){this.loadDiagrams(detail);return;}
-    	
-    	//pero para los demas se necesita el esquema so..
-    	Esquema usedDiag = this.listaEsquemas.buscar(searchSTR.getPromptText());
-    	//buscando filas con id...
-    	if (selectedChoice == "ID") {
-    		String respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscarID", null, null, 0);
-    		if (respuesta!="datos enviados") {return;}
-    		//codigo para obtener las filas buscadas en un string[];
-    		ArrayList<String[]> filasbuscadas= new ArrayList<String[]> ();
-    		if (filasbuscadas.isEmpty()) {this.messenger("No coincidences with", detail); return;}
-			this.setCxF(usedDiag, true, filasbuscadas, detail);
+    	System.out.println("Seleccionado en el Choices --->> "+selectedChoice); 
+    	if (selectedChoice.equals("Other...") || selectedChoice==null){
+    		this.loadDiagrams(detail);
+    		this.searchSTR.clear();
     		return;}
-    	
-    	//buscando con nombres...
-    	if (selectedChoice == "Name") {
-    		
-    		
-    		return;}
-    	
-    	//buscando con indices...
-    	if (selectedChoice == "Index") {
-    		
-    		
-    		return;}
-    	
-    }private void messenger(String content, String detail) {
+    	else {
+    		//pero para los demas se necesita el esquema so..
+			Esquema usedDiagram = this.listaEsquemas.buscar(searchSTR.getPromptText());
+			
+			//variables locales
+			String respuesta = null;
+			ArrayList<String[]> filasbuscadas = new ArrayList<String[]> ();;
+					
+			//buscando filas con id...
+			if (selectedChoice.equals("ID("+usedDiagram.getNombre()+")")) {
+				respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscarID", null, null, 0);
+				
+				/*codigo para agregar cada 
+				 * fila que sera string[]
+				 *  de coincidencia en un
+				 *   ArrayList<String[]>*/
+				filasbuscadas= new ArrayList<String[]> ();
+			}
+
+			//buscando con nombres...
+			else if (selectedChoice.equals("Name")) {
+				respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
+				
+				/*codigo para agregar cada
+				 *  fila que sera string[]
+				 *  de coincidencia en un
+				 *  ArrayList<String[]>*/
+				filasbuscadas= new ArrayList<String[]> ();
+			}
+			
+			//buscando con indices...
+			else if (selectedChoice.equals("Index")) {
+				/* pen
+				 * dien
+				 * te*/
+				
+			}
+			
+			//buscando con joins...
+			else if (selectedChoice.equals("Joins")) {
+				respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatosjoin", detail, null, 0);
+				
+				/*codigo para agregar cada
+				 *  fila que sera string[]
+				 *  de coincidencia en un
+				 *   ArrayList<String[]>*/
+				filasbuscadas= new ArrayList<String[]> ();
+			}
+			
+			else {
+				System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
+			}
+			//verificar que se haya hecho el proceso de busqueda y conexion.
+			if (respuesta!="datos enviados") {this.messenger("ERROR while searching ", "Try again later!");return;}
+			//verificar que por lo menos haya algun coincidencia.
+			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;}
+			this.setCxF(usedDiagram, true, filasbuscadas, detail);
+			return;}
+	}private void messenger(String content, String detail) {
 		UserMessage message = new UserMessage(AlertType.INFORMATION,
 				detail,content);
 		message.showAndWait();
 	}private void loadDiagrams(String detail) throws IOException { //loadDiagramas. 
     	this.diagrams.removeAll(diagrams);
-//    	this.diagramsList.setStyle("-fx-background-color:  #d2b11d; -fx-border-color: lightgray;");
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
-//			System.out.println("DIAGRAMAS cargados "+diagrams); 
+			System.out.println("DIAGRAMAS cargados "+diagrams); 
 			this.diagramsList.setItems(diagrams); 
 			return;} 
     	this.addNamesOneByOne(); 
-//		System.out.println("DIAGRAMAS cargados "+diagrams); 
+		System.out.println("DIAGRAMAS cargados "+diagrams); 
 	    this.diagramsList.setItems(diagrams);
     }private void loadDiagrams_buscaraux(String detail) { //buscar coincidencias para cargarlas. 
 //		System.out.println("Entra en buscar"); 
@@ -300,35 +335,39 @@ public class Controller {
     	if (s) {
     		for (int i =0; i < filasbuscadas.size(); i++) {
     			jdata.add(filasbuscadas.get(i));}}
-    	else {
-    		String string = e.buscardatos(detail, e.getNombre());
-    		String[] data = string.split(";");
-    		String[] joins = new String[data.length];
-    		String[] rows = joins[1].split(",");
-    		
-    		for (int l = 0; l <data.length; l++) {
-    			jdata.add(rows);}
-    	}
+//    	else {
+//    		String string = e.buscardatos(detail, e.getNombre());
+//    		String[] data = string.split(";");
+//    		String[] joins = new String[data.length];
+//    		String[] rows = joins[1].split(",");
+//    		
+//    		for (int l = 0; l <data.length; l++) {
+//    			jdata.add(rows);}
+//    	}
     		
     	/* Obtener cada fila String[]*/
 //    	seguir con algo maas
     	
-//		String[] d = new String[5];
-//		String[] a = new String[5];
-//		String[] b = new String[5];
-//		String[] c = new String[5];
-//    	a[0] = "a"; a[1] = "b"; a[2] = "c"; a[3] = "d"; a[4] = "e"; 
-//    	b[0] = "1"; b[1] = null; b[2] = "3"; b[3] = "4"; b[4] = "5";
-//    	d[0] = "X"; d[1] = "Z"; d[2] = "V"; d[3] = "G"; d[4] = "U";
-//    	jdata.add(a);
-//    	jdata.add(b);
-//		jdata.add(d);
-//		jdata.add(c);
+		String[] d = new String[5];
+		String[] a = new String[5];
+		String[] b = new String[5];
+		String[] c = new String[5];
+    	a[0] = "a"; a[1] = "b"; a[2] = "c"; a[3] = "d"; a[4] = "e"; 
+    	b[0] = "1"; b[1] = null; b[2] = "3"; b[3] = "4"; b[4] = "5";
+    	d[0] = "X"; d[1] = "Z"; d[2] = "V"; d[3] = "G"; d[4] = "U";
+    	jdata.add(a);
+    	jdata.add(b);
+		jdata.add(d);
+		jdata.add(c);
 
 		showTable();
     }private void setChoiceBox(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
-		this.availableChoices.add("Other Diagram...");
+		this.availableChoices.add("Other...");
+		this.availableChoices.add("ID");
+		this.availableChoices.add("Name");
+		this.availableChoices.add("Index");
+		this.availableChoices.add("Joins");
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 
 		this.choiceboxSearch.getSelectionModel().select(0);
@@ -342,7 +381,6 @@ public class Controller {
                 if (index >= rowData.length) {return new ReadOnlyStringWrapper("");} 
                 else {String cellValue = rowData[index];return new ReadOnlyStringWrapper(cellValue);}});
             firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-            firstNameCol.setOnEditCommit(event -> {String[] row = event.getRowValue();row[index] = event.getNewValue();});
             firstNameCol.setMinWidth(200);
             firstNameCol.setStyle("-fx-alignment: CENTER;");
             this.tableview.getColumns().add(firstNameCol);}
