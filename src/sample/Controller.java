@@ -48,7 +48,7 @@ import javafx.stage.Stage;
 
 public class Controller { 
 	
-	public static ListaEsquemas listaEsquemas =new ListaEsquemas();
+	public static ListaEsquemas listaEsquemas = null;
 //	private ArrayList<String> array = new ArrayList<String>(); 
 	 
 	//FXML// 
@@ -93,13 +93,18 @@ public class Controller {
     		if (!Datos.getRespuesta().equals("constructores enviados")) {
     			System.out.println("NO CARGOOOOOO MIIIIIIIEEEEERRRRRDAAAA"); 
     			return;}
+    		Controller.listaEsquemas = new ListaEsquemas();
     		Nodo<String> tmp = Datos.getConstructores().getHead();
 			while (tmp!=null){ 
-    			this.listaEsquemas.addLast(new Esquema(tmp.getNodo(), true));
+    			Controller.listaEsquemas.addLast(new Esquema(tmp.getNodo(), true));
     			System.out.println("Cargado Esquema ||| "+tmp.getNodo());
-		    	tmp=tmp.next;} 
-    		this.setChoiceBoxEdit();
-    		this.loadDiagrams(null);
+		    	tmp=tmp.next;}
+			
+			/*LLAMADAS INICIALES*/
+    		setChoiceBoxEdit();
+    		loadDiagrams(null);
+    		nothingMessage();
+    		/*LLAMADAS INICIALES*/
     	} catch (IOException m) { System.out.println("NO FUNCOOOOO MIIIIIIIEEEEERRRRRDAAAA");
     		m.printStackTrace();
     		log.debug("error"); return;} }
@@ -109,8 +114,9 @@ public class Controller {
     	String inputString = this.textfieldFilas.getText();
     	if (inputString.isEmpty()) {this.textfieldFilas.clear(); return;}
     	else if (!this.TryParse(inputString)) {
-    		UserMessage message = new UserMessage(AlertType.ERROR,
-    				inputString,"Data entered is not a integer number");
+			UserMessage message = new UserMessage(AlertType.ERROR,
+					"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!",
+					"Write a valid number");
     		message.showAndWait();
     		this.textfieldFilas.clear();
             return;}
@@ -148,29 +154,74 @@ public class Controller {
 	    } catch (IOException e) {
 	        e.printStackTrace();}}
 	
+	private boolean verifyTextField(String detail) {
+    	if (detail.isEmpty() || (detail.trim().isEmpty())) {
+    		return true;
+    	}return false;
+	}
+	
 	@FXML //evento de editar esquemas 
-	public void editButtonAction(ActionEvent event) throws IOException { 
+	public void editButtonAction(ActionEvent event) throws IOException {
+		//readvalues
     	String detail = this.textfieldEdit.getText();
-    	if (detail.isEmpty())return;
+    	String prompt = this.textfieldEdit.getPromptText();
+    	if (this.verifyTextField(detail) && prompt.equals("diagram's detail") ) {
+			UserMessage message = new UserMessage(AlertType.INFORMATION,
+					"\n\rAlso you can choose \"Name\" or \"ID\", just.. \nwrite the respective case.",
+					"SORRY..!\nFirst, you have to select a diagram");
+			message.showAndWait();
+    		return;
+    	}
+    	System.out.println("ddddddddddddddddddddddddddd "+detail);
+    	System.out.println("ppppppppppppppppppppppppppp "+prompt);
+    	//readchoice
     	String selectedChoice = this.choiceboxEdit.getSelectionModel().getSelectedItem();
     	System.out.println("detail: "+detail);
     	System.out.println("selectedChoice: "+selectedChoice);
-    	if (selectedChoice == "ID") {return;}
-    	else if (selectedChoice == "Name") {
-    		this.listaEsquemas.buscar(selectedChoice);
-    		return;}
-    	else if (selectedChoice == "Index") {
+    	//compare
+    	if (selectedChoice.equals("ID")) {
+    		System.out.println(Controller.listaEsquemas.buscar(prompt));
+    		System.out.println(Controller.listaEsquemas.buscar(detail));
+    		/*codigo 
+    		 * deberia
+    		 * que 
+    		 * hace 
+    		 * algo */
+    		return;
+    		}
+    	
+    	else if (selectedChoice.equals("NAME")) {
+    		System.out.println(Controller.listaEsquemas.buscar(prompt));
+    		System.out.println(Controller.listaEsquemas.buscar(detail));
+    		/*codigo 
+    		 * deberia
+    		 * que 
+    		 * hace 
+    		 * algo */
+    		return;
+    		}
+    	
+    	
+    	else if (selectedChoice.equals("INDEX")) {
+    		//validacion de la entrada.
     		if (!this.TryParse(detail)) {
-    			UserMessage message = new UserMessage(AlertType.ERROR,
-    					detail,"The written index is not a whole number");
-    			message.showAndWait();
-    			this.textfieldEdit.clear();
-    			return;}
+    			//si no hay numero ingresado.
+    			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {
+        			UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ¬¬","Try to write a number");
+        			message.showAndWait();
+        			this.textfieldEdit.clear();
+        		}else{
+        			//si numero no es entero.
+        			UserMessage message = new UserMessage(AlertType.ERROR,
+        					"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!",
+        					"Write a valid number");
+        			message.showAndWait();
+        			this.textfieldEdit.clear();
+    			}return;}
+    		//busqueda y abrir otra ventana.
     		int inputInt = Integer.parseInt(detail);
-    		Esquema e = this.listaEsquemas.buscar(inputInt);
-    		if (e==null) {
-    			UserMessage message = new UserMessage(AlertType.INFORMATION,
-    					detail,"Your diagram was not found");
+    		Esquema e = Controller.listaEsquemas.buscar(inputInt);
+    		if (e==null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");
     			message.showAndWait();
     			return;}
         	this.editWindow(e);
@@ -178,7 +229,7 @@ public class Controller {
     		return;}
 	}private void setChoiceBoxEdit() { //setChoiceBoxEdit de editbuttonaction.
 //		this.choiceboxEdit.getItems().clear();
-    	this.availableType.addAll("ID","Name","Index");
+    	this.availableType.addAll("ID","NAME","INDEX");
 		this.choiceboxEdit.setItems(availableType); 
 		this.choiceboxEdit.getSelectionModel().select(2);
 		//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
@@ -208,28 +259,28 @@ public class Controller {
     public void searchButtonAction(ActionEvent event) throws IOException { 
     	String detail = searchSTR.getText();
     	System.out.println("detail: "+detail); 
-    	if (detail.isEmpty() || (detail.trim().isEmpty())){
+    	if (this.verifyTextField(detail)){
     		detail=null; this.searchSTR.clear();
     		System.out.println("Escrito en detail --->>  "+detail);
     	}
     	//analizando escogencia....
     	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem(); 
     	System.out.println("Seleccionado en el Choices --->> "+selectedChoice); 
-    	if (selectedChoice.equals("Other...") || selectedChoice==null){
+    	if (selectedChoice.equals("OTHERS...") || selectedChoice==null){
     		this.loadDiagrams(detail);
     		this.searchSTR.clear();
     		return;}
     	else {
     		//pero para los demas se necesita el esquema so..
-			Esquema usedDiagram = this.listaEsquemas.buscar(searchSTR.getPromptText());
+			Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
 			
 			//variables locales
 			String respuesta = null;
 			ArrayList<String[]> filasbuscadas = new ArrayList<String[]> ();;
 					
 			//buscando filas con id...
-			if (selectedChoice.equals("ID("+usedDiagram.getNombre()+")")) {
-				respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscarID", null, null, 0);
+			if (selectedChoice.equals("ID ("+usedDiagram.getNombre()+")")) {
+				respuesta = this.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscarID", null, null, 0);
 				
 				/*codigo para agregar cada 
 				 * fila que sera string[]
@@ -239,8 +290,8 @@ public class Controller {
 			}
 
 			//buscando con nombres...
-			else if (selectedChoice.equals("Name")) {
-				respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
+			else if (selectedChoice.equals("NAME")) {
+				respuesta = this.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
 				
 				/*codigo para agregar cada
 				 *  fila que sera string[]
@@ -250,7 +301,7 @@ public class Controller {
 			}
 			
 			//buscando con indices...
-			else if (selectedChoice.equals("Index")) {
+			else if (selectedChoice.equals("INDEX")) {
 				/* pen
 				 * dien
 				 * te*/
@@ -258,8 +309,8 @@ public class Controller {
 			}
 			
 			//buscando con joins...
-			else if (selectedChoice.equals("Joins")) {
-				respuesta = this.cliente.acciones(cliente, this.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatosjoin", detail, null, 0);
+			else if (selectedChoice.equals("JOINS")) {
+				respuesta = this.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatosjoin", detail, null, 0);
 				
 				/*codigo para agregar cada
 				 *  fila que sera string[]
@@ -281,7 +332,8 @@ public class Controller {
 		UserMessage message = new UserMessage(AlertType.INFORMATION,
 				detail,content);
 		message.showAndWait();
-	}private void loadDiagrams(String detail) throws IOException { //loadDiagramas. 
+	}private void loadDiagrams(String detail) throws IOException { //loadDiagramas.
+    	diagramsList.setStyle("-fx-control-inner-background:  #562f7e;");
     	this.diagrams.removeAll(diagrams);
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
@@ -294,7 +346,7 @@ public class Controller {
     }private void loadDiagrams_buscaraux(String detail) { //buscar coincidencias para cargarlas. 
 //		System.out.println("Entra en buscar"); 
 //		System.out.println(this.listaEsquemas.getLargo()); 
-    	ArrayList<Esquema> coincided = this.listaEsquemas.buscarcoincidencias(detail); 
+    	ArrayList<Esquema> coincided = Controller.listaEsquemas.buscarcoincidencias(detail); 
     	if (coincided.isEmpty()) return; 
     	for (int i=0; i<coincided.size(); i++){ 
     		Esquema element =coincided.get(i); 
@@ -302,7 +354,7 @@ public class Controller {
     		this.diagrams.add(element.getNombre()); //add coincidences... 
     	}coincided.removeAll(coincided); 
     }private void addNamesOneByOne() { //cargar todos los diagramas. 
-			Nodo<Esquema>tmp = this.listaEsquemas.getHead(); 
+			Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
 			System.out.println("NODO ESQUEMA "+tmp); 
 			while (tmp!=null){ 
 		    	this.diagrams.add(tmp.getNodo().getNombre()); 
@@ -314,6 +366,7 @@ public class Controller {
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
 		if (selectedDiagram == null) { 
 			searchSTR.setPromptText("diagram detail"); //set to default. 
+			textfieldEdit.setPromptText("diagram detail"); //set to default. 
 			screen.getChildren().clear(); //clean screen 
 			stack.getChildren().clear(); //clean stack 
 			this.nothingMessage();//mensaje visual. 
@@ -321,14 +374,15 @@ public class Controller {
 		this.clean();
 		//nombre general del esquema (CURSO, PROFESOR, EDIFICIO...) 
 		searchSTR.setPromptText(selectedDiagram); //set to watching.
+		textfieldEdit.setPromptText(selectedDiagram); //set to default. 
     	for (int i=0; i< this.jdata.size(); i++){
     		System.out.println(this.datosObservable.get(i));}
-		Esquema e = this.listaEsquemas.buscar(selectedDiagram); 
+		Esquema e = Controller.listaEsquemas.buscar(selectedDiagram); 
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA) 
 		this.setCxF(e, false, null, null);
 	}private void setCxF(Esquema e, boolean s, ArrayList<String[]> filasbuscadas, String detail){
 		/* Acomodar las columnas en choicebox*/
-		this.setChoiceBox(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));
+		this.setChoiceBoxSearch(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));
 		/* Obtener cada columna String*/
     	this.c = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
     	/* Obtener cada fila String[]*/
@@ -348,10 +402,10 @@ public class Controller {
     	/* Obtener cada fila String[]*/
 //    	seguir con algo maas
     	
-		String[] d = new String[5];
-		String[] a = new String[5];
-		String[] b = new String[5];
-		String[] c = new String[5];
+		String[] d = new String[6];
+		String[] a = new String[6];
+		String[] b = new String[6];
+		String[] c = new String[6];
     	a[0] = "a"; a[1] = "b"; a[2] = "c"; a[3] = "d"; a[4] = "e"; 
     	b[0] = "1"; b[1] = null; b[2] = "3"; b[3] = "4"; b[4] = "5";
     	d[0] = "X"; d[1] = "Z"; d[2] = "V"; d[3] = "G"; d[4] = "U";
@@ -361,13 +415,12 @@ public class Controller {
 		jdata.add(c);
 
 		showTable();
-    }private void setChoiceBox(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
+    }private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
-		this.availableChoices.add("Other...");
-		this.availableChoices.add("ID");
-		this.availableChoices.add("Name");
-		this.availableChoices.add("Index");
-		this.availableChoices.add("Joins");
+		this.availableChoices.add("OTHERS...");
+		this.availableChoices.add("NAME");
+		this.availableChoices.add("INDEX");
+		this.availableChoices.add("JOINS");
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 
 		this.choiceboxSearch.getSelectionModel().select(0);
@@ -387,9 +440,9 @@ public class Controller {
         datosObservable = FXCollections.observableList(this.jdata);
         tableview.getItems().addAll(this.datosObservable);
         tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableview.prefWidthProperty().bind(screen.widthProperty());
-        tableview.prefHeightProperty().bind(screen.heightProperty());  
-        tableview.setFocusTraversable(false);
+        tableview.prefWidthProperty().bind(scrollpane.widthProperty());
+        tableview.prefHeightProperty().bind(scrollpane.heightProperty());
+        tableview.setStyle("-fx-control-inner-background: #d2b11d;");
 		screen.getChildren().add(tableview);
 		log.debug("TableColumns Finished --> "+"table cargado..."); 
     }private void nothingMessage() { 	//muestra que no se busca nada. 
