@@ -5,6 +5,7 @@ import Errores.DatoNoExistenteException;
 import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
 import Errores.TamanoException;
+import sample.Controller;
 import sample.Server;
 
 import java.util.ArrayList;
@@ -257,7 +258,7 @@ public class Esquema {
 
         while (cont>=0){
             String nombreesquema=this.mijoins.buscar(cont);
-            listaString.concatenarlistas(Server.esquemas.buscar(nombreesquema).obtenercolumnas());
+            listaString.concatenarlistas(Controller.listaEsquemas.buscar(nombreesquema).obtenercolumnas());
             listaString.addFirst(nombreesquema);
             cont--;
         }

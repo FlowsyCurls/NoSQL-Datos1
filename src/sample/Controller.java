@@ -48,7 +48,7 @@ import javafx.stage.Stage;
 
 public class Controller { 
 	
-	private ListaEsquemas listaEsquemas =new ListaEsquemas();
+	public static ListaEsquemas listaEsquemas =new ListaEsquemas();
 //	private ArrayList<String> array = new ArrayList<String>(); 
 	 
 	//FXML// 
