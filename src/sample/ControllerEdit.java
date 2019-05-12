@@ -168,11 +168,6 @@ public class ControllerEdit {
     
 	@FXML
 	public void cancel(ActionEvent event) {
-		if (!this.saved) {
-			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL "+e.getNombre()+"'s editation?");
-			Optional<ButtonType> result = message.showAndWait();
-			if ((result.get() == ButtonType.CANCEL)){return;}
-		}
 	    try {
 	    	Stage sampleStage = new Stage();
 	        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));

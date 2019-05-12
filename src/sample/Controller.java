@@ -29,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -56,7 +57,8 @@ public class Controller {
 	public  AnchorPane baseSample= new AnchorPane(); 
 	@FXML // fx:id="diagramsList" 
 	private ListView<String> diagramsList = new ListView<String>(); 
-	private ObservableList<String> diagrams = FXCollections.observableArrayList(); 
+	private ObservableList<String> diagrams = FXCollections.observableArrayList();
+    @FXML private ContextMenu contextmenu = new ContextMenu();
 	@FXML //fx:id="tableview"
 	private TableView<String[]> tableview = new TableView<String[]>();
 	private ObservableList<String[]> datosObservable;
@@ -82,12 +84,15 @@ public class Controller {
     private ObjectMapper objectMapper=new ObjectMapper(); 
  
     public static Logger log = LoggerFactory.getLogger(Controller.class);
+
+	public static int counter= 1;
 	private Cliente cliente = new Cliente();
  
     //initializer 
     public void initialize() throws IOException, NullPointerException {
     	//cargar esquemas del servidor.
     	try {
+    		counter = 1;
     		Datos Datos = this.cliente.acciones(this.cliente, null, "recibiresquemas", null, null, null);
     		System.out.println(Datos.getConstructores().getHead().getNodo());
     		if (!Datos.getRespuesta().equals("constructores enviados")) {
@@ -113,7 +118,7 @@ public class Controller {
 	public void addButtonAction(ActionEvent event) throws IOException { 
     	String inputString = this.textfieldFilas.getText();
     	if (inputString.isEmpty()) {this.textfieldFilas.clear(); return;}
-    	else if (!this.TryParse(inputString)) {
+    	else if (!Controller.TryParse(inputString, "INTEGER")) {
 			UserMessage message = new UserMessage(AlertType.ERROR,
 					"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!",
 					"Write a valid number");
@@ -122,15 +127,26 @@ public class Controller {
             return;}
     	this.textfieldFilas.clear();
 		int inputInt = Integer.parseInt(inputString);
-		if (inputInt==0) return;
+		if (inputInt==0) inputInt=1;
     	this.addWindow(inputInt);
-	}private  boolean TryParse(String cadena){
-		try {
-			Integer.parseInt(cadena);
-			return true;
-			} 
-		catch (NumberFormatException e) {
-			return false;}
+	}public static boolean TryParse(String cadena, String tipo){
+		if (tipo == "INTEGER") {
+			try {Integer.parseInt(cadena);return true;} 
+			catch (NumberFormatException e) {return false;}
+		}
+		else if (tipo == "DOUBLE") {
+			try {Double.parseDouble(cadena);return true;} 
+			catch (NumberFormatException e) {return false;}
+		}
+		else if (tipo == "LONG") {
+			try {Long.parseLong(cadena);return true;} 
+			catch (NumberFormatException e) {return false;}
+		}
+		else if (tipo == "FLOAT") {
+			try {Float.parseFloat(cadena);return true;} 
+			catch (NumberFormatException e) {return false;}
+		}return false;
+		
 	}private void addWindow(int columns) {//cambia a la pantalla de fin del juego
 	    try {
 	        Stage addStage = new Stage();
@@ -139,8 +155,8 @@ public class Controller {
 	        loader = new FXMLLoader(getClass().getResource("add.fxml"));
 	        root=loader.load();
 	        addStage.setTitle("Add a Diagram");
-	        ControllerAdd controller= loader.getController();
-	        controller.drawing(columns);
+	        ControllerAdd<?> controller= loader.getController();
+	        controller.drawing(columns, null);
 	        Scene scene = new Scene(root,1200,800);
 	        scene.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
 	            if (KeyCode.ESCAPE == event.getCode()) {addStage.close();}});
@@ -204,7 +220,7 @@ public class Controller {
     	
     	else if (selectedChoice.equals("INDEX")) {
     		//validacion de la entrada.
-    		if (!this.TryParse(detail)) {
+    		if (!Controller.TryParse(detail, "INTEGER")) {
     			//si no hay numero ingresado.
     			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {
         			UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ¬¬","Try to write a number");
@@ -257,10 +273,10 @@ public class Controller {
 
 	@FXML //evento de buscar esquemas 
     public void searchButtonAction(ActionEvent event) throws IOException { 
+		/*que se esta buscando*/
     	String detail = searchSTR.getText();
     	System.out.println("detail: "+detail); 
-    	if (this.verifyTextField(detail)){
-    		detail=null; this.searchSTR.clear();
+    	if (this.verifyTextField(detail)){ detail=null; this.searchSTR.clear();
     		System.out.println("Escrito en detail --->>  "+detail);
     	}
     	//analizando escogencia....
@@ -328,7 +344,28 @@ public class Controller {
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;}
 			this.setCxF(usedDiagram, true, filasbuscadas, detail);
 			return;}
-	}private void messenger(String content, String detail) {
+	}
+    private ArrayList<String> SearchID(String id, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+    private ArrayList<String> SearchName(String name, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+    private ArrayList<String> SearchIndex(String index, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+    private ArrayList<String> SearchJoins(String join, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+	
+	
+	
+	
+	private void messenger(String content, String detail) {
 		UserMessage message = new UserMessage(AlertType.INFORMATION,
 				detail,content);
 		message.showAndWait();
@@ -393,20 +430,22 @@ public class Controller {
     	
 //    	String all = e.buscartodos(); /*ver pq da error */
     	if (!s) {  /*No buscando*/
-    		ArrayList<String[]> tuple = e.getcolxrow(all);
-    		for (int j=0; j<=tuple.size()-1;j++) {
-    			this.jdata.add(tuple.get(j));
-    			System.out.println(tuple.get(j));}
+       		String filas = Controller.listaEsquemas.buscar(e.getNombre()).buscartodos();
+       		System.out.println(filas);		
+//       		for (int j=0; j<=tuple.size()-1;j++) {
+//    			this.jdata.add(tuple.get(j));
+//    			System.out.println(tuple.get(j));}
     		
 //    		String[] tmp = new String[tuple.getColumnas().size()];
 //    		for (int j=0; j<=tuple.getFilas().size()-1;j++) {
 //    			tmp[j] = tuple.getColumnas().get(j);}
 //    		this.c = tmp;
        	}else {  /*Buscando*/
-    		ArrayList<String[]> tuple = e.getcolxrow(all);
-    		for (int j=0; j<=tuple.size();j++) {
-    				if (filasbuscadas.contains(tuple.get(j))){
-    					this.jdata.add(tuple.get(j));}}
+       		String filas = e.buscartodos();
+       		System.out.println(filas);
+//       		for (int j=0; j<=tuple.size();j++) {
+//    				if (filasbuscadas.contains(tuple.get(j))){
+//    					this.jdata.add(tuple.get(j));}}
     	}showTable();
     }private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
@@ -450,7 +489,29 @@ public class Controller {
 		this.tableview.getItems().clear();
 		this.tableview.getColumns().clear();
 		this.jdata.clear();}
-		    
+	
+
+    @FXML
+    public void editContextMenu(ActionEvent event) {
+    	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
+    	this.editWindow(Controller.listaEsquemas.buscar(selectedDiagram));
+    }
+    @FXML
+	public void deleteDiagram(ActionEvent event) throws IOException {
+    	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
+		String respuesta = this.cliente.eliminarEsquema(selectedDiagram);
+		if ((respuesta.equals("esquema eliminado"))) {
+			this.initialize();
+			return;
+		}else if ((respuesta.equals("esquema usado"))) {
+    		UserMessage message = new UserMessage(AlertType.INFORMATION,
+    		"\n\r\tTry removing it's links first, then try again.","Sorry bruh..! \nThis chart is already in use...");
+        	message.showAndWait();return;
+		}UserMessage message = new UserMessage(AlertType.ERROR,
+		"\n\rSorry something gone wrong. \n\tJejeps..!","Try again later.");
+		message.showAndWait();return;
+    }
+    
 	public void hola() throws IOException { 
 	        System.out.println("estoy en la funcion"); 
 	        ObjectNode perro = objectMapper.createObjectNode(); 

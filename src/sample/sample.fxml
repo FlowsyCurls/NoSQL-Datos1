@@ -40,11 +40,6 @@
                     <MenuItem mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
@@ -163,17 +158,16 @@
                   </VBox>
                </children>
             </HBox>
-            <SplitPane dividerPositions="0.17" minHeight="400.0" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES" >
+            <SplitPane dividerPositions="0.17" minHeight="400.0" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
               <items>
                 <AnchorPane maxWidth="400.0" minHeight="400.0" minWidth="150.0" prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: black;">
                      <children>
                         <ListView fx:id="diagramsList" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#displaySelectedDiagram" prefHeight="698.0" prefWidth="400.0" style="-fx-background-color: #d2b11d; -fx-border-color: #d2b11d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <contextMenu>
-                              <ContextMenu opacity="0.95" style="-fx-background-color: #8e9598;">
+                              <ContextMenu fx:id="contextmenu" opacity="0.95" style="-fx-background-color: #8e9598;">
                                 <items>
-                                  <MenuItem mnemonicParsing="false" text="Open" />
-                                    <MenuItem mnemonicParsing="false" text="Delete" />
-                                    <MenuItem mnemonicParsing="false" text="Others..." />
+                                  <MenuItem mnemonicParsing="false" onAction="#editContextMenu" text="Edit" />
+                                    <MenuItem mnemonicParsing="false" onAction="#deleteDiagram" text="Delete" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>
