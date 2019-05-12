@@ -116,9 +116,9 @@ public class ControllerAdd<T> {
 		
 		if (selectedType!=null) choicebox.getSelectionModel().select(selectedType);
 		/*Styling*/
-		choicebox.setStyle("-fx-control-inner-background:  lightgray; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: black; -fx-background-insets: 1; -fx-focus-color: transparent;");
-		len.setStyle("-fx-background-color:  beige; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: black; -fx-focus-color: transparent;");
-		key.setStyle("-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: black; -fx-focus-color: transparent;");
+		choicebox.setStyle("-fx-control-inner-background:  lightgray; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  #d95030; -fx-background-insets: 1; -fx-focus-color: transparent;");
+		len.setStyle("-fx-background-color:  beige; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  transparent; -fx-focus-color:  #d95030;");
+		key.setStyle("-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  #d95030; -fx-focus-color: transparent;");
 		/*add to the lists*/
 		children1.addLast(choicebox);
 		children2.addLast(key);

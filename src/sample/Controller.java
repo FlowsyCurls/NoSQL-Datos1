@@ -273,10 +273,10 @@ public class Controller {
 
 	@FXML //evento de buscar esquemas 
     public void searchButtonAction(ActionEvent event) throws IOException { 
+		/*que se esta buscando*/
     	String detail = searchSTR.getText();
     	System.out.println("detail: "+detail); 
-    	if (this.verifyTextField(detail)){
-    		detail=null; this.searchSTR.clear();
+    	if (this.verifyTextField(detail)){ detail=null; this.searchSTR.clear();
     		System.out.println("Escrito en detail --->>  "+detail);
     	}
     	//analizando escogencia....
@@ -344,7 +344,28 @@ public class Controller {
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;}
 			this.setCxF(usedDiagram, true, filasbuscadas, detail);
 			return;}
-	}private void messenger(String content, String detail) {
+	}
+    private ArrayList<String> SearchID(String id, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+    private ArrayList<String> SearchName(String name, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+    private ArrayList<String> SearchIndex(String index, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+    private ArrayList<String> SearchJoins(String join, Esquema usedDiagram){
+    	ArrayList<String> filasencontradas = new ArrayList<String>();
+    	return filasencontradas;
+    }
+	
+	
+	
+	
+	private void messenger(String content, String detail) {
 		UserMessage message = new UserMessage(AlertType.INFORMATION,
 				detail,content);
 		message.showAndWait();
@@ -409,20 +430,22 @@ public class Controller {
     	
 //    	String all = e.buscartodos(); /*ver pq da error */
     	if (!s) {  /*No buscando*/
-    		ArrayList<String[]> tuple = e.getcolxrow(all);
-    		for (int j=0; j<=tuple.size()-1;j++) {
-    			this.jdata.add(tuple.get(j));
-    			System.out.println(tuple.get(j));}
+       		String filas = Controller.listaEsquemas.buscar(e.getNombre()).buscartodos();
+       		System.out.println(filas);		
+//       		for (int j=0; j<=tuple.size()-1;j++) {
+//    			this.jdata.add(tuple.get(j));
+//    			System.out.println(tuple.get(j));}
     		
 //    		String[] tmp = new String[tuple.getColumnas().size()];
 //    		for (int j=0; j<=tuple.getFilas().size()-1;j++) {
 //    			tmp[j] = tuple.getColumnas().get(j);}
 //    		this.c = tmp;
        	}else {  /*Buscando*/
-    		ArrayList<String[]> tuple = e.getcolxrow(all);
-    		for (int j=0; j<=tuple.size();j++) {
-    				if (filasbuscadas.contains(tuple.get(j))){
-    					this.jdata.add(tuple.get(j));}}
+       		String filas = e.buscartodos();
+       		System.out.println(filas);
+//       		for (int j=0; j<=tuple.size();j++) {
+//    				if (filasbuscadas.contains(tuple.get(j))){
+//    					this.jdata.add(tuple.get(j));}}
     	}showTable();
     }private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
