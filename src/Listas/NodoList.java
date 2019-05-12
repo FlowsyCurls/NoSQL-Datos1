@@ -26,6 +26,16 @@ public class NodoList <T> {
         head=n;
         largo++;
     }
+    public T get(int index){
+    	Nodo<T> tmp = this.head;
+    	int i=0;
+    	while(i!=index) {
+    		tmp=head.next;
+    		i++;
+    	}
+//    	System.out.println("Index: "+tmp.getNodo());
+		return tmp.getNodo();
+    }
 
     public int getLargo() {
         return largo;
