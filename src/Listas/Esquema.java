@@ -92,7 +92,7 @@ public class Esquema {
         this.filas.addLast(fila);
     }
 
-    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException {
+    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException {
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
@@ -110,6 +110,7 @@ public class Esquema {
                     }
                 } else if (this.getMijoins().contiene(nombre)) {
                     Esquema esquema = Server.esquemas.buscar(nombre);
+                    if (!esquema.tiene_filas){throw new EsquemaNuloException();}
                     System.out.println(esquema.getFilas().getHead().getNodo());
                     if (esquema.existe(dato, esquema.getID())) {
                         System.out.println("voy a cambiar dato en join");
@@ -143,7 +144,7 @@ public class Esquema {
         }
     }
 
-    public String buscardatos(String dato,String nombre)throws StringIndexOutOfBoundsException{
+    public String buscardatos(String dato,String nombre) throws StringIndexOutOfBoundsException, EsquemaNuloException {
         String datos="";
         if (nombre.equals(this.ID)){
             if (this.filas.existe(dato,nombre)){datos = crearstring(dato,nombre);}
@@ -160,9 +161,10 @@ public class Esquema {
             }
             datos=datos.substring(0,datos.length()-1);
         }
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
         return datos;
     }
-    public String buscardatosjoin(ListaString joins,String nombre,String dato) throws StringIndexOutOfBoundsException{//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+    public String buscardatosjoin(ListaString joins,String nombre,String dato) throws StringIndexOutOfBoundsException, EsquemaNuloException {//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
 
         String datos="";
         int cont=0;
@@ -184,6 +186,7 @@ public class Esquema {
             }
             cont++;
         }
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
         datos=datos.substring(0,datos.length()-1);
         return datos;
     }
@@ -204,7 +207,7 @@ public class Esquema {
     }
 
 
-    private String crearstring(String dato,String nombre){
+    private String crearstring(String dato,String nombre) throws EsquemaNuloException {
         Hashtable fila= this.filas.buscar(dato,nombre);
         String string="";
         int i=0;

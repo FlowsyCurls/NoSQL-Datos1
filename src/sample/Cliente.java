@@ -91,6 +91,11 @@ public class Cliente {
         this.datos.setAccion("enviar esquemas");
         return conectar();
     }
+    public Datos buscartodoslosdatos(String Nombre_esquema){
+        this.datos.setNombre(Nombre_esquema);
+        this.datos.setAccion("buscar todos los datos");
+        return conectar();
+    }
     public String guardarDatos(){
         this.datos.setAccion("guardar datos");
         return conectar().getRespuesta();

@@ -25,6 +25,7 @@ public class Accionador {
         else if (accion.equals("cambiar dato")){datos=this.cambiardato(datos);}
         else if (accion.equals("enviar esquemas")){datos=this.enviarEsquemas(datos);}
         else if (accion.equals("guardar datos")){datos=this.guardarDatos(datos);}
+        else if (accion.equals("buscar todos los datos")){datos=this.buscartodoslosdatos(datos);}
         return datos;
     }
     private Datos crearEsquema(Datos datos) {
@@ -71,6 +72,8 @@ public class Accionador {
             datos.setDato(e.getMessage().substring(19,e.getMessage().length()-1));
         } catch (DatosUsadosException e) {
             datos.setRespuesta("El dato del ID ya existe");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("no existen datos en esquema de join");
         }
         return datos;
     }
@@ -92,10 +95,24 @@ public class Accionador {
             datos.setRespuesta("datos enviados");
         }catch (StringIndexOutOfBoundsException e){
             datos.setRespuesta("no se encontraron datos");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("el esquema esta vacio");
         }
-
         return datos;
     }
+    private Datos buscartodoslosdatos(Datos datos){
+        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
+        try {
+            datos.setDatos(esquema.buscartodos());
+            datos.setRespuesta("datos enviados");
+        }catch (StringIndexOutOfBoundsException e){
+            datos.setRespuesta("no se encontraron datos");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("el esquema esta vacio");
+        }
+        return datos;
+    }
+
     private Datos buscardatosporjoin(Datos datos){
         Esquema esquema=Server.esquemas.buscar(datos.getNombre());
         try {
@@ -103,6 +120,8 @@ public class Accionador {
             datos.setRespuesta("datos enviados");
         }catch (StringIndexOutOfBoundsException e){
             datos.setRespuesta("no se encontraron datos");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("el esquema esta vacio");
         }
         return datos;
     }
