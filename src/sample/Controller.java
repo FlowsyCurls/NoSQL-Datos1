@@ -13,15 +13,15 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import Errores.EsquemaNuloException;
+import Listas.ArrayTuple;
 import Listas.Esquema;
 import Listas.ListaEsquemas;
-import Listas.ListaString;
 import Listas.Nodo;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -85,7 +85,7 @@ public class Controller {
 	private Cliente cliente = new Cliente();
  
     //initializer 
-    public void initialize() throws IOException {//URL location, ResourceBundle resouces) { 
+    public void initialize() throws IOException, NullPointerException {
     	//cargar esquemas del servidor.
     	try {
     		Datos Datos = this.cliente.acciones(this.cliente, null, "recibiresquemas", null, null, null);
@@ -380,41 +380,34 @@ public class Controller {
 		Esquema e = Controller.listaEsquemas.buscar(selectedDiagram); 
 		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA) 
 		this.setCxF(e, false, null, null);
-	}private void setCxF(Esquema e, boolean s, ArrayList<String[]> filasbuscadas, String detail){
+	}private void setCxF(Esquema e, boolean s, ArrayList<String[]> filasbuscadas, String detail) throws EsquemaNuloException{
 		/* Acomodar las columnas en choicebox*/
 		this.setChoiceBoxSearch(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));
 		/* Obtener cada columna String*/
     	this.c = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
     	/* Obtener cada fila String[]*/
-    	if (s) {
-    		for (int i =0; i < filasbuscadas.size(); i++) {
-    			jdata.add(filasbuscadas.get(i));}}
-//    	else {
-//    		String string = e.buscardatos(detail, e.getNombre());
-//    		String[] data = string.split(";");
-//    		String[] joins = new String[data.length];
-//    		String[] rows = joins[1].split(",");
-//    		
-//    		for (int l = 0; l <data.length; l++) {
-//    			jdata.add(rows);}
-//    	}
-    		
-    	/* Obtener cada fila String[]*/
-//    	seguir con algo maas
+//    	String all = "{Esquema2=raton, DAto1=lobo}:Esquema2={Dato1=raton, Esquema1=gato}:"
+//    			+ "Esquema1={dato2=222, dato1=gato};{Esquema2=liebre, DAto1=zorro}:"
+//    			+ "Esquema2={Dato1=liebre, Esquema1=perro}:Esquema1={dato2=222, dato1=perro}";
+    	String all ="{DATO1=raton, ESQUEMA1=gato}:ESQUEMA1={dato2=222, DATO1=gato};{DATO1=liebre, ESQUEMA1=perro}:ESQUEMA1={dato2=222, DATO1=perro}";
     	
-		String[] d = new String[6];
-		String[] a = new String[6];
-		String[] b = new String[6];
-		String[] c = new String[6];
-    	a[0] = "a"; a[1] = "b"; a[2] = "c"; a[3] = "d"; a[4] = "e"; 
-    	b[0] = "1"; b[1] = null; b[2] = "3"; b[3] = "4"; b[4] = "5";
-    	d[0] = "X"; d[1] = "Z"; d[2] = "V"; d[3] = "G"; d[4] = "U";
-    	jdata.add(a);
-    	jdata.add(b);
-		jdata.add(d);
-		jdata.add(c);
-
-		showTable();
+//    	String all = e.buscartodos(); /*ver pq da error */
+    	if (!s) {  /*No buscando*/
+    		ArrayList<String[]> tuple = e.getcolxrow(all);
+    		for (int j=0; j<=tuple.size()-1;j++) {
+    			this.jdata.add(tuple.get(j));
+    			System.out.println(tuple.get(j));}
+    		
+//    		String[] tmp = new String[tuple.getColumnas().size()];
+//    		for (int j=0; j<=tuple.getFilas().size()-1;j++) {
+//    			tmp[j] = tuple.getColumnas().get(j);}
+//    		this.c = tmp;
+       	}else {  /*Buscando*/
+    		ArrayList<String[]> tuple = e.getcolxrow(all);
+    		for (int j=0; j<=tuple.size();j++) {
+    				if (filasbuscadas.contains(tuple.get(j))){
+    					this.jdata.add(tuple.get(j));}}
+    	}showTable();
     }private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("OTHERS...");

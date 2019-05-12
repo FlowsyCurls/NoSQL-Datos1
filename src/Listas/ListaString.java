@@ -102,6 +102,7 @@ public class ListaString {
     	for (int i=0; i<string.largo; i++) {
     		c[i]= e.getNodo();
     		e = e.getNext();
+    		if (str.isEmpty()) str=c[i];
     		str= str+","+c[i];
     		continue;
     	}

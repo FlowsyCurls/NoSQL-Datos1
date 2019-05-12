@@ -68,7 +68,7 @@ public class Server implements Runnable {
         esquema.anadirfila("dato1:perro,dato2:222");
         esquema.anadirfila("dato1:gato,dato2:222");
         esquemas.addLast(esquema);
-        System.out.println(esquema.getID());
+//        System.out.println(esquema.getID());
         Esquema esquema2=new Esquema("Esquema2,Dato1:STRING:6,Esquema1:JOIN:3");
         esquema2.anadirfila("Dato1:raton,Esquema1:gato");
         esquema2.anadirfila("Dato1:liebre,Esquema1:perro");
@@ -77,10 +77,14 @@ public class Server implements Runnable {
         esquema3.anadirfila("DAto1:lobo,Esquema2:raton");
         esquema3.anadirfila("DAto1:zorro,Esquema2:liebre");
         esquemas.addLast(esquema3);
-        System.out.println(esquemas.getLargo());
-        System.out.println(esquemas.buscar("Esquema3").buscardatos("lobo","DAto1"));
-        System.out.println(esquemas.buscar("Esquema1").buscartodos()+"que");
-
+//        System.out.println(esquemas.getLargo());
+//        System.out.println(esquemas.buscar("Esquema3").buscardatos("lobo","DAto1"));
+        System.out.println("\n\n\n\n");
+        System.out.println(esquemas.buscar("Esquema1").buscartodos()+"1");
+        System.out.println("\n\n");
+        System.out.println(esquemas.buscar("Esquema2").buscartodos()+"2");
+        System.out.println("\n\n");
+        System.out.println(esquemas.buscar("Esquema3").buscartodos()+"3");
         Thread hilo = new Thread(this);
         hilo.start();
 
