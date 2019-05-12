@@ -19,6 +19,7 @@ public class UserMessage extends Alert{
 			this.setHeaderText(null);
 			this.setContentText(content);
 			this.setGraphic(imageView);
+			if (message=="NO") {this.getButtonTypes().set(1, ButtonType.NO);}
 			this.getButtonTypes().set(0, ButtonType.YES);
 			return;
 		}
