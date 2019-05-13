@@ -92,19 +92,15 @@ public class ArbolAA<t extends Comparable<t>,v>{
         root = temp;
     }
 	 public v search(t dato){
-         return findNode(dato);
-     }
- 
-     private v findNode(t dato){
-         NodoAA<t,v> temp = root;
-         while (temp != null){
-             if (dato.compareTo(temp.element)>0)//es igual que un arbolbinario, para su busqueda
-                 temp= temp.right;
-             else if (dato.compareTo(temp.element)<0)
-                 temp= temp.left;
-             else {
-                 return temp.refe;//me retorna le refe
-             }
-         }return null;//si no esta nada
-     }
+         return buscarDato_aux(dato,root);
+         }
+	private v buscarDato_aux(t dato,NodoAA<t,v> temp) {
+			if (temp.element.equals(dato)) {
+				return temp.refe;
+			}else if (dato.compareTo(temp.element)< 0) {
+				return temp.left==null? null: buscarDato_aux(dato,temp.left);//El mismo metodo de busqueda
+			}else{
+				return temp.right==null? null: buscarDato_aux(dato,temp.right);
+			}
+		}
 }
