@@ -222,6 +222,7 @@ public class Esquema {
                     string=string.concat(esquema.buscardatos(fila.get(getMijoins().buscar(cont)).toString(),esquema.getID()));
                     cont++;
                 }
+                string=string.concat(",");
             }
         }
         return string.substring(0,string.length()-1);

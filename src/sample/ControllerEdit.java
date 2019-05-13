@@ -203,8 +203,10 @@ public class ControllerEdit {
     public void edit(ActionEvent event) throws DatosUsadosException, EsquemaNuloException {
     	int verify = 0;
     	int size = this.newValue.getLargo();
+    	System.out.println("AQUI VA EL LARGO   "+size);
     	for (int x = 0; x < size; x++) {
     		System.out.println("ID CAMBIAR "+filas.get(this.newValueROW.get(x))[0]);
+    		System.out.println(this.newValueCOLUMNA.get(x));
     		String r = this.cliente.cambiardato(e.getNombre(), filas.get(this.newValueROW.get(x))[0], this.newValueCOLUMNA.get(x), this.newValue.get(x));
     		verify = x;
     		if (!(r.equals("dato cambiado"))) {
@@ -218,8 +220,8 @@ public class ControllerEdit {
     	if (verify == size) { this.saved = true; 
     		this.cancel(event); //Llamar a cancel, con la condicion de que se salva
     		log.debug("Se logra editar el esquema --> "+ e.getNombre());}
-    	UserMessage message = new UserMessage(AlertType.INFORMATION, this.newValue.get(verify), "Sorry an ERROR has ocurred while setting "+this.oldValue.get(verify)+" to the new value ");
-    	message.show();
+//    	UserMessage message = new UserMessage(AlertType.INFORMATION, this.newValue.get(verify), "Sorry an ERROR has ocurred while setting "+this.oldValue.get(verify)+" to the new value ");
+//    	message.show();
     	return;
     	}
     

@@ -23,11 +23,11 @@ public class NodoList <T> {
     
 	public void removeLast() {
 		if (this.head==null) {return;}
-		else if (this.head.next == null){ this.head=null; return;}
+		else if (this.head.next == null){ this.head=null; largo--; return;}
 		Nodo <T> tmp= this.head;
         while (tmp.next.next!= null) {
             tmp = tmp.next;
-        }tmp.next = null;
+        }tmp.next = null; largo--;
 	}
 	
     public void addFirst(T e) {

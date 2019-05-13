@@ -77,14 +77,14 @@ public class Server implements Runnable {
         esquema3.anadirfila("DAto1:lobo,Esquema2:raton");
         esquema3.anadirfila("DAto1:zorro,Esquema2:liebre");
         esquemas.addLast(esquema3);
-//        System.out.println(esquemas.getLargo());
-//        System.out.println(esquemas.buscar("Esquema3").buscardatos("lobo","DAto1"));
-//        System.out.println("\n\n\n\n");
-//        System.out.println(esquemas.buscar("Esquema1").buscartodos()+"1");
-//        System.out.println("\n\n");
-//        System.out.println(esquemas.buscar("Esquema2").buscartodos()+"2");
-//        System.out.println("\n\n");
-//        System.out.println(esquemas.buscar("Esquema3").buscartodos()+"3");
+        System.out.println(esquemas.getLargo());
+        System.out.println(esquemas.buscar("Esquema3").buscardatos("lobo","DAto1"));
+        System.out.println("\n\n\n\n");
+        System.out.println(esquemas.buscar("Esquema1").buscartodos()+"1");
+        System.out.println("\n\n");
+        System.out.println(esquemas.buscar("Esquema2").buscartodos()+"2");
+        System.out.println("\n\n");
+        System.out.println(esquemas.buscar("Esquema3").buscartodos()+"3");
         Thread hilo = new Thread(this);
         hilo.start();
 
