@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
@@ -23,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="baseSample" prefWidth="1100.0" style="-fx-background-color: #562f7e;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane fx:id="baseSample" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1100.0" style="-fx-background-color: #192251;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <VBox AnchorPane.bottomAnchor="-23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -73,17 +72,17 @@
                      </children>
                   </StackPane>
                   <Region maxWidth="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="115.0" HBox.hgrow="SOMETIMES" />
-                  <VBox spacing="10.0">
+                  <VBox spacing="12.0">
                      <HBox.margin>
-                        <Insets right="7.0" top="60.0" />
+                        <Insets right="7.0" top="57.0" />
                      </HBox.margin>
                      <children>
-                        <ChoiceBox fx:id="choiceboxEdit" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+                        <ChoiceBox fx:id="choiceboxEdit" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="choose category before searching" />
                            </tooltip>
                         </ChoiceBox>
-                        <ChoiceBox fx:id="choiceboxSearch" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0">
+                        <ChoiceBox fx:id="choiceboxSearch" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="choose category before searching" />
                            </tooltip>
@@ -92,16 +91,16 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefWidth="150.0" spacing="10.0" HBox.hgrow="NEVER">
                      <children>
-                        <TextField fx:id="textfieldFilas" onAction="#addButtonAction" promptText="rows number" style="-fx-background-color: lightyellow;">
+                        <TextField fx:id="textfieldFilas" onAction="#addButtonAction" promptText="rows number" style="-fx-background-color: lightyellow; -fx-background-radius: 8; -fx-border-radius: 8;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="only integer numbers" />
                            </tooltip></TextField>
-                        <TextField fx:id="textfieldEdit" onAction="#editButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow;">
+                        <TextField fx:id="textfieldEdit" onAction="#editButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow; -fx-background-radius: 8; -fx-border-radius: 8;">
                            <tooltip>
                               <Tooltip fx:id="editTooltip" opacity="0.8" text="only letters" />
                            </tooltip>
                         </TextField>
-                        <TextField fx:id="searchSTR" onAction="#searchButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow;">
+                        <TextField fx:id="searchSTR" onAction="#searchButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow; -fx-background-radius: 8; -fx-border-radius: 8;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="only letters" />
                            </tooltip></TextField>
@@ -113,9 +112,9 @@
                         <Insets right="5.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="CENTER" spacing="5.0" HBox.hgrow="NEVER">
+                  <VBox alignment="CENTER" spacing="5.0" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-insets: 1;" HBox.hgrow="NEVER">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#addButtonAction" style="-fx-background-color: #452665;" textFill="WHITE" wrapText="true">
+                        <Button mnemonicParsing="false" onAction="#addButtonAction" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-insets: 1;" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                            </font>
@@ -127,7 +126,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#editButtonAction" style="-fx-background-color: #452665;" textFill="WHITE" wrapText="true">
+                        <Button mnemonicParsing="false" onAction="#editButtonAction" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-insets: 1;" textFill="WHITE" wrapText="true">
                            <font>
                               <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                            </font>
@@ -139,7 +138,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#searchButtonAction" style="-fx-background-color: #452665;" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#searchButtonAction" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-insets: 1;" textFill="WHITE">
                            <font>
                               <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                            </font>
@@ -158,11 +157,11 @@
                   </VBox>
                </children>
             </HBox>
-            <SplitPane dividerPositions="0.17" minHeight="400.0" prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: gray;" VBox.vgrow="SOMETIMES">
+            <SplitPane dividerPositions="0.17" minHeight="400.0" prefHeight="700.0" prefWidth="800.0" style="-fx-background-radius: 20; -fx-border-radius: 20;" VBox.vgrow="SOMETIMES">
               <items>
-                <AnchorPane maxWidth="400.0" minHeight="400.0" minWidth="150.0" prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: black;">
+                <AnchorPane maxWidth="400.0" minHeight="400.0" minWidth="150.0" prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: #192251; -fx-background-radius: 20; -fx-background-insets: 2; -fx-border-color: white; -fx-border-radius: 20; -fx-border-insets: 1; -fx-border-width: 4;">
                      <children>
-                        <ListView fx:id="diagramsList" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#displaySelectedDiagram" prefHeight="698.0" prefWidth="400.0" style="-fx-background-color: #d2b11d; -fx-border-color: #d2b11d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ListView fx:id="diagramsList" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#displaySelectedDiagram" prefHeight="698.0" prefWidth="400.0" style="-fx-background-color: #192251; -fx-control-inner-background: #192251; -fx-border-width: 0; -fx-background-radius: 100;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="10.0">
                            <contextMenu>
                               <ContextMenu fx:id="contextmenu" opacity="0.95" style="-fx-background-color: #8e9598;">
                                 <items>
@@ -177,17 +176,17 @@
                         </ListView>
                      </children>
                   </AnchorPane>
-                  <ScrollPane fx:id="scrollpane" style="-fx-background-color: gray; -fx-border-color: lightgray;">
-                     <content>
-                        <AnchorPane fx:id="screen" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" style="-fx-background-color: black;">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </AnchorPane>
-                     </content>
-                  </ScrollPane>
+                  <AnchorPane prefHeight="679.0" style="-fx-background-color: #192251; -fx-background-radius: 20; -fx-background-insets: 2; -fx-border-color: white; -fx-border-radius: 20; -fx-border-insets: 1; -fx-border-width: 4;" SplitPane.resizableWithParent="false">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <children>
+                        <AnchorPane fx:id="screen" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="12.0" />
+                     </children>
+                  </AnchorPane>
               </items>
             </SplitPane>
+            <Region prefHeight="34.0" prefWidth="1100.0" />
          </children>
       </VBox>
    </children>

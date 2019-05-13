@@ -280,7 +280,6 @@ public class Esquema {
             listaString.addFirst(this.tamanos.buscarnombre(cont));
             cont--;
         }
-        listaString.addFirst("ID("+this.getNombre()+")");
         return listaString;
     }
     

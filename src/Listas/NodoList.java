@@ -20,6 +20,16 @@ public class NodoList <T> {
             largo++;
         }
     }
+    
+	public void removeLast() {
+		if (this.head==null) {return;}
+		else if (this.head.next == null){ this.head=null; return;}
+		Nodo <T> tmp= this.head;
+        while (tmp.next.next!= null) {
+            tmp = tmp.next;
+        }tmp.next = null;
+	}
+	
     public void addFirst(T e) {
         Nodo<T> n = new Nodo<>(e);
         n.next=this.head;
@@ -52,4 +62,9 @@ public class NodoList <T> {
     public void setHead (Nodo<T> head) {
         this.head = head;
     }
+	public void empty() {
+		 this.head = null;
+		 largo = 0;
+	}
+
 }
