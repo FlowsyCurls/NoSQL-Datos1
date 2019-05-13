@@ -62,24 +62,16 @@ public class AVL_referencia<t extends Comparable<t>,v> {
 		temp.left=rotacionHIzquierda(temp.left);// 3/4 de lo mismo solo que con el derecho
 		return rotacionHDerecho(temp);
 	}
-	public v buscarDato(t dato) {
+	public v search(t dato) {
 		return buscarDato_aux(dato,root);//El metodo de buscar datos, en teoria deberida de seguir funcionando
 	}
 	private v buscarDato_aux(t dato, NodoArbol_refe<t,v> temp) {
 		if (temp.element.equals(dato)) {
-			return temp.refe;//me retorna la referencia, si no esta el indice de busqueda en el arbol da null
+			return temp.refe;
 		}else if (dato.compareTo(temp.element)< 0) {
-			if (temp.left==null) {
-				return null;
-			}else {
-				return buscarDato_aux(dato,temp.left);
-			}
+			return temp.left==null? null: buscarDato_aux(dato,temp.left);
 		}else{
-			if (temp.right==null) {
-				return null;
-			}else {
-				return buscarDato_aux(dato,temp.right);
-			}
+			return temp.right==null? null: buscarDato_aux(dato,temp.right);
 		}
 	}
 	public void inOrden() {
