@@ -1,6 +1,6 @@
 package Arboles;
 
-public class AVL_referencia<t extends Comparable<t>,v> {
+public class AVL<t extends Comparable<t>,v> {
 	public NodoArbol_refe<t,v> root=null;
 	
 	public boolean isEmpty() {
