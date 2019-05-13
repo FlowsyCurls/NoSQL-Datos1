@@ -11,6 +11,8 @@ import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
 import Listas.Esquema;
 import Listas.ListaEsquemas;
+import Listas.Nodo;
+import Listas.NodoList;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,6 +63,14 @@ public class ControllerEdit {
 	private Cliente cliente;
 	private boolean saved = false;
 	
+	//LISTA CON LOS ESPACIOS DE EDICION
+	private NodoList<String> oldValue = new NodoList<>();
+	private NodoList<String> newValue = new NodoList<>();
+	private NodoList<String> newValueCOLUMNA = new NodoList<>();
+	private NodoList<Integer> newValueROW = new NodoList<>();
+	private int lasteditedCOLUMN = 0;
+	private int lasteditedROW = 0;
+	private ArrayList<String[]> filas = new ArrayList<String[]>();
     
     //initializer 
     public void initialize() throws IOException {}
@@ -86,55 +96,70 @@ public class ControllerEdit {
 	}
 	private void setCxF(){
 		this.clean();
-		this.c = this.e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
-		System.out.println(c);
-		String[] d = new String[5];
-		String[] a = new String[5];
-		String[] b = new String[5];
-		String[] c = new String[5];
-    	a[0] = "a"; a[1] = "b"; a[2] = "c"; a[3] = "d"; a[4] = "e"; 
-    	b[0] = "1"; b[1] = null; b[2] = "3"; b[3] = "4"; b[4] = "5";
-    	d[0] = "X"; d[1] = "Z"; d[2] = "V"; d[3] = "G"; d[4] = "U";
-    	jdata.add(a);
-    	jdata.add(b);
-		jdata.add(d);
-		jdata.add(c);
-		/* aqui va la logica 
-		 * de agarrar 
-		 * el esquema 
-		 * y conseguir 
-		 * sus datos 
-		 * en un String[]*/
+		/* Obtener cada columna String*/
+    	this.c = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
+    	/* Obtener cada fila String[]*/
+   		String datos = this.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
+   		System.out.println(datos);		
+   		this.filas = this.toStringArray(datos.split(";"));
+		this.jdata.addAll(filas);
 		showTable();
-	}
-    private void showTable() {
+	}private ArrayList<String[]> toStringArray(String[] toConvert) {
+		ArrayList<String[]> list = new ArrayList<>();
+		for (int j=0; j<=toConvert.length-1;j++) {
+			list.add(toConvert[j].split(","));
+			System.out.println(list.get(j)[0]);
+		}
+		return list;
+	
+	}private void showTable() {
         int size = this.c.length; //number of the columns
+        ArrayList<String> nombres = this.addNamesxIDOneByOne();
         for (int i = 0; i < size; i++) {
+        	/*Crear una columna por cada nombre de la lista*/
             TableColumn<String[], String> firstNameCol = new TableColumn<>(this.c[i]);
             int index = i ;
+            
+            /*Asignar el tipo de dato que tendra a la fila;*/
             firstNameCol.setCellValueFactory(cellData -> {
                 String[] rowData = cellData.getValue();
                 if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}
-                else {String cellValue = rowData[index];
+                else {
+                	String cellValue = rowData[index];
+                    if (nombres.contains(this.c[index])) {
+//            			System.out.println("TITULO COLUMNA no editable  "+this.c[index]);
+                    	firstNameCol.setEditable(false);}
                 	return new ReadOnlyStringWrapper(cellValue);}});
             firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
-            firstNameCol.setOnEditCommit(event -> {
-                String[] row = event.getRowValue();
-                try {String respuesta = this.cliente.acciones(cliente, e, "cambiardato", event.getNewValue(), this.c[index], index);
-                	if (respuesta=="dato cambiado") {
-                		row[index] = event.getNewValue();
-                		this.saved = true; System.out.print(respuesta);
-                		return;} 
-                	UserMessage message = new UserMessage(AlertType.INFORMATION, event.getNewValue(), "Sorry an ERROR has ocurred while setting the new value");
-					message.show();
-					this.setCxF();
-                }catch (NullPointerException | IOException a) {
-					UserMessage message = new UserMessage(AlertType.INFORMATION, event.getNewValue(), "Sorry an ERROR has ocurred while setting the new value");
-					message.show();
-					System.out.print("Ocurre un error al editar"); a.printStackTrace();}});
-            firstNameCol.setMinWidth(200);
-            firstNameCol.setStyle("-fx-alignment: CENTER;");
-            this.tableview.getColumns().add(firstNameCol);}
+            
+        	/*Asignar propiedad editable a la celda.*/
+	            firstNameCol.setOnEditCommit(event -> {
+	                String[] row = event.getRowValue();
+	                /*Prints.*/
+//	                System.out.println("old value "+event.getOldValue());
+//            		System.out.println("new value "+event.getNewValue());
+//            		System.out.println("column pos"+(event.getTablePosition().getColumn()-1));
+//            		System.out.println("row pos "+event.getTablePosition().getRow());
+	                if (this.lasteditedCOLUMN == event.getTablePosition().getColumn() && 
+	                		this.lasteditedROW == event.getTablePosition().getRow()) {
+	            		this.newValue.removeLast();
+	            		this.newValueCOLUMNA.removeLast();
+	            		this.newValueROW.removeLast();
+	                }
+	                oldValue.addLast(event.getOldValue());
+            		newValue.addLast(event.getNewValue());
+            		newValueCOLUMNA.addLast(this.c[event.getTablePosition().getColumn()]);
+            		lasteditedCOLUMN = event.getTablePosition().getColumn();
+            		newValueROW.addLast(event.getTablePosition().getRow());
+            		lasteditedROW = event.getTablePosition().getRow();
+            		//cambio
+            		row[index] = event.getNewValue();
+	                return;
+	            });
+	            firstNameCol.setMinWidth(200);
+	            firstNameCol.setStyle("-fx-alignment: CENTER;");
+	            this.tableview.getColumns().add(firstNameCol);
+        }
         datosObservable = FXCollections.observableList(this.jdata);
         tableview.getItems().addAll(this.datosObservable);
         tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -144,8 +169,16 @@ public class ControllerEdit {
 		screen.getChildren().add(tableview); 
 		log.debug("TableColumns Finished --> "+"table cargado..."); 
 	this.tableview.setEditable(true);
-	}
-    
+	}private ArrayList<String> addNamesxIDOneByOne() { //cargar todos los diagramas.
+		ArrayList<String> nombresxid = new  ArrayList<>(); 
+		Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
+		while (tmp!=null){ 
+			nombresxid.add(tmp.getNodo().getNombre());
+			nombresxid.add(tmp.getNodo().getID()); 
+//			System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
+	    	tmp=tmp.next;}
+		return nombresxid;} 
+
     public void editNameText() {
     	String newname = this.newnameText.getText(); 
     	System.out.println("newname: "+newname); 
@@ -166,9 +199,38 @@ public class ControllerEdit {
 				System.out.print("Ocurre un error al cambiar nombre"); n.printStackTrace();}
     }
     
+    @FXML
+    public void edit(ActionEvent event) throws DatosUsadosException, EsquemaNuloException {
+    	int verify = 0;
+    	int size = this.newValue.getLargo();
+    	for (int x = 0; x < size; x++) {
+    		System.out.println("ID CAMBIAR "+filas.get(this.newValueROW.get(x))[0]);
+    		String r = this.cliente.cambiardato(e.getNombre(), filas.get(this.newValueROW.get(x))[0], this.newValueCOLUMNA.get(x), this.newValue.get(x));
+    		verify = x;
+    		if (!(r.equals("dato cambiado"))) {
+    			System.out.println(r);
+    			log.debug("No se logra editar --> "+this.newValueCOLUMNA.get(x));
+    			break;}
+    		continue;
+    	}
+    	System.out.println("verify --> "+verify);
+    	/*Si se salva correctamente*/
+    	if (verify == size) { this.saved = true; 
+    		this.cancel(event); //Llamar a cancel, con la condicion de que se salva
+    		log.debug("Se logra editar el esquema --> "+ e.getNombre());}
+    	UserMessage message = new UserMessage(AlertType.INFORMATION, this.newValue.get(verify), "Sorry an ERROR has ocurred while setting "+this.oldValue.get(verify)+" to the new value ");
+    	message.show();
+    	return;
+    	}
+    
 	@FXML
 	public void cancel(ActionEvent event) {
-	    try {
+		if (!this.saved) {
+			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
+			Optional<ButtonType> result = message.showAndWait();
+			if ((result.get() == ButtonType.CANCEL)){return;}
+		}
+		try {
 	    	Stage sampleStage = new Stage();
 	        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 	        Scene scene = new Scene(root);
@@ -185,11 +247,16 @@ public class ControllerEdit {
 	    }catch (IOException e) {
 	        System.out.println("Al abrir nuevamente ocurrio esto : "+e); e.printStackTrace();}
 	}
-
+	
 	@FXML
-    public void edit(ActionEvent event) throws DatosUsadosException, EsquemaNuloException {
+	public void clear(ActionEvent event) {
+		this.newnameText.clear();
+		this.oldValue.empty();
+		this.newValue.empty();
+		this.newValueCOLUMNA.empty();
+		this.newValueROW.empty();
 		this.setCxF();
-    	if (!this.saved) return; //llamar a funcion que verifica que se salvó
-    	//despues de todo.
-		this.cancel(event);}
+	}
+	
+	
 }

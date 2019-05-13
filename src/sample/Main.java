@@ -25,6 +25,7 @@ public class Main extends Application {
             if (KeyCode.ESCAPE == event.getCode()) {primaryStage.close();}});
         primaryStage.setTitle("NOSQL World");
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image("/Media/nosql.png"));
         primaryStage.show();
     }
