@@ -51,24 +51,16 @@ public class ArbolBinario<t extends Comparable<t>,v>{
 			System.out.print(temp.element+"\n");
 		}
 	}
-	public v buscarDato(t dato) {
+	public v search(t dato) {
 		return buscarDato_aux(dato,root);
 	}
 	private v buscarDato_aux(t dato, NodoArbol_refe<t,v> temp) {
 		if (temp.element.equals(dato)) {
 			return temp.refe;
 		}else if (dato.compareTo(temp.element)< 0) {
-			if (temp.left==null) {
-				return null;
-			}else {
-				return buscarDato_aux(dato,temp.left);
-			}
+			return temp.left==null? null:buscarDato_aux(dato,temp.left);
 		}else{
-			if (temp.right==null) {
-				return null;
-			}else {
-				return buscarDato_aux(dato,temp.right);
-			}
+			return temp.right==null? null:buscarDato_aux(dato,temp.right); 
 		}
 	}
 }
