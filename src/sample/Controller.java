@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -83,6 +84,7 @@ public class Controller {
     public static Logger log = LoggerFactory.getLogger(Controller.class);
 
 	public static int counter= 1;
+	private ArrayList<String[]> filas = new ArrayList<String[]>();
 	private Cliente cliente = new Cliente();
  
     //initializer 
@@ -90,8 +92,8 @@ public class Controller {
     	//cargar esquemas del servidor.
     	try {
     		counter = 1;
-    		Datos Datos = this.cliente.acciones(this.cliente, null, "recibiresquemas", null, null, null);
-    		if (!Datos.getRespuesta().equals("constructores enviados")) {
+			Datos Datos = this.cliente.recibirEsquemas();
+			if (!Datos.getRespuesta().equals("constructores enviados")) {
     			System.out.println(Datos.getRespuesta());
     			System.out.println("NO CARGOOOOOO MIIIIIIIEEEEERRRRRDAAAA"); 
     			return;}
@@ -99,7 +101,7 @@ public class Controller {
     		Nodo<String> tmp = Datos.getConstructores().getHead();
 			while (tmp!=null){ 
     			Controller.listaEsquemas.addLast(new Esquema(tmp.getNodo(), true));
-    			System.out.println("Cargado Esquema ||| "+tmp.getNodo());
+//    			System.out.println("\rCargado Esquema ||| "+tmp.getNodo());
 		    	tmp=tmp.next;}
 			//set default choicesearch
 			this.availableChoices.add("OTHERS...");
@@ -195,11 +197,9 @@ public class Controller {
 			message.showAndWait();
     		return;
     	}
-    	System.out.println("ddddddddddddddddddddddddddd "+detail);
-    	System.out.println("ppppppppppppppppppppppppppp "+prompt);
     	//readchoice
     	String selectedChoice = this.choiceboxEdit.getSelectionModel().getSelectedItem();
-    	System.out.println("detail: "+detail);
+    	System.out.println("\rdetail: "+detail);
     	System.out.println("selectedChoice: "+selectedChoice);
     	//compare
     	if (selectedChoice.equals("ID")) {
@@ -268,7 +268,7 @@ public class Controller {
 	        editStage.setTitle("Edit Diagram");
 	        ControllerEdit controller= loader.getController();
 	        controller.getEsquema(e, this.cliente);
-	        Scene scene = new Scene(root,1200,800);
+	        Scene scene = new Scene(root);
 	        editStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
 	        editStage.setResizable(false);
 	        editStage.getIcons().add(new Image("/Media/edit.png"));
@@ -369,11 +369,11 @@ public class Controller {
     	this.diagrams.removeAll(diagrams);
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
-			System.out.println("DIAGRAMAS cargados "+diagrams); 
+			System.out.println("\rDIAGRAMAS cargados "+diagrams); 
 			this.diagramsList.setItems(diagrams); 
 			return;} 
     	this.addNamesOneByOne(); 
-		System.out.println("DIAGRAMAS cargados "+diagrams); 
+		System.out.println("\rDIAGRAMAS cargados "+diagrams); 
 	    this.diagramsList.setItems(diagrams);
     }private void loadDiagrams_buscaraux(String detail) { //buscar coincidencias para cargarlas. 
 //		System.out.println("Entra en buscar"); 
@@ -382,12 +382,12 @@ public class Controller {
     	if (coincided.isEmpty()) return; 
     	for (int i=0; i<coincided.size(); i++){ 
     		Esquema element =coincided.get(i); 
-			System.out.println("ESQUEMA encontrado :"+" |name "+element.getNombre()+" |id "+element.getID()); 
+			System.out.println("\rESQUEMA encontrado :"+" |name "+element.getNombre()+" |id "+element.getID()); 
     		this.diagrams.add(element.getNombre()); //add coincidences... 
     	}coincided.removeAll(coincided); 
     }private void addNamesOneByOne() { //cargar todos los diagramas. 
 			Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
-			System.out.println("NODO ESQUEMA "+tmp); 
+//			System.out.println("NODO ESQUEMA "+tmp); 
 			while (tmp!=null){ 
 		    	this.diagrams.add(tmp.getNodo().getNombre()); 
 		    	tmp=tmp.next;}return;} 
@@ -417,22 +417,34 @@ public class Controller {
 		this.setChoiceBoxSearch(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));
 		/* Obtener cada columna String*/
     	this.c = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
+        System.out.println("sss " +this.c.length);
     	/* Obtener cada fila String[]*/
     	if (!s) {  /*No buscando*/
        		String datos = this.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
-       		System.out.println(datos);		
-       		ArrayList<String[]> filas = this.toStringArray(datos.split(";"));
-			this.jdata.addAll(filas);
-			showTable();
+       		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
+       		if (datos == null) {
+       			this.jdata.add( new String[this.c.length-1]);
+       			showTable(); return;}
+       		datos = ControllerEdit.addnumber(datos);
+       		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
+       		this.filas = this.toStringArray(datos.split(";"));
+    		this.jdata.addAll(filas);
+    		showTable();
        	}else {  /*Buscando*/
        		String datos = this.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
-       		System.out.println(datos);		
-       		ArrayList<String[]> filas = this.toStringArray(datos.split(";"));
+       		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
+       		if (datos == null) {
+       			this.jdata.add( new String[this.c.length-1]);
+       			showTable(); return;}
+//       		datos = ControllerEdit.addnumber(datos);
+//       		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
+       		this.filas = this.toStringArray(datos.split(";"));
     		for (int z=0; z<=filas.size()-1;z++) {
     			if (filasbuscadas.contains(filas.get(z))) {
     				this.jdata.add(filas.get(z));}
     		}showTable();
     	}
+
 	}private ArrayList<String[]> toStringArray(String[] toConvert) {
 		ArrayList<String[]> list = new ArrayList<>();
 		for (int j=0; j<=toConvert.length-1;j++) {
@@ -449,29 +461,48 @@ public class Controller {
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 
 		this.choiceboxSearch.getSelectionModel().select(0);
-		
-    }private void showTable() { 
-        int size = this.c.length; //number of the columns 
-        for (int i = 0; i < size; i++) { 
-            TableColumn<String[], String> firstNameCol = new TableColumn<>(this.c[i]); 
-            int index = i ; 
-            firstNameCol.setCellValueFactory(cellData -> { 
-                String[] rowData = cellData.getValue(); 
-                if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}  
-                else {String cellValue = rowData[index];return new ReadOnlyStringWrapper(cellValue);}}); 
-            firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn()); 
-            firstNameCol.setMinWidth(200); 
+    }private void showTable() {
+		tableview = new TableView<String[]>();
+        int size = this.c.length; //number of the columns
+        ArrayList<String> nombres = ControllerEdit.addNamesxIDOneByOne();
+        for (int i = 0; i < size; i++) {
+        	/*Crear una columna por cada nombre de la lista*/
+            TableColumn<String[], String> firstNameCol = new TableColumn<>(this.c[i]);
+            int index = i ;
+            
+            /*Asignar el tipo de dato que tendra a la fila;*/
+            firstNameCol.setCellValueFactory(cellData -> {
+                String[] rowData = cellData.getValue();
+                if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}
+                else {
+                	String cellValue = rowData[index];
+                    if (nombres.contains(this.c[index])) {
+//            			System.out.println("TITULO COLUMNA no editable  "+this.c[index]);
+                    	firstNameCol.setEditable(false);
+//                    	return new ReadOnlyStringWrapper(cellValue);
+                    }
+                    else if (this.c[index]=="#") {
+//            			System.out.println("TITULO # no editable  "+this.c[index]);
+                    	firstNameCol.setEditable(false);
+                    	firstNameCol.setMinWidth(50);
+                    	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
+                    	return new ReadOnlyStringWrapper(cellValue);
+                    }
+                    firstNameCol.setMinWidth(100);
+                	firstNameCol.setResizable(true);
+                	return new ReadOnlyStringWrapper(cellValue);}});
+            firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
             firstNameCol.setStyle("-fx-alignment: CENTER;"); 
-            this.tableview.getColumns().add(firstNameCol);} 
-        datosObservable = FXCollections.observableList(this.jdata); 
-        tableview.getItems().addAll(this.datosObservable); 
-        tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
-        tableview.prefWidthProperty().bind(screen.widthProperty()); 
-        tableview.prefHeightProperty().bind(screen.heightProperty()); 
-        tableview.setStyle("-fx-control-inner-background: #192251; -fx-background-insets: 1; -fx-border-width: 0;"
+          this.tableview.getColumns().add(firstNameCol);} 
+      datosObservable = FXCollections.observableList(this.jdata); 
+      tableview.getItems().addAll(this.datosObservable); 
+      tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+      tableview.prefWidthProperty().bind(screen.widthProperty()); 
+      tableview.prefHeightProperty().bind(screen.heightProperty()); 
+      tableview.setStyle("-fx-control-inner-background: #192251; -fx-background-insets: 1; -fx-border-width: 0;"
 				+ " -fx-border-color: #192251; -fx-focus-color: transparent;");
 		screen.getChildren().add(tableview); 
-		log.debug("TableColumns Finished --> "+"table cargado..."); 
+		log.debug("TableColumns Finished --> "+"table cargado...");         
     }private void nothingMessage() { 	//muestra que no se busca nada. 
 		nothing.setText("Nothing Displayed"); nothing.setTextFill(Color.GHOSTWHITE); nothing.setFont(new Font("Arial", 25)); 
 		stack.prefWidthProperty().bind(screen.widthProperty());  
