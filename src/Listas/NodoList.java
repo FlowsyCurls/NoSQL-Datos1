@@ -36,16 +36,32 @@ public class NodoList <T> {
         head=n;
         largo++;
     }
+	public boolean contains(T string) {
+    	Nodo<T> tmp = this.head;
+    	while (tmp != null) {
+    		if (tmp.getNodo().equals(string)) {
+    			return true;
+    		} tmp = tmp.next;
+    	}
+		return false;
+	}
+
+ 
     public T get(int index){
     	Nodo<T> tmp = this.head;
-    	int i=0;
-    	while(i!=index) {
-    		tmp=head.next;
-    		i++;
-    	}
-//    	System.out.println("Index: "+tmp.getNodo());
-		return tmp.getNodo();
+//		System.out.println("Largo "+largo);
+    	int contador = 0;
+    	while (tmp != null) {
+    		if (contador==index) {
+        		System.out.println("index "+index);
+    			return tmp.getNodo();
+    		}
+    		tmp=tmp.next;
+    		contador++;
+    	}System.out.println("NO EXISTE INDICE");
+    	return null;
     }
+
 
     public int getLargo() {
         return largo;
@@ -66,5 +82,4 @@ public class NodoList <T> {
 		 this.head = null;
 		 largo = 0;
 	}
-
 }

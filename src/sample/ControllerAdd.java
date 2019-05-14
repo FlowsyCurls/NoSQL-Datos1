@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
 import Listas.Esquema;
+import Listas.Nodo;
 import Listas.NodoList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -95,7 +96,10 @@ public class ControllerAdd<T> {
 		this.setlabel();
 		this.scrollpane.setHvalue((Double) this.screen.getPrefWidth() );
 	}
-	private void setlabel() {this.columnslabel.setText(""+this.columns);}
+	private void setlabel() {
+		this.columnslabel.setText(""+this.columns);
+//		this.name.setFocusTraversable(false);
+	}
 	private final void setAll(String selectedType) {
 		TextField key = new TextField (), len = new TextField ();
 		key.setTranslateX(posx+107); key.setTranslateY(posy); key.setMaxWidth(145); key.setPromptText("set key "+(Controller.counter++));
@@ -166,44 +170,65 @@ public class ControllerAdd<T> {
 		String idchoose = this.idbox.getSelectionModel().getSelectedItem();
 		String idlen = this.idnum.getText();
     	//AGREGAR.... all al STRING CON QUE SE LLAMA EL CONSTRUCTOR.
-    	String CONSTRUCTOR = NAME+","+ID+":"+idchoose+":"+idlen;
+    	String CONSTRUCTOR = new String();
+    	CONSTRUCTOR = NAME+","+ID+":"+idchoose+":"+idlen;
     	/*Segundo guardar y verificar las columnas.*/
     	int index = this.children1.getLargo();
-    	String choosebox=null, text=null, num=null; int i;	
-    	for (i=1; i<index; i++ ){
+    	String choosebox="", text="", num=""; int i=1;	
+		System.out.println("CANTIDAD  >>>>>><<<<< "+this.screen.getChildren().size());
+
+    	//DENTRO DE CADA FILA DE HIJOS
+    	for (i=0; i<index; i++ ){
     		choosebox= this.children1.get(i).getSelectionModel().getSelectedItem();
+    		System.out.println("\nCHOOSEBOX  >>>>>><<<<< "+choosebox);
     		text = this.children2.get(i).getText();
-    		if (text.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
+    		System.out.println("\nTEXT >>>>>><<<<< "+text);
     		num = this.children3.get(i).getText();
-    		System.out.println(choosebox +" "+ text+" "+num);
-    		CONSTRUCTOR = CONSTRUCTOR+","+text+":"+choosebox+":"+num;}
-		String respuesta = this.cliente.crearEsquema(CONSTRUCTOR);
-		System.out.println(CONSTRUCTOR);
-		System.out.println(respuesta);
-		String message = "";
-		if ((respuesta.equals("esquema creado"))) { 
-			UserMessage info = new UserMessage(AlertType.CONFIRMATION,"NO","Woohoo..! \r\tScheme succesfully created! \n\n\rDo you want to build another one?");
-			Optional<ButtonType> result = info.showAndWait();
-			if ((result.get() == ButtonType.YES)){
-				int tmp = this.columns;
-				this.clean(); 
-				this.drawing(tmp, null);return;}
-			this.saved = true;
-			this.cancel(event);
-			return;
-		}else{
-			if ((respuesta.equals("nombre ya utilizado"))) { message="This name is already in use."; }
-			else if ((respuesta.equals("Hay columnas repetidas."))) { message="There are repeated columns."; }
-			else if ((respuesta.equals("el tamano solo recibe enteros"))) { message="Size only can be integers."; }
-			else if ((respuesta.equals("No existe esquema de join indicado"))) { message="There is no join scheme indicated."; }
-			else if ((respuesta.equals("esquema usado"))) { message = "Sorry bruh..! \nThis chart is already in use..."; }
-			UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+message,"Sorry bruh..!"); info.showAndWait();return;}
-    	}
+    		System.out.println("\nNUM >>>>>><<<<< "+num);
+    		if (text.isEmpty() || num.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
+    		System.out.println("\nI  >>>>>><<<<< "+i);
+    		System.out.println("INDEX  >>>>>><<<<< "+index);
+    		System.out.println("COLUMNA  >>>>>><<<<< "+choosebox +" "+ text+" "+num);
+    		CONSTRUCTOR = CONSTRUCTOR+","+text+":"+choosebox+":"+num;
+    		}
+    	/*Tercero crear el quemas*/
+		try {
+			String respuesta = this.cliente.crearEsquema(CONSTRUCTOR);
+			System.out.println(CONSTRUCTOR);
+			System.out.println(respuesta);
+			String message = "";
+			//si se crea
+			if ((respuesta.equals("esquema creado"))) { 
+				UserMessage info = new UserMessage(AlertType.CONFIRMATION,"NO","Woohoo..! \r\tScheme succesfully created! \n\n\rDo you want to build another one?");
+				Optional<ButtonType> result = info.showAndWait();
+				if ((result.get() == ButtonType.YES)){
+					int tmp = this.columns;
+					this.clean(); 
+					this.drawing(tmp, null);return;}
+				this.saved = true;
+				this.cancel(event);
+				return;
+			}else{
+				//si no se crea
+				if ((respuesta.equals("nombre ya utilizado"))) { message="This name is already in use."; }
+				else if ((respuesta.equals("Hay columnas repetidas."))) { message="There are repeated columns."; }
+				else if ((respuesta.equals("el tamano solo recibe enteros"))) { message="Size only can be integers."; }
+				else if ((respuesta.equals("No existe esquema de join indicado"))) { message="There is no join scheme indicated."; }
+				else if ((respuesta.equals("esquema usado"))) { message = "Sorry bruh..! \nThis chart is already in use..."; }
+				UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+message,"Sorry bruh..!"); info.showAndWait();
+				return;
+			}
+    	}catch (Exception e) {
+    		e.printStackTrace();}
+    }
     	
     
     private void clean() {
     	this.types.clear();
-    	Controller.counter = 1;
+    	this.idnum.clear();
+    	this.id.clear();
+    	this.name.clear();
+    	Controller.counter = 0;
 		this.typessetted=false;
     	this.screen.getChildren().clear();
     	this.posx=5; this.posy=5; this.columns = 0; 

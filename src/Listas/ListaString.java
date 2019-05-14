@@ -96,17 +96,22 @@ public class ListaString {
     }
 
 	public String[] getStringArraycolumnas(ListaString string) {
-		String[] c = new String[string.largo];
+		String[] c = new String[string.largo+1];
     	Nodo<String> e = string.getHead();
-    	String str = "";
-    	for (int i=0; i<string.largo; i++) {
+    	String str = "#";
+    	for (int i=0; i<string.largo+1; i++) {
+			if (i==0) {
+				c[i]="#";
+//	    		System.out.println("\n\n\n\nposicion "+i+ "  "+c[i]);
+				continue;
+			}
     		c[i]= e.getNodo();
     		e = e.getNext();
     		if (str.isEmpty()) str=c[i];
     		str= str+","+c[i];
-    		continue;
+//    		System.out.println("\n\n\n\nposicion "+i+ "  "+c[i]);
     	}
-		System.out.println("array "+str);
+		System.out.println("\r\nARRAY ---> "+str+"\n");
 		return c;		
 	}
 
