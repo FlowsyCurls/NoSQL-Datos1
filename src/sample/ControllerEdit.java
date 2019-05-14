@@ -39,6 +39,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class ControllerEdit {
@@ -324,7 +325,7 @@ public class ControllerEdit {
 	        addRowStage.getIcons().add(new Image("/Media/edit.png"));
 			veil.setVisible(true);
 	        addRowStage.initModality(Modality.APPLICATION_MODAL);
-	        System.out.println(addRowStage.showingProperty());
+	        addRowStage.initStyle(StageStyle.UNDECORATED);
 	        addRowStage.showAndWait();
 
 	        

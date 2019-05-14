@@ -48,6 +48,8 @@ public class ControllerAddRows {
 	private ArrayList<String> nombres;
 
 	private Region veil;
+
+	private boolean saved;
 	
     public static Logger log = LoggerFactory.getLogger(Controller.class);
 
@@ -98,41 +100,49 @@ public class ControllerAddRows {
 		
 	}
 
+    public void leerIterativo() {
+	    	int index = this.keys.getLargo();
+	    	String textfield="", text="", CONSTRUCTOR=this.columnas[1]+":"+this.ID;
+			System.out.println("CANTIDAD  >>>>>><<<<< "+this.panecolumns.getChildren().size());
+			System.out.println("CANTIDAD  >>>>>><<<<< "+this.panerows.getChildren().size());
+			for (int i=2; i<index; i++ ){
+	    		text = this.keys.get(i).getText();
+				textfield= this.spaces.get(i).getText();
+	    		if (text.equals("_")) continue;
+	    		else if (nombres.contains(textfield)) continue;
+	    		else if (text.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
+	    		CONSTRUCTOR = CONSTRUCTOR+","+textfield+":"+text;
+	    		/*prints*/ // "dato1:perro,dato2:222"
+	    		System.out.println("\ntext >>>>>><<<<< "+text);
+	    		System.out.println("textfield  >>>>>><<<<< "+textfield);
+	    		System.out.println("CONSTRUCTOR  >>>>>><<<<< "+CONSTRUCTOR);
+	    		System.out.println("I  >>>>>><<<<< "+i);
+	    		System.out.println("INDEX  >>>>>><<<<< "+index);
+			}
+	this.fila=CONSTRUCTOR;
+    }
 
-    @FXML
+	@FXML
     void cancel(ActionEvent event) throws IOException {
+		if (!saved) {
 		UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
 		Optional<ButtonType> result = message.showAndWait();
-		if ((result.get() == ButtonType.CANCEL)){return;}
+		if ((result.get() == ButtonType.CANCEL)){return;}}
 	    FXMLLoader loader;
 		loader = new FXMLLoader(getClass().getResource("edit.fxml"));
 		ControllerEdit controller= loader.getController();
 		Stage currentstage=(Stage) this.cancel.getScene().getWindow();
 		veil.setVisible(false);
+		if (saved) controller.addRows(this.fila);
 		currentstage.close();
-		controller.addRows(this.fila);
+		
     }
 
     @FXML
     void save(ActionEvent event) {
-
+    	this.leerIterativo();
+    	this.saved = true;
     }
-	
-	public void leerIterativo() {
-//		for (i=0; i<index; i++ ){
-//    		choosebox= this.children1.get(i).getSelectionModel().getSelectedItem();
-//    		System.out.println("\nCHOOSEBOX  >>>>>><<<<< "+choosebox);
-//    		text = this.children2.get(i).getText();
-//    		System.out.println("\nTEXT >>>>>><<<<< "+text);
-//    		num = this.children3.get(i).getText();
-//    		System.out.println("\nNUM >>>>>><<<<< "+num);
-//    		if (text.isEmpty() || num.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
-//    		System.out.println("\nI  >>>>>><<<<< "+i);
-//    		System.out.println("INDEX  >>>>>><<<<< "+index);
-//    		System.out.println("COLUMNA  >>>>>><<<<< "+choosebox +" "+ text+" "+num);
-//    		CONSTRUCTOR = CONSTRUCTOR+","+text+":"+choosebox+":"+num;
-//    		}
-	}
 	
 	
 	
