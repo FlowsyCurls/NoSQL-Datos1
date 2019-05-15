@@ -54,74 +54,87 @@ public class Controller {
 	//FXML// 
 	@FXML // fx:id="base" 
 	public  AnchorPane baseSample= new AnchorPane(); 
+	
 	@FXML // fx:id="diagramsList" 
 	private ListView<String> diagramsList = new ListView<String>(); 
 	private ObservableList<String> diagrams = FXCollections.observableArrayList();
-    @FXML private ContextMenu contextmenu = new ContextMenu();
+    
+	@FXML private ContextMenu contextmenu = new ContextMenu();
+	
 	@FXML //fx:id="tableview"
 	private TableView<String[]> tableview = new TableView<String[]>();
 	private ObservableList<String[]> datosObservable;
+	
 	@FXML // fx:id="screen" 
 	private AnchorPane screen = new AnchorPane();
-    @FXML // fx:id="textfieldFilas"
+    
+	@FXML // fx:id="textfieldFilas"
     private ChoiceBox<String> choiceboxEdit = new ChoiceBox<String>(); 
 	private ObservableList<String> availableType = FXCollections.observableArrayList();
-    @FXML
+    
+	@FXML
     private ChoiceBox<String> choiceboxSearch = new ChoiceBox<String>(); 
 	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
-    @FXML private TextField textfieldFilas;
-    @FXML private TextField textfieldEdit;
+    
+	@FXML private TextField textfieldFilas;
+   
+	@FXML private TextField textfieldEdit;
     public ArrayList<String[]> jdata = new ArrayList<String[]>(); //Here is the dat
     private String[] c;
+   
     @FXML // fx:id="search" 
     private TextField searchSTR =  new TextField(); 
+    
     //FMLX nothingMessage 
 	private final StackPane stack = new StackPane(); 
 	private final Label nothing =new Label(); 
+	
 	//objextmapper 
     private ObjectMapper objectMapper=new ObjectMapper(); 
  
     public static Logger log = LoggerFactory.getLogger(Controller.class);
 
 	public static int counter= 1;
-	private ArrayList<String[]> filas = new ArrayList<String[]>();
-	private Cliente cliente = new Cliente();
+	private static ArrayList<String[]>  filas = new ArrayList<String[]>();
+	public static Cliente cliente = new Cliente();
  
     //initializer 
     public void initialize() throws IOException {
-    	//cargar esquemas del servidor.
     	try {
-    		counter = 1;
-			Datos Datos = this.cliente.recibirEsquemas();
-			if (!Datos.getRespuesta().equals("constructores enviados")) {
-    			System.out.println(Datos.getRespuesta());
-    			System.out.println("NO CARGOOOOOO MIIIIIIIEEEEERRRRRDAAAA"); 
-    			return;}
-    		Controller.listaEsquemas = new ListaEsquemas();
-    		Nodo<String> tmp = Datos.getConstructores().getHead();
-			while (tmp!=null){ 
-    			Controller.listaEsquemas.addLast(new Esquema(tmp.getNodo(), true));
-//    			System.out.println("\rCargado Esquema ||| "+tmp.getNodo());
-		    	tmp=tmp.next;}
+	    	//cargar esquemas del servidor.
+	    	Controller.Cargaresquemas();
 			//set default choicesearch
 			this.availableChoices.add("OTHERS...");
 			this.choiceboxSearch.setItems(availableChoices);
 			this.choiceboxSearch.getSelectionModel().select(0);
 			/*LLAMADAS INICIALES*/
-    		setChoiceBoxEdit();
-    		loadDiagrams(null);
-    		nothingMessage();
-    		/*LLAMADAS INICIALES*/
-    	} catch (IOException m) { 
-    		System.out.println("NO FUNCOOOOO");
-    		m.printStackTrace();
-    		log.debug("error"); return;
-    		} 
-    	catch (NullPointerException n) { 
+			setChoiceBoxEdit();
+			loadDiagrams(null);
+			nothingMessage();
+			/*LLAMADAS INICIALES*/
+    	} catch (NullPointerException n) { 
     		System.out.println("Compa inicie el Server primero...");
     		return;
     		}
     	}
+    
+    
+    //cargar esquemas
+    public static void Cargaresquemas() throws NullPointerException, IOException {
+		counter = 1;
+		Datos Datos = cliente.recibirEsquemas();
+		if (!Datos.getRespuesta().equals("constructores enviados")) {
+			System.out.println(Datos.getRespuesta());
+			System.out.println("NO CARGOOOOOO MIIIIIIIEEEEERRRRRDAAAA"); 
+			return;}
+		Controller.listaEsquemas = new ListaEsquemas();
+		Nodo<String> tmp = Datos.getConstructores().getHead();
+		while (tmp!=null){ 
+			Controller.listaEsquemas.addLast(new Esquema(tmp.getNodo(), true));
+//			System.out.println("\rCargado Esquema ||| "+tmp.getNodo());
+	    	tmp=tmp.next;}
+    }
+
     
     @FXML  //evento de anadir 
 	public void addButtonAction(ActionEvent event) throws IOException { 
@@ -267,7 +280,7 @@ public class Controller {
 	        root=loader.load();
 	        editStage.setTitle("Edit Diagram");
 	        ControllerEdit controller= loader.getController();
-	        controller.getEsquema(e, this.cliente);
+	        controller.getEsquema(e.getNombre());
 	        Scene scene = new Scene(root);
 	        editStage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
 	        editStage.setResizable(false);
@@ -303,7 +316,7 @@ public class Controller {
 
 			//buscando con nombres...
 			if (selectedChoice.equals("NAME")) {
-				respuesta = this.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
+				respuesta = Controller.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
 				
 				/*codigo para agregar cada
 				 *  fila que sera string[]
@@ -322,7 +335,7 @@ public class Controller {
 			
 			//buscando con joins...
 			else if (selectedChoice.equals("JOINS")) {
-				respuesta = this.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatosjoin", detail, null, 0);
+				respuesta = Controller.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatosjoin", detail, null, 0);
 				
 				/*codigo para agregar cada
 				 *  fila que sera string[]
@@ -420,32 +433,32 @@ public class Controller {
         System.out.println("sss " +this.c.length);
     	/* Obtener cada fila String[]*/
     	if (!s) {  /*No buscando*/
-       		String datos = this.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
+       		String datos = Controller.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
        		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
        		if (datos == null) {
        			this.jdata.add( new String[this.c.length-1]);
        			showTable(); return;}
        		datos = ControllerEdit.addnumber(datos);
        		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
-       		this.filas = this.toStringArray(datos.split(";"));
+       		Controller.filas = this.toStringArray(datos.split(";"));
     		this.jdata.addAll(filas);
     		showTable();
        	}else {  /*Buscando*/
-       		String datos = this.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
+       		String datos = Controller.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
        		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
        		if (datos == null) {
        			this.jdata.add( new String[this.c.length-1]);
        			showTable(); return;}
 //       		datos = ControllerEdit.addnumber(datos);
 //       		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
-       		this.filas = this.toStringArray(datos.split(";"));
+       		Controller.filas = this.toStringArray(datos.split(";"));
     		for (int z=0; z<=filas.size()-1;z++) {
     			if (filasbuscadas.contains(filas.get(z))) {
     				this.jdata.add(filas.get(z));}
     		}showTable();
     	}
-
-	}private ArrayList<String[]> toStringArray(String[] toConvert) {
+	}
+	private ArrayList<String[]> toStringArray(String[] toConvert) {
 		ArrayList<String[]> list = new ArrayList<>();
 		for (int j=0; j<=toConvert.length-1;j++) {
 			list.add(toConvert[j].split(","));
@@ -525,7 +538,7 @@ public class Controller {
     @FXML
 	public void deleteDiagram(ActionEvent event) throws IOException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
-		String respuesta = this.cliente.eliminarEsquema(selectedDiagram);
+		String respuesta = Controller.cliente.eliminarEsquema(selectedDiagram);
 		if ((respuesta.equals("esquema eliminado"))) {
 			this.initialize();
 			return;
