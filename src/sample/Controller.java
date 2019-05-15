@@ -164,7 +164,7 @@ public class Controller {
 	        loader = new FXMLLoader(getClass().getResource("add.fxml"));
 	        root=loader.load();
 	        addStage.setTitle("Add a Diagram");
-	        ControllerAdd<?> controller= loader.getController();
+	        ControllerAdd controller= loader.getController();
 	        controller.drawing(columns, null);
 	        Scene scene = new Scene(root,1200,800);
 	        scene.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {

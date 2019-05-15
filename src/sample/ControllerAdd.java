@@ -3,6 +3,8 @@ package sample;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.swing.event.ChangeListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +13,7 @@ import Errores.EsquemaNuloException;
 import Listas.Esquema;
 import Listas.Nodo;
 import Listas.NodoList;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,39 +39,48 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
-public class ControllerAdd<T> {
+public class ControllerAdd {
 
 	//fxml
     @FXML private AnchorPane screen = new AnchorPane();
     @FXML private Button cancel = new Button();
     @FXML private Label columnslabel = new Label();
     @FXML private ScrollPane scrollpane = new ScrollPane();
-    @FXML private ChoiceBox<String> choicebox = new ChoiceBox<String>(), idbox = new ChoiceBox<String>();
+    @FXML private ChoiceBox<String> choicebox = new ChoiceBox<String>(),idbox = new ChoiceBox<String>(), schemeName =new ChoiceBox<String>(), schemeID = new ChoiceBox<String>();
     @FXML private TextField idnum = new TextField();
     @FXML private VBox radiusVBox = new VBox();
     @FXML private TextField id = new TextField();
     @FXML private TextField name = new TextField();
     @FXML private RadioButton b1,b2,b3,b4,b5;
     @FXML private ToggleGroup togglegroup = new ToggleGroup();
-
+	//tipos
 	private ObservableList<String> types = FXCollections.observableArrayList(); 
+	private ObservableList<String> posiblesjoins = FXCollections.observableArrayList();
+	private ObservableList<String> posiblesids= FXCollections.observableArrayList(); 
 
-	//variables
+
+	//variables posicionamiento
 	private int posx = 5, posy = 5, columns=0;
 	private boolean typessetted =false;
 	private NodoList<ChoiceBox<String>> children1 = new NodoList<ChoiceBox<String>>();
 	private NodoList<TextField> children2 = new NodoList<TextField>(), children3 = new NodoList<TextField>();
+	//guardado
+	
 	private boolean saved = false;
+	//cliente
 	private Cliente cliente = new Cliente();
 	//statics
     public static Logger log = LoggerFactory.getLogger(ControllerAdd.class);
  
-    
-    
+    /*METHODOS*/
     //initializer 
     public void initialize() throws IOException {
     }
@@ -81,6 +93,11 @@ public class ControllerAdd<T> {
 		    this.scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		    this.scrollpane.setPannable(true);
 		    return;}
+		try{ if (selectedType.equals("_")) {
+				this.setAll("_");
+//				schemeName.getText();
+//				this.schemeName.clear();
+		}} catch (NullPointerException n) {}
 		while (columns!=0) {
 			this.setAll(selectedType);
 			columns--;
@@ -89,6 +106,11 @@ public class ControllerAdd<T> {
     
 	@FXML
 	public void addcolumn(ActionEvent event) throws IOException {
+		if (event == null) {
+			this.drawing(1,"_"); this.columns++;
+			this.scrollpane.setHvalue((Double) this.screen.getPrefWidth());
+			return;
+		}
 		RadioButton selectedRadioButton = (RadioButton) togglegroup.getSelectedToggle();
 		String selectedType = selectedRadioButton.getText();
 		System.out.println(selectedType);
@@ -98,8 +120,20 @@ public class ControllerAdd<T> {
 	}
 	private void setlabel() {
 		this.columnslabel.setText(""+this.columns);
-//		this.name.setFocusTraversable(false);
+		int n =0;
+		Nodo<Esquema> tmp = Controller.listaEsquemas.getHead();
+        while (n<Controller.listaEsquemas.getLargo()){
+        	posiblesjoins.add(tmp.getNodo().getNombre());
+            tmp=tmp.next;
+            n++;
+ 		}
+//        this.schemeName = new ChoiceBox<String>();
+        schemeName.getSelectionModel().selectedItemProperty().addListener( 
+        		(ObservableValue<? extends String> observable, String oldValue, String newValue) -> this.updateJoinID(newValue)); 
+		this.schemeName.setItems(posiblesjoins);
+		schemeName.getSelectionModel().select(0); 
 	}
+	
 	private final void setAll(String selectedType) {
 		TextField key = new TextField (), len = new TextField ();
 		key.setTranslateX(posx+107); key.setTranslateY(posy); key.setMaxWidth(145); key.setPromptText("set key "+(Controller.counter++));
@@ -221,17 +255,43 @@ public class ControllerAdd<T> {
     	}catch (Exception e) {
     		e.printStackTrace();}
     }
+  
+    public void updateJoinID(String scheme) {
+		Esquema respuesta = Controller.listaEsquemas.buscar(scheme);
+		System.out.println("Encontrado "+respuesta.getNombre());
+   		String[] datos = this.cliente.buscartodoslosdatos(respuesta.getNombre()).getDatos().split(";");
+    	this.posiblesids.clear();
+   		for (int i = 0; i<datos.length; i++ ) {
+			posiblesids.add(datos[i].split(",")[0]);
+		}
+		this.schemeID.setItems(posiblesids);
+		schemeID.getSelectionModel().select(0);
+
+    }
+    @FXML
+    public void addJoin(ActionEvent event) {
+    	String scheme = this.schemeName.getSelectionModel().getSelectedItem();
+    	String id = this.schemeID.getSelectionModel().getSelectedItem();
+    	System.out.println("scheme "+scheme+" id "+id);
+    	/*bueno ya tengo el esquema y el id de la fila... ahora que */
     	
-    
+	}
+
     private void clean() {
+    	//liimpiar choicebox
+    	this.posiblesjoins.clear();
+    	this.posiblesids.clear();
     	this.types.clear();
     	this.idnum.clear();
+    	//textfields.
     	this.id.clear();
     	this.name.clear();
+    	//reiniciar contador.
     	Controller.counter = 0;
 		this.typessetted=false;
     	this.screen.getChildren().clear();
     	this.posx=5; this.posy=5; this.columns = 0; 
     }
+
 }
 ;

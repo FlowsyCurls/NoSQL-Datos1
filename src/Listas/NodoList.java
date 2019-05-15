@@ -53,7 +53,7 @@ public class NodoList <T> {
     	int contador = 0;
     	while (tmp != null) {
     		if (contador==index) {
-        		System.out.println("index "+index);
+//        		System.out.println("index "+index);
     			return tmp.getNodo();
     		}
     		tmp=tmp.next;

@@ -100,16 +100,16 @@
                                           <ToggleGroup fx:id="togglegroup" />
                                        </toggleGroup>
                                     </RadioButton>
-                                    <RadioButton fx:id="b2" mnemonicParsing="false" text="INTEGER" textFill="WHITE" toggleGroup="$togglegroup">
+                                    <RadioButton fx:id="b2" mnemonicParsing="false" text="INTEGER" textFill="WHITE">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="togglegroup1" />
+                                       </toggleGroup>
                                        <font>
                                           <Font name="Berlin Sans FB Demi Bold" size="21.0" />
                                        </font>
                                        <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                       <padding>
                                           <Insets left="20.0" />
-                                       </padding>
+                                       </VBox.margin>
                                     </RadioButton>
                                     <RadioButton fx:id="b3" mnemonicParsing="false" text="DOUBLE" textFill="WHITE" toggleGroup="$togglegroup">
                                        <font>
@@ -135,14 +135,45 @@
                                           <Insets left="20.0" />
                                        </VBox.margin>
                                     </RadioButton>
-                                    <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addcolumn" prefHeight="40.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d95030;" text=" Add Column" textOverrun="CLIP" VBox.vgrow="SOMETIMES">
+                                    <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addcolumn" prefHeight="40.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d95030;" text=" Add Column" textAlignment="CENTER" textOverrun="CLIP" VBox.vgrow="SOMETIMES">
                                        <font>
                                           <Font name="Century Gothic Bold" size="15.0" />
                                        </font>
                                        <VBox.margin>
-                                          <Insets bottom="3.0" left="25.0" top="10.0" />
+                                          <Insets bottom="3.0" left="20.0" top="-5.0" />
                                        </VBox.margin>
                                     </Button>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addJoin" prefHeight="40.0" prefWidth="119.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d95030;" text=" Add Join" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="-10.0" left="20.0" top="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                    <ChoiceBox fx:id="schemeName" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;">
+                                       <VBox.margin>
+                                          <Insets left="20.0" right="25.0" />
+                                       </VBox.margin>
+                                    </ChoiceBox>
+                                    <ChoiceBox fx:id="schemeID" prefWidth="123.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;">
+                                       <VBox.margin>
+                                          <Insets left="20.0" right="25.0" top="-12.0" />
+                                       </VBox.margin>
+                                    </ChoiceBox>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addJoin" prefHeight="55.0" prefWidth="131.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d95030;" text="Save with Index Structure" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                                       <font>
+                                          <Font name="Century Gothic Bold" size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="-10.0" left="20.0" top="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                    <ChoiceBox fx:id="structuresBox" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="25.0" />
+                                       </VBox.margin>
+                                    </ChoiceBox>
                                  </children>
                               </VBox>
                               <ScrollPane fx:id="scrollpane" pannable="true" prefHeight="601.0" prefWidth="951.0" style="-fx-border-color: #d95030; -fx-background: #d95030; -fx-border-radius: 15; -fx-background-radius: 15; -fx-background-color: #d95030; -fx-background-insets: -2;" vbarPolicy="NEVER" HBox.hgrow="SOMETIMES">
@@ -152,8 +183,10 @@
                               </ScrollPane>
                            </children>
                         </HBox>
-                     </children></AnchorPane>
-               </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
             <HBox alignment="TOP_CENTER" layoutY="76.0" prefHeight="46.0" prefWidth="1200.0" spacing="15.0" VBox.vgrow="SOMETIMES">
                <children>
                   <Button fx:id="cancel" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancel" prefWidth="100.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-background-insets: 1; -fx-border-color: lightgray;" text="Cancel" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
