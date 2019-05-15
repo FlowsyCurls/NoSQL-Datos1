@@ -49,7 +49,7 @@ public class ControllerAddRows {
 
 	private Region veil;
 
-	private boolean saved;
+	private boolean saved = false;
 	
     public static Logger log = LoggerFactory.getLogger(Controller.class);
 
@@ -111,7 +111,7 @@ public class ControllerAddRows {
 	    		if (text.equals("_")) continue;
 	    		else if (nombres.contains(textfield)) continue;
 	    		else if (text.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
-	    		CONSTRUCTOR = CONSTRUCTOR+","+textfield+":"+text;
+	    		CONSTRUCTOR = CONSTRUCTOR+","+text+":"+textfield;
 	    		/*prints*/ // "dato1:perro,dato2:222"
 	    		System.out.println("\ntext >>>>>><<<<< "+text);
 	    		System.out.println("textfield  >>>>>><<<<< "+textfield);
@@ -123,25 +123,38 @@ public class ControllerAddRows {
     }
 
 	@FXML
-    void cancel(ActionEvent event) throws IOException {
+    void cancel(ActionEvent event) throws IOException{
 		if (!saved) {
 		UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
 		Optional<ButtonType> result = message.showAndWait();
 		if ((result.get() == ButtonType.CANCEL)){return;}}
-	    FXMLLoader loader;
-		loader = new FXMLLoader(getClass().getResource("edit.fxml"));
-		ControllerEdit controller= loader.getController();
+//        Stage addRowStage = new Stage();
+        Parent root;
+        FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("edit.fxml"));
+        root=loader.load();
+//        addRowStage.setTitle("Edit Diagram");
 		Stage currentstage=(Stage) this.cancel.getScene().getWindow();
 		veil.setVisible(false);
-		if (saved) controller.addRows(this.fila);
+		if (this.saved) {
+			try{
+				System.out.println("FILAS  >>>>>><<<<< "+fila);
+				ControllerEdit controller= loader.getController();	
+				controller.addRows(this.fila);
+			} catch (NullPointerException envio){
+				envio.printStackTrace();
+			}
+		}
 		currentstage.close();
 		
     }
 
     @FXML
-    void save(ActionEvent event) {
+    void save(ActionEvent event) throws IOException {
     	this.leerIterativo();
     	this.saved = true;
+    	this.cancel(event);
+
     }
 	
 	

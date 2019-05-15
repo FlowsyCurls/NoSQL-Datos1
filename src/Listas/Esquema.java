@@ -93,7 +93,8 @@ public class Esquema {
     }
 
     public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException {
-        Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
+        System.out.println(fila);
+    	Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
         while (cont<datos.length){

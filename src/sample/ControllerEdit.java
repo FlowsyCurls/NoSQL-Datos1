@@ -65,7 +65,6 @@ public class ControllerEdit {
     @FXML private Button deleteButton;
     
     @FXML private Button addButton;
-
     
     @FXML private TextField newnameText;
     
@@ -89,20 +88,43 @@ public class ControllerEdit {
 	private NodoList<String> historialEliminadas = new NodoList<>(); 
 	private NodoList<String> historialAgregados = new NodoList<>();
 
-	private int lasteditedCOLUMN = 0;
-	private int lasteditedROW = 0;
+	private int lasteditedCOLUMN = -1;
+	private int lasteditedROW = -1;
 	private ArrayList<String[]> filas = new ArrayList<String[]>();
     
     //initializer 
     public void initialize() throws IOException {}
     private void clean() {
+//    	System.out.println("\nANTES CLEAR()");
+//		System.out.println("+Largo de Lista: "+"oldValue "+oldValue.getLargo());
+//		System.out.println("+Largo de Lista: "+"newValue "+newValue.getLargo());
+//		System.out.println("+Largo de Lista: "+"newValueCOLUMNA "+newValueCOLUMNA.getLargo());
+//		System.out.println("+Largo de Lista: "+"newValueROW "+newValueROW.getLargo());
+//		System.out.println("+Largo de Lista: "+"historialAgregados "+historialAgregados.getLargo());
+//		System.out.println("+Largo de Lista: "+"historialEliminadas "+historialEliminadas.getLargo());
 		this.jdata.clear();
 		this.columnsarray.clear();
 		this.datosObservable.clear();
 		this.tableview.getColumns().clear();
 		this.tableview.getItems().clear();
 		this.screen.getChildren().clear();
-	}
+    	this.lasteditedCOLUMN = -1;
+    	this.lasteditedROW = -1;
+		this.newnameText.clear();
+		this.oldValue.empty();
+		this.newValue.empty();
+		this.newValueCOLUMNA.empty();
+		this.newValueROW.empty();
+		this.historialAgregados.empty();
+		this.historialEliminadas.empty();
+//    	System.out.println("\nDESPUES CLEAR()");
+//		System.out.println("+Largo de Lista: "+"oldValue "+oldValue.getLargo());
+//		System.out.println("+Largo de Lista: "+"newValue "+newValue.getLargo());
+//		System.out.println("+Largo de Lista: "+"newValueCOLUMNA "+newValueCOLUMNA.getLargo());
+//		System.out.println("+Largo de Lista: "+"newValueROW "+newValueROW.getLargo());
+//		System.out.println("+Largo de Lista: "+"historialAgregados "+historialAgregados.getLargo());
+//		System.out.println("+Largo de Lista: "+"historialEliminadas "+historialEliminadas.getLargo());
+    }
 	//conexion principal controller
 	public void getEsquema(Esquema e, Cliente cliente) {
 		this.cliente = cliente;
@@ -286,6 +308,8 @@ public class ControllerEdit {
 	public void addRows(String fila) {
     	String toAdd_id = addfield.getText();
     	/*intento de agre directamente*/
+		System.out.println("FILAS edit  >>>>>><<<<< "+fila);
+
     	try {e.anadirfila(fila);}
     	//sino solo muestra mensaje y retorna.
     	catch (DatosUsadosException | NumberFormatException | TamanoException | DatoNoExistenteException | EsquemaNuloException e) {
@@ -295,6 +319,7 @@ public class ControllerEdit {
     	this.historialAgregados.addLast(toAdd_id);
 		this.addfield.clear();
 		this.setCxF(true);
+		return;
     }
 	
 	@FXML 
@@ -326,25 +351,26 @@ public class ControllerEdit {
 			veil.setVisible(true);
 	        addRowStage.initModality(Modality.APPLICATION_MODAL);
 	        addRowStage.initStyle(StageStyle.UNDECORATED);
-	        addRowStage.showAndWait();
+	        addRowStage.show();
+	        addfield.clear();
 
 	        
 	    } catch (IOException error) {
 	    	error.printStackTrace();}
 	}
 	@FXML  
-    private void addRowsHistory(ActionEvent event) {
+    private String addRowsHistory(ActionEvent event) {
     	for (int info = 0; info < this.historialEliminadas.getLargo(); info++) { 
     		String Respuesta = this.cliente.eliminardatos(e.getNombre(), historialAgregados.get(info));
     		if (Respuesta!="datos anadidos") { 
     	    	UserMessage message = new UserMessage(AlertType.INFORMATION, historialAgregados.get(info), "Sorry an ERROR has ocurred while adding ");
     	    	message.show();
     			this.addfield.clear();
-    			return;
+    			return null;
     		}
 		}
-    	//Llamar a cancel, con la condicion de que se salva.
-		log.debug("Se logra editar el esquema --> "+ e.getNombre());
+    	log.debug("Se logra editar el esquema --> "+ e.getNombre());
+    	return "agregados";
 		}
     
     @FXML
@@ -374,44 +400,63 @@ public class ControllerEdit {
     }
     	
     	
-    private void deleteRowsHistory(ActionEvent event) {
+    private String deleteRowsHistory(ActionEvent event) {
     	for (int id = 0; id < this.historialEliminadas.getLargo(); id++) { 
     		String Respuesta = this.cliente.eliminardatos(e.getNombre(), historialEliminadas.get(id));
     		if (Respuesta!="Fila elimanda") { 
     	    	UserMessage message = new UserMessage(AlertType.INFORMATION, historialEliminadas.get(id), "Sorry an ERROR has ocurred while deleting ");
     	    	message.show();
     			this.deletefield.clear();
-    			return;
+    			return null;
     		}
 		}
     	this.saved = true;
     	this.cancel(event); //Llamar a cancel, con la condicion de que se salva.
 		log.debug("Se logra editar el esquema --> "+ e.getNombre());
+		return "eliminados";
 		}
     
     @FXML
     public void edit(ActionEvent event) throws DatosUsadosException, EsquemaNuloException {
     	int verify = 0;
     	int size = this.newValue.getLargo();
-    	System.out.println("AQUI VA EL LARGO   "+size);
+    	System.out.println("\nAQUI VA EL LARGO   "+size);
     	for (int x = 0; x < size; x++) {
-    		System.out.println("ID CAMBIAR "+filas.get(this.newValueROW.get(x))[0]);
-    		System.out.println(this.newValueCOLUMNA.get(x));
-    		String r = this.cliente.cambiardato(e.getNombre(), filas.get(this.newValueROW.get(x))[0], this.newValueCOLUMNA.get(x), this.newValue.get(x));
+    		String  nombre = e.getNombre();
+    		String IDfila = filas.get(this.newValueROW.get(x))[1];
+    		String Nmcolumna = this.newValueCOLUMNA.get(x);
+    		String newValue = this.newValue.get(x);
+    		/*prints*/
+    		System.out.println("\nIndice "+x);
+    		System.out.println("Nombre esquema "+nombre);
+    		System.out.println("ID del valor " +IDfila);
+    		System.out.println("Valor Columna "+Nmcolumna);
+    		System.out.println("Valor nuevo "+newValue+"\n");
+    		String r = this.cliente.cambiardato(nombre, IDfila, Nmcolumna, newValue);
     		verify = x;
     		if (!(r.equals("dato cambiado"))) {
     			System.out.println(r);
     			log.debug("No se logra editar --> "+this.newValueCOLUMNA.get(x));
     			break;}
-    		continue;
-    	}
-//    	System.out.println("verify --> "+verify);
+    		System.out.println("\nSe cambio "+newValue);}
+    	verify+=1;
+    	System.out.println("\nverify --> "+verify);
     	/*Si se salva correctamente*/
-    	if (verify == size) {  
-    		this.addRowsHistory(event);
-    		this.deleteRowsHistory(event);
-    		log.debug("Se logra editar el esquema --> "+ e.getNombre());}
     	UserMessage message = new UserMessage(AlertType.INFORMATION, this.newValue.get(verify), "Sorry an ERROR has ocurred while setting "+this.oldValue.get(verify)+" to the new value ");
+    	if (verify == size) {  
+    		String agregados = this.addRowsHistory(event);
+    		if (!agregados.equals("agregados")) {
+    			message.show();
+    			return;
+    		}
+    		String eliminados =this.deleteRowsHistory(event);
+    		if (!eliminados.equals("eliminados")) {
+    			message.show();
+    			return;
+    		}
+    		log.debug("Se logra editar el esquema --> "+ e.getNombre());
+    		this.clear(event);
+    		return;}
     	message.show();
     	return;
     	}
@@ -443,11 +488,6 @@ public class ControllerEdit {
 	
 	@FXML
 	public void clear(ActionEvent event) {
-		this.newnameText.clear();
-		this.oldValue.empty();
-		this.newValue.empty();
-		this.newValueCOLUMNA.empty();
-		this.newValueROW.empty();
 		this.setCxF(false);
 	}
 	
