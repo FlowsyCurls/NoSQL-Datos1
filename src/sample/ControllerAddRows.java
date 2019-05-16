@@ -63,7 +63,7 @@ public class ControllerAddRows {
 		this.esquema = esquema;
 		this.veil = veil;
 		this.idText.setText(ID);
-		this.nombres = ControllerEdit.addNamesxIDOneByOne();
+		this.nombres = ControllerEdit.addNamesxIDOneByOne("nombrexid");
 		this.dibujoIterativo();
 	}
 

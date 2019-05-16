@@ -100,19 +100,7 @@ public class ControllerEdit {
 		veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8)");
 
 	}
-	public static void printArray(String[] array, String nombre) { 
-		if (array.length==0)return; 
-		String str= ""; 
-		System.out.print("\n"+nombre+" : "); 
-		for (int j=0; j<=array.length-1; j++) { 
-			if (str.isEmpty()) {  
-				str = array[j].toString(); 
-				continue;} 
-			str = str +"   +   "+ array[j].toString(); 
-			} 
-		System.out.println(str); 
-		System.out.print("\n"); 
-	} 
+
 	
 	public void setCxF(){
 		this.clean();
@@ -135,7 +123,7 @@ public class ControllerEdit {
    		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");
    		filas = new ArrayList<String[]>();
    		filas = this.toStringArray(datos.split(";"));
-   		printArray(datos.split(";"), "filas ");
+   		Controller.printArray(datos.split(";"), "filas ");
    		jdata.addAll(filas);
 		showTable();
 	}
@@ -190,7 +178,7 @@ public class ControllerEdit {
 	}private void showTable() {
 		tableview = new TableView<String[]>();
         int size = columnas_esquema.length; //number of the columns
-        ArrayList<String> nombres = ControllerEdit.addNamesxIDOneByOne();
+        ArrayList<String> nombrexid = ControllerEdit.addNamesxIDOneByOne("nombresxid");
         for (int i = 0; i < size; i++) {
         	/*Crear una columna por cada nombre de la lista*/
             TableColumn<String[], String> firstNameCol = new TableColumn<>(columnas_esquema[i]);
@@ -202,7 +190,7 @@ public class ControllerEdit {
                 if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}
                 else {
                 	String cellValue = rowData[index];
-                    if (nombres.contains(columnas_esquema[index])) {
+                    if (nombrexid.contains(columnas_esquema[index])) {
 //            			System.out.println("TITULO COLUMNA no editable  "+EsquemaEditadoCOLUMNAS[index]);
                     	firstNameCol.setEditable(false);
 //                    	return new ReadOnlyStringWrapper(cellValue);
@@ -254,14 +242,20 @@ public class ControllerEdit {
 		this.deleteBox.setItems(posiblesids);
 		deleteBox.getSelectionModel().select(0); 
 	}
-	public static ArrayList<String> addNamesxIDOneByOne() { //cargar todos los diagramas.
+	public static ArrayList<String> addNamesxIDOneByOne(String caso) { //cargar todos los diagramas.
 		ArrayList<String> nombresxid = new  ArrayList<>(); 
 		Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
 		while (tmp!=null){ 
+			if (caso.equals("nombre")) {
 			nombresxid.add(tmp.getNodo().getNombre());
-			nombresxid.add(tmp.getNodo().getID()); 
 //			System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
 	    	tmp=tmp.next;}
+			else if (caso.equals("nombrexid")) {
+				nombresxid.add(tmp.getNodo().getNombre());
+				nombresxid.add(tmp.getNodo().getID()); 
+//				System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
+		    	tmp=tmp.next;}
+			}
 		return nombresxid;} 
 
 	public void editNameText() {

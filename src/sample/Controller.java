@@ -80,7 +80,6 @@ public class Controller {
    
 	@FXML private TextField textfieldEdit;
     public ArrayList<String[]> jdata = new ArrayList<String[]>(); //Here is the dat
-    private String[] c;
    
     @FXML // fx:id="search" 
     private TextField searchSTR =  new TextField(); 
@@ -95,7 +94,10 @@ public class Controller {
     public static Logger log = LoggerFactory.getLogger(Controller.class);
 
 	public static int counter= 1;
+	
+	private static String [] columnas;
 	private static ArrayList<String[]>  filas = new ArrayList<String[]>();
+	
 	public static Cliente cliente = new Cliente();
  
     //initializer 
@@ -297,7 +299,8 @@ public class Controller {
     	String detail = searchSTR.getText();
     	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem();
     	System.out.println("Seleccionado en el Choices --->> "+selectedChoice); 
-    	System.out.println("detail: "+detail); 
+    	System.out.println("detail: "+detail);
+    	
     	/*TEXT VACIO*/
     	if (this.verifyTextField(detail)){
     		detail=null; 
@@ -310,80 +313,73 @@ public class Controller {
     		this.loadDiagrams(detail);
     		this.searchSTR.clear();
     		return;}
-    	else {
-    		//pero para los demas se necesita el esquema so..
-			Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
-			
-			//variables locales
-			String respuesta = null;
-			ArrayList<String[]> filasbuscadas = new ArrayList<String[]> ();;
-
-			//buscando con nombres...
-        	/*BUSQUEDA DE OTROS ESQUEMAS QUE COINCIDAN*/
-			if (selectedChoice.equals("NAME")) {
-				respuesta = Controller.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
-				
-				/*codigo para agregar cada
-				 *  fila que sera string[]
-				 *  de coincidencia en un
-				 *  ArrayList<String[]>*/
-				filasbuscadas= new ArrayList<String[]> ();
-			}
-			
-			//buscando con indices...
-			else if (selectedChoice.equals("INDEX")) {
-				/* pen
-				 * dien
-				 * te*/
-				
-			}
-			
-			//buscando con joins...
-			else if (selectedChoice.equals("JOINS")) {
-				respuesta = Controller.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatosjoin", detail, null, 0);
-				
-				/*codigo para agregar cada
-				 *  fila que sera string[]
-				 *  de coincidencia en un
-				 *   ArrayList<String[]>*/
-				filasbuscadas= new ArrayList<String[]> ();
-			}
-			
-			else {
-				System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
-			}
-			//verificar que se haya hecho el proceso de busqueda y conexion.
-			if (respuesta!="datos enviados") {this.messenger("ERROR while searching ", "Try again later!");return;}
-			//verificar que por lo menos haya algun coincidencia.
-			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;}
-			this.setCxF(usedDiagram, true, filasbuscadas, detail);
-			return;}
+    	//buscar esquema solicitado
+		Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
+		//variables locales
+		ArrayList<Integer> filasbuscadas = new ArrayList<> (); //filas por mostrar
+   		String datos = Controller.cliente.buscartodoslosdatos(usedDiagram.getNombre()).getDatos(); //datos de las filas del esquema.
+    	/*buscando con indices...*/
+		if (selectedChoice.equals("INDEX")) {
+//				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
+//			
+//			
+		}
+    	/*buscando con joins...*/
+		else if (selectedChoice.equals("JOINS")) {
+//				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)
+//			
+//			
+		}
+		else {
+			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
+			for (int i=0; i< columnas.length; i++){
+				if (columnas[i].equals(selectedChoice)) {
+					String[] arrayDatos = datos.split(";");
+					for (int h=0; h< arrayDatos.length; h++){
+						System.out.println("ENTRA"+arrayDatos[h].split(",")[i-1]);
+						if (arrayDatos[h].split(",")[i-1].contentEquals(detail)) {
+							System.out.println("ENTRA "+arrayDatos[h]);
+							System.out.println(h);
+							filasbuscadas.add(h);
+			}}}}}
+		//verificar que por lo menos haya algun coincidencia. 
+		if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+		else {this.setCxF(datos, filasbuscadas); 
+		return;
+		}
 	}
-    private ArrayList<String> SearchID(String id, Esquema usedDiagram){
-    	ArrayList<String> filasencontradas = new ArrayList<String>();
-    	return filasencontradas;
-    }
-    private ArrayList<String> SearchName(String name, Esquema usedDiagram){
-    	ArrayList<String> filasencontradas = new ArrayList<String>();
-    	return filasencontradas;
-    }
-    private ArrayList<String> SearchIndex(String index, Esquema usedDiagram){
-    	ArrayList<String> filasencontradas = new ArrayList<String>();
-    	return filasencontradas;
-    }
-    private ArrayList<String> SearchJoins(String join, Esquema usedDiagram){
-    	ArrayList<String> filasencontradas = new ArrayList<String>();
-    	return filasencontradas;
-    }
-	
-	
-	
+		
+//    private ArrayList<String> SearchIndex(String index, Esquema usedDiagram){
+//    	ArrayList<String> filasencontradas = new ArrayList<String>();
+//    	return filasencontradas;
+//    }
+//    private ArrayList<String> SearchJoins(String join, Esquema usedDiagram){
+//    	ArrayList<String> filasencontradas = new ArrayList<String>();
+//    	return filasencontradas;
+//    }
 	
 	private void messenger(String content, String detail) {
 		UserMessage message = new UserMessage(AlertType.INFORMATION,
 				detail,content);
 		message.showAndWait();
-	}private void loadDiagrams(String detail) throws IOException { //loadDiagramas.
+	}
+	
+	public static void printArray(String[] array, String nombre) { 
+		if (array.length==0)return; 
+		String str= ""; 
+		System.out.print("\n"+nombre+" : "); 
+		for (int j=0; j<=array.length-1; j++) { 
+			if (str.isEmpty()) {  
+				str = array[j].toString(); 
+				continue;} 
+			str = str +"   +   "+ array[j].toString(); 
+			} 
+		System.out.println(str); 
+		System.out.print("\n"); 
+	}
+	
+	/*PARA MODIFICAR EL LISTVIEW EN BASE A LO QUE SE BUSCA*/
+	private void loadDiagrams(String detail) throws IOException { //loadDiagramas.
     	this.diagrams.removeAll(diagrams);
     	if (detail!=null) { // si estoy buscando.... 
     		this.loadDiagrams_buscaraux(detail); 
@@ -394,8 +390,6 @@ public class Controller {
 		System.out.println("\rDIAGRAMAS cargados "+diagrams); 
 	    this.diagramsList.setItems(diagrams);
     }private void loadDiagrams_buscaraux(String detail) { //buscar coincidencias para cargarlas. 
-//		System.out.println("Entra en buscar"); 
-//		System.out.println(this.listaEsquemas.getLargo()); 
     	ArrayList<Esquema> coincided = Controller.listaEsquemas.buscarcoincidencias(detail); 
     	if (coincided.isEmpty()) return; 
     	for (int i=0; i<coincided.size(); i++){ 
@@ -403,14 +397,16 @@ public class Controller {
 			System.out.println("\rESQUEMA encontrado :"+" |name "+element.getNombre()+" |id "+element.getID()); 
     		this.diagrams.add(element.getNombre()); //add coincidences... 
     	}coincided.removeAll(coincided); 
-    }private void addNamesOneByOne() { //cargar todos los diagramas. 
+    }
+    /*PARA AGREGAR TODOS LOS ESQUEMAS AAL LISTVIEW*/
+	private void addNamesOneByOne() { //cargar todos los diagramas. 
 			Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
 //			System.out.println("NODO ESQUEMA "+tmp); 
 			while (tmp!=null){ 
 		    	this.diagrams.add(tmp.getNodo().getNombre()); 
 		    	tmp=tmp.next;}return;} 
  
-	//evento de seleccion de diagrama. 
+	/*PARA MOSTRAR DIAGRAMA SELECCIONADO*/
     public void displaySelectedDiagram(MouseEvent event) throws IOException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
@@ -427,50 +423,53 @@ public class Controller {
 		textfieldEdit.setPromptText(selectedDiagram); //set to default. 
     	for (int i=0; i< this.jdata.size(); i++){
     		System.out.println(this.datosObservable.get(i));}
+    	//obtener esquema
 		Esquema e = Controller.listaEsquemas.buscar(selectedDiagram); 
-		//nombre de cada columna del esquema (ID, NOMBRE, APELLIDO, CARNE, CEDULA) 
-		this.setCxF(e, false, null, null);
-	}private void setCxF(Esquema e, boolean s, ArrayList<String[]> filasbuscadas, String detail) throws EsquemaNuloException{
 		/* Acomodar las columnas en choicebox*/
 		this.setChoiceBoxSearch(e.obtenercolumnas().getArraycolumnas(e.obtenercolumnas()));
 		/* Obtener cada columna String*/
-    	this.c = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
-        System.out.println("sss " +this.c.length);
+		Controller.columnas = e.obtenercolumnas().getStringArraycolumnas(e.obtenercolumnas());
+    	/* Obtener cada dato en fila String[]*/
+   		String datos = Controller.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
+    	/* Dibujarlo*/
+		this.setCxF(datos, null);
+		System.out.println("Cantidad Columnas |>> "+columnas.length);
+		System.out.println("Datos Filas |>> "+datos);
+	}
+    
+    private void setCxF(String datos, ArrayList<Integer> filasbuscadas) throws EsquemaNuloException{
+    	this.clean();
+    	/*Si no hay datos*/
+    	if (datos == null) {
+   			this.jdata.add(new String[columnas.length-1]);
+   			showTable(); return;}
+    	//agregar numeros.
+    	datos = ControllerEdit.addnumber(datos);
+   		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
     	/* Obtener cada fila String[]*/
-    	if (!s) {  /*No buscando*/
-       		String datos = Controller.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
-       		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
-       		if (datos == null) {
-       			this.jdata.add( new String[this.c.length-1]);
-       			showTable(); return;}
-       		datos = ControllerEdit.addnumber(datos);
-       		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
+    	if (filasbuscadas == null) {  //NO BUSCANDO
        		Controller.filas = this.toStringArray(datos.split(";"));
     		this.jdata.addAll(filas);
-    		showTable();
-       	}else {  /*Buscando*/
-       		String datos = Controller.cliente.buscartodoslosdatos(e.getNombre()).getDatos();
-       		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
-       		if (datos == null) {
-       			this.jdata.add( new String[this.c.length-1]);
-       			showTable(); return;}
-//       		datos = ControllerEdit.addnumber(datos);
-//       		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
+    	}else{ //BUSCANDO
        		Controller.filas = this.toStringArray(datos.split(";"));
-    		for (int z=0; z<=filas.size()-1;z++) {
-    			if (filasbuscadas.contains(filas.get(z))) {
-    				this.jdata.add(filas.get(z));}
-    		}showTable();
-    	}
+    		int done = 0;
+       		while (done != filasbuscadas.size()) {
+				this.jdata.add(filas.get(filasbuscadas.get(done)));
+				done++;
+    		}
+    	}showTable();
 	}
-	private ArrayList<String[]> toStringArray(String[] toConvert) {
+	
+    private ArrayList<String[]> toStringArray(String[] toConvert) {
 		ArrayList<String[]> list = new ArrayList<>();
 		for (int j=0; j<=toConvert.length-1;j++) {
 			list.add(toConvert[j].split(","));
 			System.out.println(list.get(j)[0]);
 		}
 		return list;
-    }private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
+    }
+    
+    private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("OTHERS...");
 		this.availableChoices.add("NAME");
@@ -480,27 +479,27 @@ public class Controller {
 		this.choiceboxSearch.setItems(availableChoices); 
 		this.choiceboxSearch.getSelectionModel().select(0);
     }
+    
     private void showTable() {
 		tableview = new TableView<String[]>();
-        int size = this.c.length; //number of the columns
-        ArrayList<String> nombres = ControllerEdit.addNamesxIDOneByOne();
+        int size = columnas.length; //number of the columns
+        ArrayList<String> nombrexid = ControllerEdit.addNamesxIDOneByOne("nombrexid");
         for (int i = 0; i < size; i++) {
         	/*Crear una columna por cada nombre de la lista*/
-            TableColumn<String[], String> firstNameCol = new TableColumn<>(this.c[i]);
+            TableColumn<String[], String> firstNameCol = new TableColumn<>(columnas[i]);
             int index = i ;
-            
             /*Asignar el tipo de dato que tendra a la fila;*/
             firstNameCol.setCellValueFactory(cellData -> {
                 String[] rowData = cellData.getValue();
                 if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}
                 else {
                 	String cellValue = rowData[index];
-                    if (nombres.contains(this.c[index])) {
+                    if (nombrexid.contains(columnas[index])) {
 //            			System.out.println("TITULO COLUMNA no editable  "+this.c[index]);
                     	firstNameCol.setEditable(false);
 //                    	return new ReadOnlyStringWrapper(cellValue);
                     }
-                    else if (this.c[index]=="#") {
+                    else if (columnas[index]=="#") {
 //            			System.out.println("TITULO # no editable  "+this.c[index]);
                     	firstNameCol.setEditable(false);
                     	firstNameCol.setMinWidth(50);
