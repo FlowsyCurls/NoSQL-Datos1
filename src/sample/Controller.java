@@ -292,16 +292,20 @@ public class Controller {
 	    	error.printStackTrace();}}
 
 	@FXML //evento de buscar esquemas 
-    public void searchButtonAction(ActionEvent event) throws IOException, NullPointerException { 
-		/*que se esta buscando*/
+    public void searchButtonAction(ActionEvent event) throws IOException, NullPointerException {
+    	/*analizando escogencia....*/
     	String detail = searchSTR.getText();
-    	System.out.println("detail: "+detail); 
-    	if (this.verifyTextField(detail)){ detail=null; this.searchSTR.clear();
-    		System.out.println("Escrito en detail --->>  "+detail);
-    	}
-    	//analizando escogencia....
-    	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem(); 
+    	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem();
     	System.out.println("Seleccionado en el Choices --->> "+selectedChoice); 
+    	System.out.println("detail: "+detail); 
+    	/*TEXT VACIO*/
+    	if (this.verifyTextField(detail)){
+    		detail=null; 
+    		this.searchSTR.clear();
+    		System.out.println("Escrito en detail --->>  "+detail);
+    		return;
+    	}
+    	/*BUSQUEDA DE OTROS ESQUEMAS QUE COINCIDAN*/
     	if (selectedChoice.equals("OTHERS...") || selectedChoice==null){
     		this.loadDiagrams(detail);
     		this.searchSTR.clear();
@@ -315,6 +319,7 @@ public class Controller {
 			ArrayList<String[]> filasbuscadas = new ArrayList<String[]> ();;
 
 			//buscando con nombres...
+        	/*BUSQUEDA DE OTROS ESQUEMAS QUE COINCIDAN*/
 			if (selectedChoice.equals("NAME")) {
 				respuesta = Controller.cliente.acciones(cliente, Controller.listaEsquemas.buscar(searchSTR.getPromptText()), "buscardatos", null, null, 0);
 				
@@ -474,7 +479,8 @@ public class Controller {
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 
 		this.choiceboxSearch.getSelectionModel().select(0);
-    }private void showTable() {
+    }
+    private void showTable() {
 		tableview = new TableView<String[]>();
         int size = this.c.length; //number of the columns
         ArrayList<String> nombres = ControllerEdit.addNamesxIDOneByOne();
