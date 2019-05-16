@@ -96,7 +96,6 @@ public class Controller {
 	public static int counter= 1;
 	
 	private static String [] columnas;
-	private static ArrayList<String[]>  filas = new ArrayList<String[]>();
 	
 	public static Cliente cliente = new Cliente();
  
@@ -378,6 +377,22 @@ public class Controller {
 		System.out.print("\n"); 
 	}
 	
+	public static ArrayList<String> addNamesxIDOneByOne(String caso) { //cargar todos los diagramas.
+		ArrayList<String> nombresxid = new  ArrayList<>(); 
+		Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
+		while (tmp!=null){ 
+			if (caso.equals("nombre")) {
+			nombresxid.add(tmp.getNodo().getNombre());
+//			System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
+	    	tmp=tmp.next;}
+			else if (caso.equals("nombrexid")) {
+				nombresxid.add(tmp.getNodo().getNombre());
+				nombresxid.add(tmp.getNodo().getID()); 
+//				System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
+		    	tmp=tmp.next;}
+			}
+		return nombresxid;}
+	
 	/*PARA MODIFICAR EL LISTVIEW EN BASE A LO QUE SE BUSCA*/
 	private void loadDiagrams(String detail) throws IOException { //loadDiagramas.
     	this.diagrams.removeAll(diagrams);
@@ -444,14 +459,15 @@ public class Controller {
    			this.jdata.add(new String[columnas.length-1]);
    			showTable(); return;}
     	//agregar numeros.
-    	datos = ControllerEdit.addnumber(datos);
-   		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");		
+    	datos = Controller.addnumber(datos);
+   		System.out.println("Enumerados --> "+datos+"\n");		
     	/* Obtener cada fila String[]*/
+   		ArrayList<String[]>  filas = new ArrayList<String[]>();
     	if (filasbuscadas == null) {  //NO BUSCANDO
-       		Controller.filas = this.toStringArray(datos.split(";"));
+       		filas = this.toStringArray(datos.split(";"));
     		this.jdata.addAll(filas);
     	}else{ //BUSCANDO
-       		Controller.filas = this.toStringArray(datos.split(";"));
+       		filas = this.toStringArray(datos.split(";"));
     		int done = 0;
        		while (done != filasbuscadas.size()) {
 				this.jdata.add(filas.get(filasbuscadas.get(done)));
@@ -459,12 +475,39 @@ public class Controller {
     		}
     	}showTable();
 	}
+    
+	public static String addnumber(String sinnumer) {
+//		System.out.println("\n\n\nSINNUMER: "+sinnumer);
+		int remind = -1;
+		int cont = 0;
+		int last = (sinnumer.split(";").length-1);
+		String concate = "";
+		for (int s=0; s<=sinnumer.length()-1;s++) {
+			if (sinnumer.charAt (s) == ';') {
+				String substring = sinnumer.substring(remind+1, s);
+				substring = String.valueOf(cont)+","+substring;
+				concate = concate+";"+substring;
+				if (remind==-1) concate = substring;
+				remind = s;
+				cont++;
+			}else if(cont == last && s==sinnumer.length()-1 && remind==-1) {
+				concate = String.valueOf(cont)+","+sinnumer;
+				cont++;
+			}else if (cont == last && s==sinnumer.length()-1) {
+				String substring = sinnumer.substring(remind+1);
+				substring = ";"+String.valueOf(cont)+","+substring;
+				concate = concate+substring;
+				cont++;}}
+		ControllerEdit.numerofilas=cont;
+//		System.out.println("Controller numf "+ControllerEdit.numerofilas);
+		return concate;
+	}
 	
     private ArrayList<String[]> toStringArray(String[] toConvert) {
 		ArrayList<String[]> list = new ArrayList<>();
 		for (int j=0; j<=toConvert.length-1;j++) {
 			list.add(toConvert[j].split(","));
-			System.out.println(list.get(j)[0]);
+//			System.out.println(list.get(j)[0]);
 		}
 		return list;
     }
@@ -483,7 +526,7 @@ public class Controller {
     private void showTable() {
 		tableview = new TableView<String[]>();
         int size = columnas.length; //number of the columns
-        ArrayList<String> nombrexid = ControllerEdit.addNamesxIDOneByOne("nombrexid");
+        ArrayList<String> nombrexid = Controller.addNamesxIDOneByOne("nombrexid");
         for (int i = 0; i < size; i++) {
         	/*Crear una columna por cada nombre de la lista*/
             TableColumn<String[], String> firstNameCol = new TableColumn<>(columnas[i]);
@@ -495,12 +538,9 @@ public class Controller {
                 else {
                 	String cellValue = rowData[index];
                     if (nombrexid.contains(columnas[index])) {
-//            			System.out.println("TITULO COLUMNA no editable  "+this.c[index]);
                     	firstNameCol.setEditable(false);
-//                    	return new ReadOnlyStringWrapper(cellValue);
                     }
                     else if (columnas[index]=="#") {
-//            			System.out.println("TITULO # no editable  "+this.c[index]);
                     	firstNameCol.setEditable(false);
                     	firstNameCol.setMinWidth(50);
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
