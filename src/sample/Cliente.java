@@ -57,9 +57,9 @@ public class Cliente {
         this.armarobjetodatos("buscar datos",nombre_esquema,dato,columna,"",null);
         return this.conectar();
     }
-    public Datos buscardatosporjoin(String nombre_esquema,String dato,String columna,ListaString nombre_joins){//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+    public Datos buscardatosporjoin(String nombre_esquema,String dato,String columna,String nombre_joins){//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
         this.armarobjetodatos("buscar datos por join",nombre_esquema,dato,columna,"",nombre_joins);
-        return this.conectar();//ordenar los joins del más cercano al nombre_esquema hasta el más lejano donde se encuentra la columna
+        return this.conectar();//poner el nombre del esquema de la columna osea el ultimo join
     }
     public Datos buscardatosporindice(String nombre_esquema,String dato,String columna,String indice){
         this.armarobjetodatos("buscar datos por indice",nombre_esquema,dato,columna,indice,null);
@@ -106,13 +106,13 @@ public class Cliente {
         return conectar();
     }
 
-    private void armarobjetodatos(String accion,String nombre,String dato,String columna, String indice, ListaString joins){
+    private void armarobjetodatos(String accion,String nombre,String dato,String columna, String indice, String nombre_join){
         this.datos.setAccion(accion);
         this.datos.setNombre(nombre);
         this.datos.setDato(dato);
         this.datos.setColumna(columna);
         this.datos.setIndice(indice);
-        this.datos.setNombre_joins(joins);
+        this.datos.setNombre_join(nombre_join);
     }
     private Datos conectar()  {
         Datos datosrecibidos=new Datos();
@@ -173,9 +173,9 @@ public class Cliente {
 	    else if (accion=="buscardatosporindice"){
 	    	Datos respuesta=cliente.buscardatosporindice(e.getNombre(), newvalue, columna, index);
 	    	System.out.println(respuesta); return respuesta;}
-	    else if (accion=="buscardatosporjoin"){
-	    	Datos respuesta=cliente.buscardatosporjoin(e.getNombre(), newvalue, columna, e.getJoinde());
-	    	System.out.println(respuesta); return respuesta;}
+//	    else if (accion=="buscardatosporjoin"){
+//	    	Datos respuesta=cliente.buscardatosporjoin(e.getNombre(), newvalue, columna, String nombreEsquemajoin);
+//	    	System.out.println(respuesta); return respuesta;}
     	return null;
     }
 }

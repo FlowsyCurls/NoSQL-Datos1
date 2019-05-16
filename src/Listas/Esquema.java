@@ -166,34 +166,26 @@ public class Esquema {
         return datos;
     }
     public String buscardatosjoin(String nombre_join,String nombre,String dato) throws StringIndexOutOfBoundsException, EsquemaNuloException {//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
-
         String datos="";
+        int i=0;
+        Esquema esquema=Server.esquemas.buscar(nombre_join);
+        ListaString IDs= new ListaString();
+        while (i<esquema.filas.getLargo()){
+            Hashtable linea=esquema.filas.buscar(i);
+            if (linea.get(nombre).toString().equals(dato)){
+                IDs.addFirst(linea.get(esquema.getID()).toString());
+            }
+            i++;
+        }
+        ListaString thisIDs= this.buscarhaciaatras(IDs,esquema.getNombre(),esquema.getID(),this.nombre);
+        thisIDs.Print();
+        thisIDs.limpiarlista();
+        thisIDs.Print();
         int cont=0;
-        while (cont<this.filas.getLargo()){
-            Hashtable fila=filas.buscar(cont);
-            Hashtable filatmp=filas.buscar(cont);
-            int i=0;
-            Hashtable filajoin=null;
-            Esquema esquema=Server.esquemas.buscar(nombre_join);
-            ListaString IDs= new ListaString();
-            while (i<esquema.filas.getLargo()){
-                Hashtable linea=esquema.filas.buscar(i);
-                if (linea.get(nombre).toString().equals(dato)){
-                    IDs.addFirst(linea.get(nombre).toString());
-                }
-                i++;
-            }
-            while (i<esquema.getJoinde().getLargo()){//aqui se mueve desde el join más cercano hasta el join final donde se encuentra el nombre de la columna
-
-//                filajoin=esquema.getFilas().buscar(filatmp.get(nombre_join,esquema.getID());
-                filatmp=filajoin;
-                i++;
-            }
-
-            if (filajoin.get(nombre).toString().equals(dato)){
-                datos=datos.concat(this.crearstring(fila.get(this.ID).toString(),this.getID()));
-                datos=datos.concat(";");
-            }
+        while (cont<thisIDs.getLargo()) {
+            Hashtable fila = this.filas.buscar(thisIDs.buscar(cont),this.ID);
+            datos = datos.concat(this.crearstring(fila.get(this.ID).toString(), this.getID()));
+            datos = datos.concat(";");
             cont++;
         }
         if (!this.tiene_filas){throw new EsquemaNuloException();}
@@ -381,9 +373,10 @@ public class Esquema {
         }
         return constructores;
     }
-    public ListaString buscarhaciaatras(ListaString IDs, String nombre, String nombre_join){
+    private ListaString buscarhaciaatras(ListaString IDs, String nombre, String nombre_join, String nombre_fin){
         Esquema esquema=Server.esquemas.buscar(nombre);
         int cont= 0;
+        ListaString thisIDs=new ListaString();
         ListaString nuevoIDs=new ListaString();
         while (cont<IDs.getLargo()){
             String ID=IDs.buscar(cont);
@@ -391,15 +384,31 @@ public class Esquema {
             while (i<esquema.filas.getLargo()){
                 Hashtable linea=esquema.filas.buscar(i);
                 if (linea.get(nombre_join).toString().equals(ID)){
-                    nuevoIDs.addFirst(linea.get(nombre_join).toString());
+                    nuevoIDs.addFirst(linea.get(esquema.getID()).toString());
                 }
                 i++;
             }
+            cont++;
         }
-        if (nombre.equals(this.nombre)){
+        nuevoIDs.Print();
+        System.out.println(nombre);
+        System.out.println(nombre_fin);
+        if (nombre.equals(nombre_fin)){
             return nuevoIDs;
         }
-        return null;
+        else if(esquema.getJoinde().getLargo()==0){
+            System.out.println("no tengo mas joins");
+            return new ListaString();
+        }
+        else {
+            int n=0;
+            while (n<esquema.getJoinde().getLargo()){
+                ListaString listatmp=esquema.buscarhaciaatras(nuevoIDs,esquema.getJoinde().buscar(n),esquema.getNombre(),nombre_fin);
+                thisIDs.concatenarlistas(listatmp);
+                n++;
+            }
+            return thisIDs;
+        }
     }
     public ListaString obtenercolumnasparaedit(){
         ListaString listaString=new ListaString();

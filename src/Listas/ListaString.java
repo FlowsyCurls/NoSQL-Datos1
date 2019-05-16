@@ -82,14 +82,37 @@ public class ListaString {
         Nodo<String>tmp=this.head;
         int n=0;
         while (n<this.largo){
-            System.out.println(tmp.getNodo());
+            System.out.print(tmp.getNodo()+",");
             tmp=tmp.next;
             n++;
             }
-
+        System.out.println(" ");
+    }
+    public void limpiarlista(){
+        int cont=0;
+        Nodo<String> tmp = this.head;
+        while (cont<this.largo) {
+            this.Print();
+            String dato = tmp.getNodo();
+            tmp = tmp.next;
+            Nodo<String> tmp2=tmp;
+            int n = cont+1;
+            while (n < this.largo) {
+                System.out.println(dato+":"+tmp2.getNodo());
+                if (dato.equals(tmp2.getNodo())) {
+                    System.out.println(dato+" eliminado");
+                    this.eliminar(dato);
+                    cont=-1;
+                    tmp=this.head;
+                    break;
+                }
+                tmp2 = tmp2.next;
+                System.out.println(n);
+                n++;
+            }
+            cont++;
         }
-
-
+    }
 
     public int getLargo() {
         return largo;

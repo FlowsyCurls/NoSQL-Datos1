@@ -4,9 +4,9 @@ import Listas.ListaString;
 
 public class Datos {
     private String accion,respuesta;
-    private String nombre,columna,dato,datos, cambio;
+    private String nombre,columna,dato,datos, cambio, nombre_join;
     private String indice;
-    private ListaString nombre_joins,constructores;
+    private ListaString constructores;
 
     public String getAccion() {
         return accion;
@@ -64,13 +64,6 @@ public class Datos {
         this.indice = indice;
     }
 
-    public ListaString getNombre_joins() {
-        return nombre_joins;
-    }
-    public void setNombre_joins(ListaString nombre_joins) {
-        this.nombre_joins = nombre_joins;
-    }
-
     public String getCambio() {
         return cambio;
     }
@@ -85,5 +78,13 @@ public class Datos {
 
     public void setConstructores(ListaString constructores) {
         this.constructores = constructores;
+    }
+
+    public String getNombre_join() {
+        return nombre_join;
+    }
+
+    public void setNombre_join(String nombre_join) {
+        this.nombre_join = nombre_join;
     }
 }

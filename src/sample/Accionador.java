@@ -128,18 +128,18 @@ public class Accionador {
         return datos;
     }
 
-//    private Datos buscardatosporjoin(Datos datos){
-//        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
-//        try {
-//            datos.setDatos(esquema.buscardatosjoin(datos.getNombre_joins(),datos.getColumna(),datos.getDato()));
-//            datos.setRespuesta("datos enviados");
-//        }catch (StringIndexOutOfBoundsException e){
-//            datos.setRespuesta("no se encontraron datos");
-//        } catch (EsquemaNuloException e) {
-//            datos.setRespuesta("el esquema esta vacio");
-//        }
-//        return datos;
-//    }
+    private Datos buscardatosporjoin(Datos datos){
+        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
+        try {
+            datos.setDatos(esquema.buscardatosjoin(datos.getNombre_join(),datos.getColumna(),datos.getDato()));
+            datos.setRespuesta("datos enviados");
+        }catch (StringIndexOutOfBoundsException e){
+            datos.setRespuesta("no se encontraron datos");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("el esquema esta vacio");
+        }
+        return datos;
+    }
     private Datos cambiarnombreesquema(Datos datos){
         Server.esquemas.cambiarnombreEsquema(datos.getNombre(),datos.getCambio());
         datos.setRespuesta("Nombre cambiado");
