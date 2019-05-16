@@ -87,8 +87,6 @@ public class ControllerEdit {
 	public void getEsquema(String nombre) throws IOException {
 		Controller.Cargaresquemas();
 		esquema = Controller.listaEsquemas.buscar(nombre);
-		System.out.println("pasa texsst");
-
 		System.out.println("Primera vez "+esquema.getNombre());
 		/* Obtener cada columna String*/ columnas = esquema.obtenercolumnasparaedit().getStringArraycolumnas(esquema.obtenercolumnasparaedit());
     	/* Obtener cada datos String*/ String datos = Controller.cliente.buscardatosparaedit(esquema.getNombre()).getDatos();
@@ -115,9 +113,9 @@ public class ControllerEdit {
 		this.clean();
    		/*SI NO EXISTEN FILAS*/
    		if (datos == null) {
-   			jdata.add(new String[columnas.length-1]);
    			ControllerEdit.numerofilas = 0;
-   			showTable(); 
+   	   		filas = new ArrayList<String[]>();
+   			showTable();
    			return;
    			}
    		/*SI EXISTEN FILAS*/
@@ -130,6 +128,7 @@ public class ControllerEdit {
    		Controller.printArray(datos.split(";"), "filas ");
    		jdata.addAll(filas);
 		showTable();
+		this.deleteChoiceBox();
 	}
 		
 	private ArrayList<String[]> toStringArray(String[] toConvert) {
@@ -152,18 +151,16 @@ public class ControllerEdit {
             /*Asignar el tipo de dato que tendra a la fila;*/
             firstNameCol.setCellValueFactory(cellData -> {
                 String[] rowData = cellData.getValue();
-                System.out.println("llego aqui");
-
                 if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}
                 else {
                 	String cellValue = rowData[index];
                     if (columnas[index].equals(esquema.getID())) {
-            			System.out.println("TITULO COLUMNA no editable  "+columnas[index]);
+            			System.out.println("\nC-ID editable "+columnas[index]);
                     	firstNameCol.setEditable(false);
                     	return new ReadOnlyStringWrapper(cellValue);
                     }
                     else if (columnas[index]=="#") {
-            			System.out.println("TITULO # no editable  "+columnas[index]);
+            			System.out.println("\nC-# editable"+columnas[index]);
                     	firstNameCol.setEditable(false);
                     	firstNameCol.setMinWidth(50);
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
@@ -198,7 +195,6 @@ public class ControllerEdit {
 		screen.getChildren().add(tableview); 
 		log.debug("TableColumns Finished --> "+"table cargado..."); 
 	this.tableview.setEditable(true);
-	this.deleteChoiceBox();
 	}
 	
 	private void deleteChoiceBox() {
@@ -261,23 +257,27 @@ public class ControllerEdit {
 		cancel(event);
 	}
 	@FXML
-    void editNameText(ActionEvent event) {
+    void editNameText(ActionEvent event) throws NullPointerException, IOException {
 		String newname = this.newnameText.getText(); 
 		System.out.println("newname: "+newname); 
 		if (newname.isEmpty() || (newname.trim().isEmpty())) { this.newnameText.clear(); 
 			UserMessage message = new UserMessage(AlertType.INFORMATION, "blank", "Sorry but name can't be");
 			message.show();
 			return;}
-		else { String str = ("Are you sure to change "+esquema.getNombre()+"'s name to "+newname);
+		else { 
+			String str = ("Are you sure to change "+esquema.getNombre()+"'s name to "+newname);
 			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, str);
 			Optional<ButtonType> result = message.showAndWait();
 			if ((result.get() == ButtonType.CANCEL))return;}
 			String respuesta = Controller.cliente.cambiarnombreesquema(esquema.getNombre(), newname);
-				if (respuesta == "Nombre cambiado") {
-					this.newnameText.setPromptText(newname);
-					saved = true; System.out.print(respuesta);
-					return;}
-	}
+			if (respuesta.equals("Nombre cambiado")) {
+				this.newnameText.setPromptText("prev. "+esquema.getNombre());
+				this.newnameText.clear();
+				this.esquema.setNombre(newname);
+				this.setEsquema();
+				return;}
+			System.out.println(respuesta);	
+    }
 	@FXML 
     void handleButtonAdd(ActionEvent event) throws IOException {
 		//casilla de nombre de la fila a eliminar.
@@ -310,7 +310,7 @@ public class ControllerEdit {
     	//casilla de nombre de la fila a eliminar.
     	String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
     	String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
-		if (!respuesta.equals("datos elimandos")) { 
+		if (!respuesta.equals("datos eliminados")) { 
 	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t"+respuesta, "Sorry..");
 	    	message.show();
     	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
