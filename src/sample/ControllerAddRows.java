@@ -15,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,9 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class ControllerAddRows {
 	
@@ -63,7 +60,7 @@ public class ControllerAddRows {
 		this.esquema = esquema;
 		this.veil = veil;
 		this.idText.setText(ID);
-		this.nombres = ControllerEdit.addNamesxIDOneByOne("nombrexid");
+		this.nombres = Controller.addNamesxIDOneByOne("nombrexid");
 		this.dibujoIterativo();
 	}
 
@@ -139,7 +136,8 @@ public class ControllerAddRows {
 			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
 			Optional<ButtonType> result = message.showAndWait();
 			if ((result.get() == ButtonType.CANCEL)){return;}}
-	        Parent root;
+	        @SuppressWarnings("unused")
+			Parent root;
 	        FXMLLoader loader;
 	        loader = new FXMLLoader(getClass().getResource("edit.fxml"));
 	        root=loader.load();
@@ -150,7 +148,6 @@ public class ControllerAddRows {
 					System.out.println("FILAS  >>>>>><<<<< "+fila);
 					ControllerEdit controller= loader.getController();	
 					controller.addRows(this.fila, esquema.getNombre());
-					controller.setCxF();
 				} catch (NullPointerException envio){
 					envio.printStackTrace();
 				}

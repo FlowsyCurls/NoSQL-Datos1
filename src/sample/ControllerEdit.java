@@ -1,17 +1,14 @@
 package sample;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import Errores.DatosUsadosException;
 import Listas.Esquema;
-import Listas.Nodo;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,16 +63,17 @@ public class ControllerEdit {
     @FXML private TextField newnameText = new TextField();
     
 	private ObservableList<String> posiblesids= FXCollections.observableArrayList(); 
+    public ArrayList<String[]> jdata = new ArrayList<String[]>(); //Here is the dat
 
     //Variables
-    public ArrayList<String[]> jdata = new ArrayList<String[]>(); //Here is the dat
-    public static Logger log = LoggerFactory.getLogger(ControllerEdit.class);
 	public static int numerofilas;
-    public  Esquema esquema;
-    public  String[] columnas_esquema; 
-    
-	private static boolean saved = false;
+	private static String [] columnas;
 	private ArrayList<String[]> filas;
+    public  Esquema esquema;
+	private static boolean saved = false;
+	
+    public static Logger log = LoggerFactory.getLogger(ControllerEdit.class);
+
     
     //initializer 
     public void initialize() throws IOException {
@@ -89,114 +87,80 @@ public class ControllerEdit {
 	public void getEsquema(String nombre) throws IOException {
 		Controller.Cargaresquemas();
 		esquema = Controller.listaEsquemas.buscar(nombre);
-		System.out.println("vamos denuevo "+esquema.getNombre());
-		setCxF();
+		System.out.println("Primera vez "+esquema.getNombre());
+		/* Obtener cada columna String*/ columnas = esquema.obtenercolumnasparaedit().getStringArraycolumnas(esquema.obtenercolumnasparaedit());
+    	/* Obtener cada datos String*/ String datos = Controller.cliente.buscardatosparaedit(esquema.getNombre()).getDatos();
 		setTexts();
+		setCxF(datos);
 	}
-
+	private void setEsquema() throws NullPointerException, IOException {
+		Controller.Cargaresquemas();
+		esquema = Controller.listaEsquemas.buscar(esquema.getNombre());
+		System.out.println("Otras veces "+esquema.getNombre());
+		/* Obtener cada columna String*/ columnas = esquema.obtenercolumnasparaedit().getStringArraycolumnas(esquema.obtenercolumnasparaedit());
+		/* Obtener cada datos String*/ String datos = Controller.cliente.buscardatosparaedit(esquema.getNombre()).getDatos();
+		setTexts();
+		setCxF(datos);
+	}
+	
 	private void setTexts() {
 		this.nameText.setText(esquema.getNombre());
 		this.idText.setText(esquema.getID());
 		veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8)");
-
 	}
-
 	
-	public void setCxF(){
+	private void setCxF(String datos){
 		this.clean();
-		/* Obtener cada columna String*/
-    	columnas_esquema = esquema.obtenercolumnas().getStringArraycolumnas(esquema.obtenercolumnas());
-    	/* Obtener cada fila String[]*/
-   		String datos = Controller.cliente.buscartodoslosdatos(esquema.getNombre()).getDatos();
-   		System.out.println("\nDATOS DE BUSCAR TODOS --> "+datos);
-   		
    		/*SI NO EXISTEN FILAS*/
    		if (datos == null) {
-   			jdata.add(new String[columnas_esquema.length-1]);
    			ControllerEdit.numerofilas = 0;
-   			showTable(); 
+   	   		filas = new ArrayList<String[]>();
+   			showTable();
    			return;
    			}
-   		
    		/*SI EXISTEN FILAS*/
-   		datos = ControllerEdit.addnumber(datos);
-   		System.out.println("DATOS CON NUMERO DE FILAS AGREGADOS --> "+datos+"\n");
+   		System.out.println("\nDatos |>> "+datos);
+   		datos = Controller.addnumber(datos);   		
+   		System.out.println("Enumeracion |>> "+datos);
+    	/* Obtener cada fila String[]*/
    		filas = new ArrayList<String[]>();
    		filas = this.toStringArray(datos.split(";"));
    		Controller.printArray(datos.split(";"), "filas ");
    		jdata.addAll(filas);
 		showTable();
+		this.deleteChoiceBox();
 	}
-	public static String addnumber(String sinnumer) {
-		System.out.println("\n\n\nSINNUMER: "+sinnumer);
-		int remind = -1;
-		int cont = 0;
-		int last = (sinnumer.split(";").length-1);
-		String concate = "";
-		for (int s=0; s<=sinnumer.length()-1;s++) {
-			
-//			System.out.println("remind "+remind);
-			
-			if (sinnumer.charAt (s) == ';') {
-				String substring = sinnumer.substring(remind+1, s);
-//				System.out.println("\n\rSubstring "+substring);
-				substring = String.valueOf(cont)+","+substring;
-//				System.out.println("String "+substring);
-				concate = concate+";"+substring;
-				if (remind==-1) concate = substring;
-//				System.out.println("concate "+concate);
-				remind = s;
-				cont++;
-			}
-			else if(cont == last && s==sinnumer.length()-1 && remind==-1) {
-				concate = String.valueOf(cont)+","+sinnumer;
-				cont++;
-			}
-			else if (cont == last && s==sinnumer.length()-1) {
-				String substring = sinnumer.substring(remind+1);
-//				System.out.println("\n\rSubstring "+substring);
-				substring = ";"+String.valueOf(cont)+","+substring;
-//				System.out.println("String "+substring);
-				concate = concate+substring;
-				cont++;
-//				System.out.println("concate "+concate);
-			}
-		}
-//		System.out.println("concate "+concate);
-		ControllerEdit.numerofilas=cont;
-		System.out.println("Controller numf "+ControllerEdit.numerofilas);
-		return concate;
-	}
+		
 	private ArrayList<String[]> toStringArray(String[] toConvert) {
 		ArrayList<String[]> list = new ArrayList<>();
 		for (int j=0; j<=toConvert.length-1;j++) {
 			list.add(toConvert[j].split(","));
 //			System.out.println(list.get(j)[0]);
-		}
+			}
 		return list;
+	}
 	
-	}private void showTable() {
+	private void showTable() {
 		tableview = new TableView<String[]>();
-        int size = columnas_esquema.length; //number of the columns
-        ArrayList<String> nombrexid = ControllerEdit.addNamesxIDOneByOne("nombresxid");
+        int size = columnas.length; //number of the columns
         for (int i = 0; i < size; i++) {
         	/*Crear una columna por cada nombre de la lista*/
-            TableColumn<String[], String> firstNameCol = new TableColumn<>(columnas_esquema[i]);
+            TableColumn<String[], String> firstNameCol = new TableColumn<>(columnas[i]);
             int index = i ;
-            
+
             /*Asignar el tipo de dato que tendra a la fila;*/
             firstNameCol.setCellValueFactory(cellData -> {
                 String[] rowData = cellData.getValue();
                 if (index >= rowData.length) {return new ReadOnlyStringWrapper("");}
                 else {
                 	String cellValue = rowData[index];
-                    if (nombrexid.contains(columnas_esquema[index])) {
-//            			System.out.println("TITULO COLUMNA no editable  "+EsquemaEditadoCOLUMNAS[index]);
+                    if (columnas[index].equals(esquema.getID())) {
+            			System.out.println("\nC-ID editable "+columnas[index]);
                     	firstNameCol.setEditable(false);
-//                    	return new ReadOnlyStringWrapper(cellValue);
+                    	return new ReadOnlyStringWrapper(cellValue);
                     }
-                    else if (columnas_esquema[index]=="#") {
-//            			System.out.println("TITULO # no editable  "+EsquemaEditadoCOLUMNAS[index]);
+                    else if (columnas[index]=="#") {
+            			System.out.println("\nC-# editable"+columnas[index]);
                     	firstNameCol.setEditable(false);
                     	firstNameCol.setMinWidth(50);
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
@@ -209,9 +173,12 @@ public class ControllerEdit {
         	/*Asignar propiedad editable a la celda.*/
 	            firstNameCol.setOnEditCommit(event -> {
 	                String[] row = event.getRowValue();
-	                Controller.cliente.cambiardato(esquema.getNombre(), filas.get(event.getTablePosition().getRow())[1],
-	            			columnas_esquema[event.getTablePosition().getColumn()], event.getNewValue());
-            		//cambio
+	                String respuesta = Controller.cliente.cambiardato(esquema.getNombre(), filas.get(event.getTablePosition().getRow())[1],
+	            			columnas[event.getTablePosition().getColumn()], event.getNewValue());
+            		if (!respuesta.equals("dato cambiado")) {
+            			System.out.println("Respuesta al intento de edicion |>> "+respuesta);
+            			return;}
+            		/*cambio visual*/
             		row[index] = event.getNewValue();
    	                return;
 	            });
@@ -228,10 +195,9 @@ public class ControllerEdit {
 		screen.getChildren().add(tableview); 
 		log.debug("TableColumns Finished --> "+"table cargado..."); 
 	this.tableview.setEditable(true);
-	this.deleteChoiceBox();
-
+	}
 	
-	}private void deleteChoiceBox() {
+	private void deleteChoiceBox() {
 		if (ControllerEdit.numerofilas == 0 ) {
 			this.posiblesids.clear();
 			this.deleteBox = new ChoiceBox<String>();
@@ -242,97 +208,22 @@ public class ControllerEdit {
 		this.deleteBox.setItems(posiblesids);
 		deleteBox.getSelectionModel().select(0); 
 	}
-	public static ArrayList<String> addNamesxIDOneByOne(String caso) { //cargar todos los diagramas.
-		ArrayList<String> nombresxid = new  ArrayList<>(); 
-		Nodo<Esquema>tmp = Controller.listaEsquemas.getHead(); 
-		while (tmp!=null){ 
-			if (caso.equals("nombre")) {
-			nombresxid.add(tmp.getNodo().getNombre());
-//			System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
-	    	tmp=tmp.next;}
-			else if (caso.equals("nombrexid")) {
-				nombresxid.add(tmp.getNodo().getNombre());
-				nombresxid.add(tmp.getNodo().getID()); 
-//				System.out.println("NODO ESQUEMA "+tmp.getNodo().getNombre());
-		    	tmp=tmp.next;}
-			}
-		return nombresxid;} 
-
-	public void editNameText() {
-		String newname = this.newnameText.getText(); 
-		System.out.println("newname: "+newname); 
-		if (newname.isEmpty() || (newname.trim().isEmpty())) { this.newnameText.clear(); 
-			UserMessage message = new UserMessage(AlertType.INFORMATION, "blank", "Sorry but name can't be");
-			message.show();
-			return;}
-		else { String str = ("Are you sure to change "+esquema.getNombre()+"'s name to "+newname);
-			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, str);
-			Optional<ButtonType> result = message.showAndWait();
-			if ((result.get() == ButtonType.CANCEL))return;}
-			String respuesta = Controller.cliente.cambiarnombreesquema(esquema.getNombre(), newname);
-				if (respuesta == "Nombre cambiado") {
-					this.newnameText.setPromptText(newname);
-					saved = true; System.out.print(respuesta);
-					return;}
+	
+	void addRows(String fila, String nombre) throws IOException {
+	this.initialize();
+	System.out.println(nombre);
+	String respuesta = Controller.cliente.insertardatos(nombre, fila);
+	System.out.println("FILAS recibidas  >>>>>><<<<< "+fila);
+	System.out.println("Respuesta "+respuesta);
+	//sino solo muestra mensaje y retorna.
+	if (respuesta == null) {
+		UserMessage message = new UserMessage(AlertType.INFORMATION, fila, "Sorry an ERROR has ocurred while adding ");message.show(); 
+		this.addfield.clear(); return;
 	}
-	public void addRows(String fila, String nombre) throws IOException {
-		this.initialize();
-		System.out.println(nombre);
-		String respuesta = Controller.cliente.insertardatos(nombre, fila);
-		System.out.println("FILAS recibidas  >>>>>><<<<< "+fila);
-		System.out.println("Respuesta "+respuesta);
-		//sino solo muestra mensaje y retorna.
-		if (respuesta == null) {
-			UserMessage message = new UserMessage(AlertType.INFORMATION, fila, "Sorry an ERROR has ocurred while adding ");message.show(); 
-			this.addfield.clear(); return;
-		}
-		this.getEsquema(nombre);
-		}
-
-	@FXML 
-    public void handleButtonAdd(ActionEvent event) throws IOException {
-		//casilla de nombre de la fila a eliminar.
-		String toAdd_id = addfield.getText();
-		if (toAdd_id.isEmpty())return;
-		/*verificar si aparece dentro de las filas*/
-		int apariciones = 0;
-		for (int id = 0; id < filas.size(); id++) { 
-			System.out.println(filas.get(id)[1]);
-			if (filas.get(id)[1].equals(toAdd_id)) apariciones++;}
-		/*ver si aparece o que*/
-		if (apariciones != 0) { UserMessage message = new UserMessage(AlertType.INFORMATION, "has been used." +"\n\rEach person is unique and unrepeatable, \rthe same applies to your IDs ",  "Hmm' sorry bruh! "+ toAdd_id); message.show(); this.addfield.clear(); return;}
-
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("addRows.fxml"));
-	        Parent root1 = (Parent) loader.load();
-	        Stage stage = new Stage();
-	        Stage currentStage = (Stage) this.addButton.getScene().getWindow();
-	        stage.initOwner(currentStage);
-	        stage.initModality(Modality.APPLICATION_MODAL);
-	        stage.initStyle(StageStyle.UNDECORATED);
-	        stage.setResizable(false);
-	        stage.setScene(new Scene(root1));
-	        this.veil.setVisible(true);
-	        ControllerAddRows controller= loader.getController();
-	        controller.getID(toAdd_id, columnas_esquema, esquema, veil);
-	        stage.showAndWait();
+	this.getEsquema(nombre);
 	}
 	@FXML
-    public void handleButtonDelete(ActionEvent event) throws DatosUsadosException {
-    	//casilla de nombre de la fila a eliminar.
-    	String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
-    	String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
-		if (!respuesta.equals("datos elimandos")) { 
-	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t"+respuesta, "Sorry..");
-	    	message.show();
-    	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
-		this.setCxF();
-		}
-    }
-
-
-
-    @FXML
-	public void cancel(ActionEvent event) {
+	void cancel(ActionEvent event) {
 		if (!saved) {
 			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
 			Optional<ButtonType> result = message.showAndWait();
@@ -356,19 +247,81 @@ public class ControllerEdit {
 	        System.out.println("Al abrir nuevamente ocurrio esto : "+e); e.printStackTrace();}
 	}
 	@FXML
-    public void edit(ActionEvent event) throws IOException {
-    	//mensaje de seguridad.
-    	UserMessage message = new UserMessage(AlertType.CONFIRMATION, "NO","Are you sure you want to edit? \n\rChanges can not be undone!");
+	void edit(ActionEvent event) throws IOException {
+		//mensaje de seguridad.
+		UserMessage message = new UserMessage(AlertType.CONFIRMATION, "NO","Are you sure you want to edit? \n\rChanges can not be undone!");
 		Optional<ButtonType> result = message.showAndWait();
 		if ((result.get() == ButtonType.NO)){return;}
-    	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
-    	saved = true;
-    	cancel(event);
-    }
-    
+		log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
+		saved = true;
+		cancel(event);
+	}
 	@FXML
-	public void refresh(ActionEvent event) throws IOException {
-		this.setCxF();
+    void editNameText(ActionEvent event) throws NullPointerException, IOException {
+		String newname = this.newnameText.getText(); 
+		System.out.println("newname: "+newname); 
+		if (newname.isEmpty() || (newname.trim().isEmpty())) { this.newnameText.clear(); 
+			UserMessage message = new UserMessage(AlertType.INFORMATION, "blank", "Sorry but name can't be");
+			message.show();
+			return;}
+		else { 
+			String str = ("Are you sure to change "+esquema.getNombre()+"'s name to "+newname);
+			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, str);
+			Optional<ButtonType> result = message.showAndWait();
+			if ((result.get() == ButtonType.CANCEL))return;}
+			String respuesta = Controller.cliente.cambiarnombreesquema(esquema.getNombre(), newname);
+			if (respuesta.equals("Nombre cambiado")) {
+				this.newnameText.setPromptText("prev. "+esquema.getNombre());
+				this.newnameText.clear();
+				this.esquema.setNombre(newname);
+				this.setEsquema();
+				return;}
+			System.out.println(respuesta);	
+    }
+	@FXML 
+    void handleButtonAdd(ActionEvent event) throws IOException {
+		//casilla de nombre de la fila a eliminar.
+		String toAdd_id = addfield.getText();
+		if (toAdd_id.isEmpty())return;
+		/*verificar si aparece dentro de las filas*/
+		int apariciones = 0;
+		for (int id = 0; id < filas.size(); id++) { 
+			System.out.println(filas.get(id)[1]);
+			if (filas.get(id)[1].equals(toAdd_id)) apariciones++;}
+		/*ver si aparece o que*/
+		if (apariciones != 0) { UserMessage message = new UserMessage(AlertType.INFORMATION, "has been used." +"\n\rEach person is unique and unrepeatable, \rthe same applies to your IDs ",  "Hmm' sorry bruh! "+ toAdd_id); message.show(); this.addfield.clear(); return;}
+
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("addRows.fxml"));
+	        Parent root1 = (Parent) loader.load();
+	        Stage stage = new Stage();
+	        Stage currentStage = (Stage) this.addButton.getScene().getWindow();
+	        stage.initOwner(currentStage);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UNDECORATED);
+	        stage.setResizable(false);
+	        stage.setScene(new Scene(root1));
+	        this.veil.setVisible(true);
+	        ControllerAddRows controller= loader.getController();
+	        controller.getID(toAdd_id, columnas, esquema, veil);
+	        stage.showAndWait();
+	}
+	@FXML
+    void handleButtonDelete(ActionEvent event) throws DatosUsadosException {
+    	//casilla de nombre de la fila a eliminar.
+    	String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
+    	String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
+		if (!respuesta.equals("datos eliminados")) { 
+	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t"+respuesta, "Sorry..");
+	    	message.show();
+    	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
+		try {this.setEsquema();} 
+		catch (NullPointerException | IOException e) {e.printStackTrace();}
+		}
+    }
+
+    @FXML
+	void refresh(ActionEvent event) throws IOException {
+		this.setEsquema();
 		this.addfield.clear();
 	}
 	
