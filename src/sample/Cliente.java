@@ -100,6 +100,11 @@ public class Cliente {
         this.datos.setAccion("guardar datos");
         return conectar().getRespuesta();
     }
+    public Datos buscardatosparaedit(String Nombre_esquema){
+        this.datos.setNombre(Nombre_esquema);
+        this.datos.setAccion("buscar datos para edit");
+        return conectar();
+    }
 
     private void armarobjetodatos(String accion,String nombre,String dato,String columna, String indice, ListaString joins){
         this.datos.setAccion(accion);

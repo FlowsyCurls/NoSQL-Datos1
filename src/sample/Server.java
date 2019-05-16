@@ -84,7 +84,6 @@ public class Server implements Runnable {
         System.out.println("\n\n");
         System.out.println(esquemas.buscar("Esquema2").buscartodos()+"2");
         System.out.println("\n\n");
-        System.out.println(esquemas.buscar("Esquema3").buscartodos()+"3");
         Thread hilo = new Thread(this);
         hilo.start();
 

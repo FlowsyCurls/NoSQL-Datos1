@@ -17,7 +17,7 @@ public class Accionador {
         else if (accion.equals("insertar datos")){datos=this.insertardatos(datos);}
         else if (accion.equals("eliminar datos")){datos=this.eliminardatos(datos);}
         else if (accion.equals("buscar datos")){datos=this.buscardatos(datos);}
-        else if (accion.equals("buscar datos por join")){datos=this.buscardatosporjoin(datos);}
+//        else if (accion.equals("buscar datos por join")){datos=this.buscardatosporjoin(datos);}
         else if (accion.equals("buscar datos por indice")){datos=this.buscardatosporindice(datos);}
         else if (accion.equals("crear indice")){datos=this.crearindice(datos);}
         else if (accion.equals("eliminar indice")){datos=this.eliminarindice(datos);}
@@ -26,8 +26,23 @@ public class Accionador {
         else if (accion.equals("enviar esquemas")){datos=this.enviarEsquemas(datos);}
         else if (accion.equals("guardar datos")){datos=this.guardarDatos(datos);}
         else if (accion.equals("buscar todos los datos")){datos=this.buscartodoslosdatos(datos);}
+        else if (accion.equals("buscar datos para edit")) {datos=this.buscardatosparaedit(datos);}
         return datos;
     }
+
+    private Datos buscardatosparaedit(Datos datos) {
+        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
+        try {
+            datos.setDatos(esquema.buscardatosparaedit());
+            datos.setRespuesta("datos enviados");
+        }catch (StringIndexOutOfBoundsException e){
+            datos.setRespuesta("no se encontraron datos");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("el esquema esta vacio");
+        }
+        return datos;
+    }
+
     private Datos crearEsquema(Datos datos) {
         try {
         Esquema esquema = new Esquema(datos.getDatos());
@@ -113,18 +128,18 @@ public class Accionador {
         return datos;
     }
 
-    private Datos buscardatosporjoin(Datos datos){
-        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
-        try {
-            datos.setDatos(esquema.buscardatosjoin(datos.getNombre_joins(),datos.getColumna(),datos.getDato()));
-            datos.setRespuesta("datos enviados");
-        }catch (StringIndexOutOfBoundsException e){
-            datos.setRespuesta("no se encontraron datos");
-        } catch (EsquemaNuloException e) {
-            datos.setRespuesta("el esquema esta vacio");
-        }
-        return datos;
-    }
+//    private Datos buscardatosporjoin(Datos datos){
+//        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
+//        try {
+//            datos.setDatos(esquema.buscardatosjoin(datos.getNombre_joins(),datos.getColumna(),datos.getDato()));
+//            datos.setRespuesta("datos enviados");
+//        }catch (StringIndexOutOfBoundsException e){
+//            datos.setRespuesta("no se encontraron datos");
+//        } catch (EsquemaNuloException e) {
+//            datos.setRespuesta("el esquema esta vacio");
+//        }
+//        return datos;
+//    }
     private Datos cambiarnombreesquema(Datos datos){
         Server.esquemas.cambiarnombreEsquema(datos.getNombre(),datos.getCambio());
         datos.setRespuesta("Nombre cambiado");

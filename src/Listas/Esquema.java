@@ -47,8 +47,8 @@ public class Esquema {
         }
     }
 
-    
-	private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
+
+    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
         int cont=1;
         this.ID=partes[cont].split(":")[0];
@@ -94,7 +94,7 @@ public class Esquema {
 
     public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException {
         System.out.println(fila);
-    	Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
+        Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
         int cont=0;
         while (cont<datos.length){
@@ -137,7 +137,7 @@ public class Esquema {
         }
         else {
             if (this.filas.getLargo()>1){
-            this.filas.eliminar(dato,this.ID);
+                this.filas.eliminar(dato,this.ID);
             }
             else{
                 this.tiene_filas=false;
@@ -165,7 +165,7 @@ public class Esquema {
         if (!this.tiene_filas){throw new EsquemaNuloException();}
         return datos;
     }
-    public String buscardatosjoin(ListaString joins,String nombre,String dato) throws StringIndexOutOfBoundsException, EsquemaNuloException {//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
+    public String buscardatosjoin(String nombre_join,String nombre,String dato) throws StringIndexOutOfBoundsException, EsquemaNuloException {//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
 
         String datos="";
         int cont=0;
@@ -174,9 +174,18 @@ public class Esquema {
             Hashtable filatmp=filas.buscar(cont);
             int i=0;
             Hashtable filajoin=null;
-            while (i<joins.getLargo()){//aqui se mueve desde el join más cercano hasta el join final donde se encuentra el nombre de la columna
-                Esquema esquema=Server.esquemas.buscar(joins.buscar(i));
-                filajoin=esquema.getFilas().buscar(filatmp.get(joins.buscar(i)).toString(),esquema.getID());
+            Esquema esquema=Server.esquemas.buscar(nombre_join);
+            ListaString IDs= new ListaString();
+            while (i<esquema.filas.getLargo()){
+                Hashtable linea=esquema.filas.buscar(i);
+                if (linea.get(nombre).toString().equals(dato)){
+                    IDs.addFirst(linea.get(nombre).toString());
+                }
+                i++;
+            }
+            while (i<esquema.getJoinde().getLargo()){//aqui se mueve desde el join más cercano hasta el join final donde se encuentra el nombre de la columna
+
+//                filajoin=esquema.getFilas().buscar(filatmp.get(nombre_join,esquema.getID());
                 filatmp=filajoin;
                 i++;
             }
@@ -232,16 +241,16 @@ public class Esquema {
 
 
     public ArrayTuple getDatosArray() throws EsquemaNuloException{
-    	ArrayTuple tuple = new ArrayTuple();
-    	ArrayList<String> keys = this.obtenercolumnas().getArraycolumnas(this.obtenercolumnas());
-		String[] cadena = this.buscartodos().split(",");
-		for (int i=0; i<cadena.length; i++) {
+        ArrayTuple tuple = new ArrayTuple();
+        ArrayList<String> keys = this.obtenercolumnas().getArraycolumnas(this.obtenercolumnas());
+        String[] cadena = this.buscartodos().split(",");
+        for (int i=0; i<cadena.length; i++) {
             String nombre = keys.get(0);
             String dato=cadena[i].split(":")[0];
             tuple.addAll(nombre, dato);
-		}
-		return tuple;
-	}
+        }
+        return tuple;
+    }
 
 
 
@@ -284,18 +293,18 @@ public class Esquema {
         }
         return listaString;
     }
-    
+
     public ArrayList<String> getMijoinsArray() {
-    	ArrayList<String> array = new ArrayList<String>();
-    	Nodo<String> tmp = this.mijoins.getHead();
-    	for (int i=0; i<this.mijoins.getLargo(); i++) {
-    		array.add(tmp.getNodo());
-    		tmp = tmp.getNext();
-    	}
-		return array;
+        ArrayList<String> array = new ArrayList<String>();
+        Nodo<String> tmp = this.mijoins.getHead();
+        for (int i=0; i<this.mijoins.getLargo(); i++) {
+            array.add(tmp.getNodo());
+            tmp = tmp.getNext();
+        }
+        return array;
     }
-    
-    
+
+
     public void cambiarnombrecolumna(String nombre, String nuevonombre){
         int cont=0;
         while (cont<this.filas.getLargo()){
@@ -309,9 +318,9 @@ public class Esquema {
     }
 
     public void cambiardato(String ID, String columna, String nuevodato) throws DatoNoExistenteException {
-    	System.out.println("ID por editar : " +ID);
-    	System.out.println("COLUMNA por editar : " +columna);
-    	System.out.println("NUEVODATO por editar : " +nuevodato);
+        System.out.println("ID por editar : " +ID);
+        System.out.println("COLUMNA por editar : " +columna);
+        System.out.println("NUEVODATO por editar : " +nuevodato);
         Hashtable fila=this.filas.buscar(ID,this.ID);
         if (this.getMijoins().contiene(columna)) {
             Esquema esquema = Server.esquemas.buscar(columna);
@@ -347,7 +356,7 @@ public class Esquema {
         }
         System.out.println(constructor);
         constructor=constructor.substring(0,constructor.length()-1);
-            return constructor;
+        return constructor;
     }
     public ListaString crearconstructoresdatos(){
         ListaString constructores=new ListaString();
@@ -372,6 +381,74 @@ public class Esquema {
         }
         return constructores;
     }
+    public ListaString buscarhaciaatras(ListaString IDs, String nombre, String nombre_join){
+        Esquema esquema=Server.esquemas.buscar(nombre);
+        int cont= 0;
+        ListaString nuevoIDs=new ListaString();
+        while (cont<IDs.getLargo()){
+            String ID=IDs.buscar(cont);
+            int i=0;
+            while (i<esquema.filas.getLargo()){
+                Hashtable linea=esquema.filas.buscar(i);
+                if (linea.get(nombre_join).toString().equals(ID)){
+                    nuevoIDs.addFirst(linea.get(nombre_join).toString());
+                }
+                i++;
+            }
+        }
+        if (nombre.equals(this.nombre)){
+            return nuevoIDs;
+        }
+        return null;
+    }
+    public ListaString obtenercolumnasparaedit(){
+        ListaString listaString=new ListaString();
+        int cont=this.mijoins.getLargo()-1;
+
+        while (cont>=0){
+            String nombreesquema=this.mijoins.buscar(cont);
+            listaString.addFirst(nombreesquema);
+            cont--;
+        }
+        cont=this.tamanos.getLargo()-1;
+        while (cont>=0){
+            listaString.addFirst(this.tamanos.buscarnombre(cont));
+            cont--;
+        }
+        return listaString;
+    }
+    public String buscardatosparaedit() throws EsquemaNuloException {
+        String datos="";
+        int cont=0;
+        while (cont<this.filas.getLargo()){
+            System.out.println("entro aca");
+            Hashtable fila=this.filas.buscar(cont);
+            datos=datos.concat(this.crearstringparaedit(fila.get(this.ID).toString(),this.getID()));
+            datos=datos.concat(";");
+            cont++;
+        }
+        datos=datos.substring(0,datos.length()-1);
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
+        return datos;
+    }
+    private String crearstringparaedit(String dato,String nombre) {
+        Hashtable fila= this.filas.buscar(dato,nombre);
+        String string="";
+        int i=0;
+        while (i<this.tamanos.getLargo()){
+            string=string.concat( fila.get(this.tamanos.buscarnombre(i))+",");
+            i++;
+        }
+        if (this.getMijoins().getLargo()!=0){
+            int cont=0;
+            while (cont<getMijoins().getLargo()){
+                string=string.concat(fila.get(mijoins.buscar(cont))+",");
+                cont++;
+            }
+        }
+        return string.substring(0,string.length()-1);
+    }
+
 
 
     private String obtenertipo(String nombre){
@@ -398,7 +475,7 @@ public class Esquema {
     public String getNombre() {
         return nombre;
     }
-    
+
     public String Nombre0() {
         return "Nombre0";
     }
@@ -431,12 +508,12 @@ public class Esquema {
     public void setJoinde(ListaString joinde) {
         this.joinde = joinde;
     }
-	public void setMijoins(ListaString mijoins) {
-		this.mijoins = mijoins;
-	}
-	public void setTamanos(ListaTamano tamanos) {
-		this.tamanos = tamanos;
-	}
+    public void setMijoins(ListaString mijoins) {
+        this.mijoins = mijoins;
+    }
+    public void setTamanos(ListaTamano tamanos) {
+        this.tamanos = tamanos;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;

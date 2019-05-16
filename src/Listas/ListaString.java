@@ -78,6 +78,18 @@ public class ListaString {
     	}
 		return array;
     }
+    public void Print(){
+        Nodo<String>tmp=this.head;
+        int n=0;
+        while (n<this.largo){
+            System.out.println(tmp.getNodo());
+            tmp=tmp.next;
+            n++;
+            }
+
+        }
+
+
 
     public int getLargo() {
         return largo;
