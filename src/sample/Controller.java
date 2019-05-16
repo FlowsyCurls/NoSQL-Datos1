@@ -85,8 +85,8 @@ public class Controller {
     private TextField searchSTR =  new TextField(); 
     
     //FMLX nothingMessage 
-	private final StackPane stack = new StackPane(); 
-	private final Label nothing =new Label(); 
+	private  StackPane stack = new StackPane(); 
+	private  Label nothing =new Label(); 
 	
 	//objextmapper 
     private ObjectMapper objectMapper=new ObjectMapper(); 
@@ -522,6 +522,7 @@ public class Controller {
 		screen.getChildren().add(tableview); 
 		log.debug("TableColumns Finished --> "+"table cargado...");         
     }private void nothingMessage() { 	//muestra que no se busca nada. 
+    	nothing =new Label(); 
 		nothing.setText("Nothing Displayed"); nothing.setTextFill(Color.GHOSTWHITE); nothing.setFont(new Font("Arial", 25)); 
 		stack.prefWidthProperty().bind(screen.widthProperty());  
 		stack.prefHeightProperty().bind(screen.heightProperty());  
@@ -545,6 +546,7 @@ public class Controller {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
 		String respuesta = Controller.cliente.eliminarEsquema(selectedDiagram);
 		if ((respuesta.equals("esquema eliminado"))) {
+			this.clean();
 			this.initialize();
 			return;
 		}else if ((respuesta.equals("esquema usado"))) {
