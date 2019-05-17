@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import Listas.Esquema;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,6 +62,12 @@ public class ControllerEdit {
     
     @FXML private TextField newnameText = new TextField();
     
+    @FXML private ChoiceBox<String> structuresBox = new ChoiceBox<String>();
+
+    @FXML  private ChoiceBox<String> structureskey = new ChoiceBox<String>();
+
+	private ObservableList<String> posibleStructures = FXCollections.observableArrayList();
+	private ObservableList<String> posibleKeys = FXCollections.observableArrayList();
 	private ObservableList<String> posiblesids= FXCollections.observableArrayList(); 
     public ArrayList<String[]> jdata = new ArrayList<String[]>(); //Here is the dat
 
@@ -107,6 +114,11 @@ public class ControllerEdit {
 	private void setTexts() {
 		this.nameText.setText(esquema.getNombre());
 		this.idText.setText(esquema.getID());
+        structuresBox.getSelectionModel().selectedItemProperty().addListener( 
+        		(ObservableValue<? extends String> observable, String oldValue, String newValue) -> this.updateStructuresKey(esquema.getNombre())); 
+		this.posibleStructures.addAll("Simple List", "Binary","R-N","B","B+","AVL","AA");
+        this.structuresBox.setItems(this.posibleStructures);
+		structuresBox.getSelectionModel().select(0); 
 		veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8)");
 	}
 	
@@ -177,7 +189,8 @@ public class ControllerEdit {
 	                String respuesta = Controller.cliente.cambiardato(esquema.getNombre(), filas.get(event.getTablePosition().getRow())[1],
 	            			columnas[event.getTablePosition().getColumn()], event.getNewValue());
             		if (!respuesta.equals("dato cambiado")) {
-            			System.out.println("Respuesta al intento de edicion |>> "+respuesta);
+            			UserMessage message = new UserMessage(AlertType.ERROR, "\n\n\r\t>>"+respuesta, "Respuesta al intento de edicion >> "); message.showAndWait();
+//            			System.out.println("\n\n\nRespuesta al intento de edicion |>> "+respuesta);
             			return;}
             		/*cambio visual*/
             		row[index] = event.getNewValue();
@@ -210,13 +223,26 @@ public class ControllerEdit {
 		deleteBox.getSelectionModel().select(0); 
 	}
 	
+    public void updateStructuresKey(String scheme) {
+		Esquema esquema_con_columnas = Controller.listaEsquemas.buscar(scheme);
+		ArrayList<String>  keys_columnas = esquema_con_columnas.obtenercolumnas().getArraycolumnas(esquema_con_columnas.obtenercolumnas());
+		System.out.println("Encontrado "+esquema_con_columnas.getNombre());
+    	this.posibleKeys.clear();
+   		for (int i = 0; i<keys_columnas.size(); i++ ) {
+   			posibleKeys.add(keys_columnas.get(i).split(",")[0]);
+		}
+		this.structureskey.setItems(posibleKeys);
+		structureskey.getSelectionModel().select(0);
+
+    }
 
 	@FXML
 	void cancel(ActionEvent event) {
 		if (!saved) {
-			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
-			Optional<ButtonType> result = message.showAndWait();
-			if ((result.get() == ButtonType.CANCEL)){return;}
+//			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
+//			Optional<ButtonType> result = message.showAndWait();
+//			if ((result.get() == ButtonType.CANCEL)){return;}
+			return;
 		}
 		try {
 	    	Stage sampleStage = new Stage();
@@ -304,6 +330,15 @@ public class ControllerEdit {
 	    	message.show();}
     	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
 		this.setEsquema();
+    }
+	
+    @FXML
+    void addStructure(ActionEvent event) {
+    	String Structure = this.structuresBox.getSelectionModel().getSelectedItem();
+    	String Key = this.structureskey.getSelectionModel().getSelectedItem();
+    	System.out.println("\n--> "+"Estructura: "+Structure+"  _  Llave: "+Key);
+    	log.debug("Se logra guardar en la estructura --> "+"Estructura: "+Structure+"  _  Llave: "+Key);
+
     }
 
     @FXML

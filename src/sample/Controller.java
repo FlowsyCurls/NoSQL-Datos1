@@ -236,7 +236,7 @@ public class Controller {
 //		this.choiceboxEdit.getItems().clear();
         this.availableType.addAll("NAME","INDEX");
         this.choiceboxEdit.setItems(availableType);
-        this.choiceboxEdit.getSelectionModel().select(2);
+        this.choiceboxEdit.getSelectionModel().select(0);
         //de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
 //		this.availableChoices.add("Other..."); this.choiceboxSearch.setItems(availableChoices);
 //		this.choiceboxSearch.getSelectionModel().select(0);
@@ -320,12 +320,12 @@ public class Controller {
 			else {this.setCxF(datos, filasbuscadas);}return;
 //				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
 
-    	/*buscando con joins...*/
-		}else if (selectedChoice.equals("JOINS")) {
-			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
-			//verificar que por lo menos haya algun coincidencia. 
-			if (filasbuscadas == null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
-			else {this.setCxF(datos, filasbuscadas);}return;
+//    	/*buscando con joins...*/
+//		}else if (selectedChoice.equals("JOINS")) {
+//			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
+//			//verificar que por lo menos haya algun coincidencia. 
+//			if (filasbuscadas == null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+//			else {this.setCxF(datos, filasbuscadas);}return;
 //				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)
 			
 	    /*buscando con columnas...*/
@@ -344,35 +344,35 @@ public class Controller {
 		return filas;
     }
     
-    private ArrayList<Integer> SearchJoins(String detail, String Datos, Esquema usedDiagram) throws EsquemaNuloException{
-		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
-		ArrayList<String[]> tmpfilas = this.toStringArray(Datos.split(";"));
-		String[] datos = Datos.split(";");
-		printArray(columnas,"columans");
-		int j=1;
-		boolean encuentro = false;
-		for (int i=0; i< tmpfilas.size(); i++){
-			if (tmpfilas.get(0)[i].equals("_")){
-				j+=i; encuentro=true; break;
-			}
-		}if (encuentro==false) return null;
-		System.out.println("\n------> \n Nombre Esquema:"+usedDiagram.getNombre()+"\n detail: "+detail+
-				"\n indice J: "+j+"\n NOMBREJOIN: "+columnas[j]+"\n COLUMNA: "+columnas[j+1]+"\n");
-		Datos Joins = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columnas[j+1], columnas[j]);
-		System.out.println("Respuesta "+Joins.getRespuesta());
-//		if (Joins.getRespuesta())
-		System.out.println("Joins "+Joins);
-		String[] joins = Joins.getDatos().split(";");
-		for (int i=0; i< datos.length; i++){
-			int z = 0;
-			while (z < joins.length) {
-				if (datos[i].contentEquals(joins[z])) {
-					filas.add(i);
-				}z++;
-			}
-		}
-		return filas;
-    }
+//    private ArrayList<Integer> SearchJoins(String detail, String Datos, Esquema usedDiagram) throws EsquemaNuloException{
+//		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
+//		ArrayList<String[]> tmpfilas = this.toStringArray(Datos.split(";"));
+//		String[] datos = Datos.split(";");
+//		printArray(columnas,"columans");
+//		int j=1;
+//		boolean encuentro = false;
+//		for (int i=0; i< tmpfilas.size(); i++){
+//			if (tmpfilas.get(0)[i].equals("_")){
+//				j+=i; encuentro=true; break;
+//			}
+//		}if (encuentro==false) return null;
+//		System.out.println("\n------> \n Nombre Esquema:"+usedDiagram.getNombre()+"\n detail: "+detail+
+//				"\n indice J: "+j+"\n NOMBREJOIN: "+columnas[j]+"\n COLUMNA: "+columnas[j+1]+"\n");
+//		Datos Joins = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columnas[j+1], columnas[j]);
+//		System.out.println("Respuesta "+Joins.getRespuesta());
+////		if (Joins.getRespuesta())
+//		System.out.println("Joins "+Joins);
+//		String[] joins = Joins.getDatos().split(";");
+//		for (int i=0; i< datos.length; i++){
+//			int z = 0;
+//			while (z < joins.length) {
+//				if (datos[i].contentEquals(joins[z])) {
+//					filas.add(i);
+//				}z++;
+//			}
+//		}
+//		return filas;
+//    }
     
 	private ArrayList<Integer> SearchAtributes(String detail, String selectedChoice, String datos, Esquema usedDiagram){
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
@@ -549,7 +549,7 @@ public class Controller {
 		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("OTHERS...");
 		this.availableChoices.add("NAME");
-		this.availableChoices.add("JOINS");
+//		this.availableChoices.add("JOINS");
 		this.availableChoices.add("INDEX");
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 

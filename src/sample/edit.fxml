@@ -74,7 +74,7 @@
                         <Insets />
                      </VBox.margin>
                   </AnchorPane>
-                  <HBox fillHeight="false" prefHeight="446.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="TOP_CENTER" fillHeight="false" prefHeight="446.0" VBox.vgrow="ALWAYS">
                      <children>
                         <VBox nodeOrientation="LEFT_TO_RIGHT" spacing="8.0" HBox.hgrow="NEVER">
                            <children>
@@ -111,7 +111,7 @@
                               <Insets left="5.0" top="3.0" />
                            </HBox.margin>
                         </VBox>
-                        <Region prefWidth="232.0" />
+                        <Region minWidth="190.0" />
                         <Button fx:id="cancel" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancel" prefWidth="100.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-background-insets: 1; -fx-border-color: lightgray;" text="Cancel" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
                            <font>
                               <Font name="Century Gothic Bold" size="16.0" />
@@ -134,8 +134,31 @@
                               <Insets top="40.0" />
                            </HBox.margin>
                         </Button>
-                        <Region />
+                        <Region minWidth="200.0" />
+                        <Button alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addStructure" prefHeight="60.0" prefWidth="131.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d2b11d; -fx-border-width: 5;" text="Save with Structure" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                           <font>
+                              <Font name="Century Gothic Bold" size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets bottom="5.0" right="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <VBox prefHeight="200.0" prefWidth="150.0" spacing="5.0" HBox.hgrow="NEVER">
+                           <children>
+                              <ChoiceBox fx:id="structuresBox" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;" />
+                              <ChoiceBox fx:id="structureskey" prefWidth="120.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets right="20.0" />
+                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
