@@ -423,7 +423,7 @@ public class Controller {
  
 	/*PARA MOSTRAR DIAGRAMA SELECCIONADO*/
     public void displaySelectedDiagram(MouseEvent event) throws IOException {
-    	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
+    	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem();
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
 		if (selectedDiagram == null) { 
 			searchSTR.setPromptText("diagram detail"); //set to default. 
@@ -579,11 +579,13 @@ public class Controller {
     @FXML
     public void editContextMenu(ActionEvent event) {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
+    	if (selectedDiagram==null) return;
     	this.editWindow(Controller.listaEsquemas.buscar(selectedDiagram));
     }
     @FXML
 	public void deleteDiagram(ActionEvent event) throws IOException {
-    	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem(); 
+    	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem();
+    	if (selectedDiagram==null) return;
 		String respuesta = Controller.cliente.eliminarEsquema(selectedDiagram);
 		if ((respuesta.equals("esquema eliminado"))) {
 			this.clean();
