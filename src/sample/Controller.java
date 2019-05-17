@@ -221,7 +221,7 @@ public class Controller {
     		//validacion de la entrada.
     		if (!Controller.TryParse(detail, "INTEGER")) {
     			//si no hay numero ingresado.
-    			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ¬¬","Try to write a number");message.showAndWait();this.textfieldEdit.clear();return;}}
+    			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ï¿½ï¿½","Try to write a number");message.showAndWait();this.textfieldEdit.clear();return;}}
     			else{UserMessage message = new UserMessage(AlertType.ERROR,"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!","Write a valid number");message.showAndWait();this.textfieldEdit.clear();}return;}
 		//busqueda y abrir otra ventana.
 		int inputInt = Integer.parseInt(detail);
@@ -308,7 +308,6 @@ public class Controller {
 			
 	    /*buscando con columnas...*/
 		}else {
-			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
 			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
 			//verificar que por lo menos haya algun coincidencia. 
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
@@ -334,7 +333,7 @@ public class Controller {
 				j+=i; encuentro=true; break;
 			}
 		}if (encuentro==false) return null;
-		System.out.println("\n------> \n Nombre Esquema:"+usedDiagram.getNombre()+
+		System.out.println("\n------> \n Nombre Esquema:"+usedDiagram.getNombre()+"\n detail: "+detail+
 				"\n indice J: "+j+"\n NOMBREJOIN: "+columnas[j]+"\n COLUMNA: "+columnas[j+1]+"\n");
 		Datos Joins = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columnas[j+1], columnas[j]);
 		System.out.println("Respuesta "+Joins.getRespuesta());
