@@ -200,49 +200,49 @@ public class Controller {
 	}
 	
 	@FXML //evento de editar esquemas 
-	public void editButtonAction(ActionEvent event) throws IOException {
-		//readvalues
-    	String detail = this.textfieldEdit.getText();
-    	String prompt = this.textfieldEdit.getPromptText();
-    	if (this.verifyTextField(detail) && prompt.equals("diagram's detail") ) {UserMessage message = new UserMessage(AlertType.INFORMATION,"\n\rAlso you can choose \"Name\" or \"ID\", just.. \nwrite the respective case.","SORRY..!\nFirst, you have to select a diagram");message.showAndWait();return;}
-    	//readchoice
-    	String selectedChoice = this.choiceboxEdit.getSelectionModel().getSelectedItem();
-    	/*buscar por nombre*/
-    	if (selectedChoice.equals("NAME")) {
-    		Esquema buscado = new Esquema();
-    		if (this.verifyTextField(detail)) {buscado = Controller.listaEsquemas.buscar(prompt);}
-			else {buscado = Controller.listaEsquemas.buscar(detail);}
-		    if (buscado == null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");message.showAndWait(); this.textfieldEdit.clear(); return;} //si no existe.
-    		this.editWindow(buscado);
-			System.out.println("esquema buscado: "+buscado.getNombre()+" ,id: "+buscado.getID());
-    		return;}
-    	/*buscar por indice*/
-    	else if (selectedChoice.equals("INDEX")) {
-    		//validacion de la entrada.
-    		if (!Controller.TryParse(detail, "INTEGER")) {
-    			//si no hay numero ingresado.
-    			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ��","Try to write a number");message.showAndWait();this.textfieldEdit.clear();return;}}
-    			else{UserMessage message = new UserMessage(AlertType.ERROR,"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!","Write a valid number");message.showAndWait();this.textfieldEdit.clear();}return;}
-		//busqueda y abrir otra ventana.
-		int inputInt = Integer.parseInt(detail);
-		Esquema buscado = Controller.listaEsquemas.buscar(inputInt);
-		if (buscado==null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");message.showAndWait();return;}
-    	this.editWindow(buscado);
-		System.out.println("esquema: "+buscado.getNombre()+" ,id: "+buscado.getID());
-		return;
-	}
-	
-	private void setChoiceBoxEdit() { //setChoiceBoxEdit de editbuttonaction.
+    public void editButtonAction(ActionEvent event) throws IOException {
+        //readvalues
+        String detail = this.textfieldEdit.getText();
+        String prompt = this.textfieldEdit.getPromptText();
+        if (this.verifyTextField(detail) && prompt.equals("diagram's detail") ) {UserMessage message = new UserMessage(AlertType.INFORMATION,"\n\rAlso you can choose \"Name\" or \"ID\", just.. \nwrite the respective case.","SORRY..!\nFirst, you have to select a diagram");message.showAndWait();return;}
+        //readchoice
+        String selectedChoice = this.choiceboxEdit.getSelectionModel().getSelectedItem();
+        /*buscar por nombre*/
+        if (selectedChoice.equals("NAME")) {
+            Esquema buscado = new Esquema();
+            if (this.verifyTextField(detail)) {buscado = Controller.listaEsquemas.buscar(prompt);}
+            else {buscado = Controller.listaEsquemas.buscar(detail);}
+            if (buscado == null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");message.showAndWait(); this.textfieldEdit.clear(); return;} //si no existe.
+            this.editWindow(buscado);
+            System.out.println("esquema buscado: "+buscado.getNombre()+" ,id: "+buscado.getID());
+            return;}
+        /*buscar por indice*/
+        else if (selectedChoice.equals("INDEX")) {
+            //validacion de la entrada.
+            if (!Controller.TryParse(detail, "INTEGER")) {
+                //si no hay numero ingresado.
+                if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ��","Try to write a number");message.showAndWait();this.textfieldEdit.clear();return;}}
+            else{UserMessage message = new UserMessage(AlertType.ERROR,"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!","Write a valid number");message.showAndWait();this.textfieldEdit.clear();}return;}
+        //busqueda y abrir otra ventana.
+        int inputInt = Integer.parseInt(detail);
+        Esquema buscado = Controller.listaEsquemas.buscar(inputInt);
+        if (buscado==null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");message.showAndWait();return;}
+        this.editWindow(buscado);
+        System.out.println("esquema: "+buscado.getNombre()+" ,id: "+buscado.getID());
+        return;
+    }
+
+    private void setChoiceBoxEdit() { //setChoiceBoxEdit de editbuttonaction.
 //		this.choiceboxEdit.getItems().clear();
-    	this.availableType.addAll("NAME","INDEX");
-		this.choiceboxEdit.setItems(availableType); 
-		this.choiceboxEdit.getSelectionModel().select(2);
-		//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
-//		this.availableChoices.add("Other..."); this.choiceboxSearch.setItems(availableChoices); 
+        this.availableType.addAll("NAME","INDEX");
+        this.choiceboxEdit.setItems(availableType);
+        this.choiceboxEdit.getSelectionModel().select(2);
+        //de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
+//		this.availableChoices.add("Other..."); this.choiceboxSearch.setItems(availableChoices);
 //		this.choiceboxSearch.getSelectionModel().select(0);
-	}
-	
-	private void editWindow(Esquema e) {
+    }
+
+    private void editWindow(Esquema e) {
 	    try {
 	        Stage editStage = new Stage();
 	        Parent root;
