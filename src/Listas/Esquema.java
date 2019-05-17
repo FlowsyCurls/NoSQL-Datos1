@@ -26,8 +26,7 @@ public class Esquema {
         this.nombre=partes[0];
         this.crearfila(partes);
     }
-
-
+    
     public Esquema (String constructor,Boolean cliente) {
         String[] partes = constructor.split(",");
         this.nombre=partes[0];
@@ -45,6 +44,9 @@ public class Esquema {
             }
             cont++;
         }
+    }
+    
+    public Esquema () {
     }
 
     public Esquema() {
