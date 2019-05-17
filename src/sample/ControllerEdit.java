@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Errores.DatosUsadosException;
 import Listas.Esquema;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -69,7 +68,7 @@ public class ControllerEdit {
 	public static int numerofilas;
 	private static String [] columnas;
 	private ArrayList<String[]> filas;
-    public  Esquema esquema;
+    public  Esquema esquema = new Esquema();
 	private static boolean saved = false;
 	
     public static Logger log = LoggerFactory.getLogger(ControllerEdit.class);
@@ -85,6 +84,7 @@ public class ControllerEdit {
     
 	//conexion principal controller
 	public void getEsquema(String nombre) throws IOException {
+		this.addfield.clear();
 		Controller.Cargaresquemas();
 		esquema = Controller.listaEsquemas.buscar(nombre);
 		System.out.println("Primera vez "+esquema.getNombre());
@@ -100,6 +100,7 @@ public class ControllerEdit {
 		/* Obtener cada columna String*/ columnas = esquema.obtenercolumnasparaedit().getStringArraycolumnas(esquema.obtenercolumnasparaedit());
 		/* Obtener cada datos String*/ String datos = Controller.cliente.buscardatosparaedit(esquema.getNombre()).getDatos();
 		setTexts();
+		System.out.println("se llama");
 		setCxF(datos);
 	}
 	
@@ -124,14 +125,14 @@ public class ControllerEdit {
    		System.out.println("Enumeracion |>> "+datos);
     	/* Obtener cada fila String[]*/
    		filas = new ArrayList<String[]>();
-   		filas = this.toStringArray(datos.split(";"));
+   		filas = ControllerEdit.toStringArray(datos.split(";"));
    		Controller.printArray(datos.split(";"), "filas ");
    		jdata.addAll(filas);
 		showTable();
 		this.deleteChoiceBox();
 	}
 		
-	private ArrayList<String[]> toStringArray(String[] toConvert) {
+	public static ArrayList<String[]> toStringArray(String[] toConvert) {
 		ArrayList<String[]> list = new ArrayList<>();
 		for (int j=0; j<=toConvert.length-1;j++) {
 			list.add(toConvert[j].split(","));
@@ -155,12 +156,12 @@ public class ControllerEdit {
                 else {
                 	String cellValue = rowData[index];
                     if (columnas[index].equals(esquema.getID())) {
-            			System.out.println("\nC-ID editable "+columnas[index]);
+//            			System.out.println("\nC-ID editable "+columnas[index]);
                     	firstNameCol.setEditable(false);
                     	return new ReadOnlyStringWrapper(cellValue);
                     }
                     else if (columnas[index]=="#") {
-            			System.out.println("\nC-# editable"+columnas[index]);
+//            			System.out.println("\nC-# editable"+columnas[index]);
                     	firstNameCol.setEditable(false);
                     	firstNameCol.setMinWidth(50);
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
@@ -209,19 +210,7 @@ public class ControllerEdit {
 		deleteBox.getSelectionModel().select(0); 
 	}
 	
-	void addRows(String fila, String nombre) throws IOException {
-	this.initialize();
-	System.out.println(nombre);
-	String respuesta = Controller.cliente.insertardatos(nombre, fila);
-	System.out.println("FILAS recibidas  >>>>>><<<<< "+fila);
-	System.out.println("Respuesta "+respuesta);
-	//sino solo muestra mensaje y retorna.
-	if (respuesta == null) {
-		UserMessage message = new UserMessage(AlertType.INFORMATION, fila, "Sorry an ERROR has ocurred while adding ");message.show(); 
-		this.addfield.clear(); return;
-	}
-	this.getEsquema(nombre);
-	}
+
 	@FXML
 	void cancel(ActionEvent event) {
 		if (!saved) {
@@ -302,21 +291,19 @@ public class ControllerEdit {
 	        stage.setScene(new Scene(root1));
 	        this.veil.setVisible(true);
 	        ControllerAddRows controller= loader.getController();
-	        controller.getID(toAdd_id, columnas, esquema, veil);
+	        controller.getID(toAdd_id, columnas, esquema, veil, currentStage);
 	        stage.showAndWait();
 	}
 	@FXML
-    void handleButtonDelete(ActionEvent event) throws DatosUsadosException {
+    void handleButtonDelete(ActionEvent event) throws NullPointerException, IOException {
     	//casilla de nombre de la fila a eliminar.
     	String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
     	String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
 		if (!respuesta.equals("datos eliminados")) { 
 	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t"+respuesta, "Sorry..");
-	    	message.show();
+	    	message.show();}
     	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
-		try {this.setEsquema();} 
-		catch (NullPointerException | IOException e) {e.printStackTrace();}
-		}
+		this.setEsquema();
     }
 
     @FXML
