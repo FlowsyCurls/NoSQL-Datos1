@@ -287,7 +287,8 @@ public class Controller {
 		//variables locales
 		ArrayList<Integer> filasbuscadas = new ArrayList<> (); //filas por mostrar
    		String datos = Controller.cliente.buscartodoslosdatos(usedDiagram.getNombre()).getDatos(); //datos de las filas del esquema.
-   		
+		System.out.println("Datos "+datos);
+		
     	/*buscando con indices...*/
 		if (selectedChoice.equals("INDEX")) {
 			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
@@ -299,10 +300,9 @@ public class Controller {
 
     	/*buscando con joins...*/
 		}else if (selectedChoice.equals("JOINS")) {
-			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
 			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
 			//verificar que por lo menos haya algun coincidencia. 
-			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+			if (filasbuscadas == null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
 			else {this.setCxF(datos, filasbuscadas);}return;
 //				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)
 			
@@ -322,9 +322,33 @@ public class Controller {
 		return filas;
     }
     
-    private ArrayList<Integer> SearchJoins(String detail, String datos, Esquema usedDiagram){
+    private ArrayList<Integer> SearchJoins(String detail, String Datos, Esquema usedDiagram) throws EsquemaNuloException{
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
-		Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columna, nombre_joins)
+		ArrayList<String[]> tmpfilas = this.toStringArray(Datos.split(";"));
+		String[] datos = Datos.split(";");
+		printArray(columnas,"columans");
+		int j=1;
+		boolean encuentro = false;
+		for (int i=0; i< tmpfilas.size(); i++){
+			if (tmpfilas.get(0)[i].equals("_")){
+				j+=i; encuentro=true; break;
+			}
+		}if (encuentro==false) return null;
+		System.out.println("\n------> \n Nombre Esquema:"+usedDiagram.getNombre()+
+				"\n indice J: "+j+"\n NOMBREJOIN: "+columnas[j]+"\n COLUMNA: "+columnas[j+1]+"\n");
+		Datos Joins = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columnas[j+1], columnas[j]);
+		System.out.println("Respuesta "+Joins.getRespuesta());
+//		if (Joins.getRespuesta())
+		System.out.println("Joins "+Joins);
+		String[] joins = Joins.getDatos().split(";");
+		for (int i=0; i< datos.length; i++){
+			int z = 0;
+			while (z < joins.length) {
+				if (datos[i].contentEquals(joins[z])) {
+					filas.add(i);
+				}z++;
+			}
+		}
 		return filas;
     }
     

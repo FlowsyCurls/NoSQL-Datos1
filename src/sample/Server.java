@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -53,8 +54,9 @@ public class Server implements Runnable {
                 datosenvio.close();
                 misocket.close();
             }
-
-        } catch (IOException e) {
+        } catch (BindException b) {
+        	System.out.println("\n\n\n\n\r\t\tEl server ya está corriendo...");
+    	} catch (IOException e) {
             e.printStackTrace();
         }
 
