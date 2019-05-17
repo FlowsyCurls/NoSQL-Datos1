@@ -43,7 +43,7 @@ public class ControllerAdd {
     @FXML private Button cancel = new Button();
     @FXML private Label columnslabel = new Label();
     @FXML private ScrollPane scrollpane = new ScrollPane();
-    @FXML private ChoiceBox<String> choicebox = new ChoiceBox<String>(),idbox = new ChoiceBox<String>(), schemeName =new ChoiceBox<String>(), schemeID = new ChoiceBox<String>();
+    @FXML private ChoiceBox<String> choicebox = new ChoiceBox<String>(),idbox = new ChoiceBox<String>(), schemeName =new ChoiceBox<String>();
     @FXML private TextField idnum = new TextField();
     @FXML private VBox radiusVBox = new VBox();
     @FXML private TextField id = new TextField();
@@ -53,10 +53,10 @@ public class ControllerAdd {
 	//tipos
 	private ObservableList<String> types = FXCollections.observableArrayList(); 
 	private ObservableList<String> posiblesjoins = FXCollections.observableArrayList();
-	private ObservableList<String> posiblesids= FXCollections.observableArrayList(); 
 
 
 	//variables posicionamiento
+	private static  NodoList<String> ComprobarJoin = new NodoList<>();
 	private int posx = 5, posy = 5, columns=0;
 	private boolean typessetted =false;
 	private NodoList<ChoiceBox<String>> children1 = new NodoList<ChoiceBox<String>>();
@@ -83,12 +83,10 @@ public class ControllerAdd {
 		    this.scrollpane.setPannable(true);
 		    return;}
 		try{ if (selectedType.equals("_")) {
-				this.setAll("_");
-//				schemeName.getText();
-//				this.schemeName.clear();
+				this.setAll("_", false);
 		}} catch (NullPointerException n) {}
 		while (columns!=0) {
-			this.setAll(selectedType);
+			this.setAll(selectedType, false);
 			columns--;
 		}this.setlabel();
 	}
@@ -116,14 +114,46 @@ public class ControllerAdd {
             tmp=tmp.next;
             n++;
  		}
-//        this.schemeName = new ChoiceBox<String>();
-        schemeName.getSelectionModel().selectedItemProperty().addListener( 
-        		(ObservableValue<? extends String> observable, String oldValue, String newValue) -> this.updateJoinID(newValue)); 
 		this.schemeName.setItems(posiblesjoins);
 		schemeName.getSelectionModel().select(0); 
 	}
 	
-	private final void setAll(String selectedType) {
+	private final void setAll(String selectedType, boolean JOIN) {
+		if (JOIN) {
+			TextField key = new TextField (selectedType), len = new TextField ();
+			key.setTranslateX(posx+107); key.setTranslateY(posy); key.setMaxWidth(145); key.setDisable(true);
+			len.setTranslateX(posx+253); len.setTranslateY(posy); len.setMinWidth(30); 
+			len.setPrefWidth(Control.USE_COMPUTED_SIZE); len.setMaxWidth(50); len.setPromptText("size"); 
+			//choicekey
+			choicebox = new ChoiceBox<String>();
+			choicebox.setTranslateX(posx); choicebox.setTranslateY(posy); choicebox.setPrefWidth(105); choicebox.setDisable(true);
+			if (!this.typessetted) {
+		    	types.addAll("STRING","INTEGER","DOUBLE","LONG","FLOAT");
+				this.typessetted = true;
+				this.idbox.setItems(types);
+				this.idbox.getSelectionModel().select(0);
+			}
+			ObservableList<String> joinObservable = FXCollections.observableArrayList("JOIN"); 
+			choicebox.setItems(joinObservable); 
+			choicebox.getSelectionModel().select(0); 
+			screen.getChildren().addAll(choicebox, key, len);
+			this.posy+=49;
+
+			/*Styling*/
+			choicebox.setStyle("-fx-control-inner-background:  lightgray; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  #d95030; -fx-background-insets: 1; -fx-focus-color: transparent;");
+			len.setStyle("-fx-background-color:  beige; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  transparent; -fx-focus-color:  #d95030;");
+			key.setStyle("-fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  #d95030; -fx-focus-color: transparent;");
+			/*add to the lists*/
+			children1.addLast(choicebox);
+			children2.addLast(key);
+			children3.addLast(len);
+			if (this.posy+20 > this.screen.getPrefHeight()) {
+				this.posx+=330; this.posy=5;
+				if (this.posx>923) {
+					this.screen.setPrefWidth(this.posx+315);
+				}
+			}return;
+		}
 		TextField key = new TextField (), len = new TextField ();
 		key.setTranslateX(posx+107); key.setTranslateY(posy); key.setMaxWidth(145); key.setPromptText("set key "+(Controller.counter++));
 		len.setTranslateX(posx+253); len.setTranslateY(posy); len.setMinWidth(30); 
@@ -133,15 +163,15 @@ public class ControllerAdd {
 		choicebox.setTranslateX(posx); choicebox.setTranslateY(posy);
 		if (!this.typessetted) {
 	    	types.addAll("STRING","INTEGER","DOUBLE","LONG","FLOAT");
-			this.typessetted = true;}
+			this.typessetted = true;
+			this.idbox.setItems(types);
+			this.idbox.getSelectionModel().select(0);
+		}
 		choicebox.setItems(types); 
-		this.idbox.setItems(types);
 		choicebox.getSelectionModel().select(0); 
-		this.idbox.getSelectionModel().select(0);
 		screen.getChildren().addAll(choicebox, key, len);
 		this.posy+=49;
 		
-		if (selectedType!=null) choicebox.getSelectionModel().select(selectedType);
 		/*Styling*/
 		choicebox.setStyle("-fx-control-inner-background:  lightgray; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  #d95030; -fx-background-insets: 1; -fx-focus-color: transparent;");
 		len.setStyle("-fx-background-color:  beige; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color:  transparent; -fx-focus-color:  #d95030;");
@@ -198,27 +228,27 @@ public class ControllerAdd {
     	/*Segundo guardar y verificar las columnas.*/
     	int index = this.children1.getLargo();
     	String choosebox="", text="", num=""; int i=1;	
-		System.out.println("CANTIDAD  >>>>>><<<<< "+this.screen.getChildren().size());
+//		System.out.println("CANTIDAD  >>>>>><<<<< "+this.screen.getChildren().size());
 
     	//DENTRO DE CADA FILA DE HIJOS
     	for (i=0; i<index; i++ ){
     		choosebox= this.children1.get(i).getSelectionModel().getSelectedItem();
-    		System.out.println("\nCHOOSEBOX  >>>>>><<<<< "+choosebox);
+//    		System.out.println("\nCHOOSEBOX  >>>>>><<<<< "+choosebox);
     		text = this.children2.get(i).getText();
-    		System.out.println("\nTEXT >>>>>><<<<< "+text);
+//    		System.out.println("\nTEXT >>>>>><<<<< "+text);
     		num = this.children3.get(i).getText();
-    		System.out.println("\nNUM >>>>>><<<<< "+num);
+//    		System.out.println("\nNUM >>>>>><<<<< "+num);
     		if (text.isEmpty() || num.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
-    		System.out.println("\nI  >>>>>><<<<< "+i);
-    		System.out.println("INDEX  >>>>>><<<<< "+index);
-    		System.out.println("COLUMNA  >>>>>><<<<< "+choosebox +" "+ text+" "+num);
+//    		System.out.println("\nI  >>>>>><<<<< "+i);
+//    		System.out.println("INDEX  >>>>>><<<<< "+index);
+//    		System.out.println("COLUMNA  >>>>>><<<<< "+choosebox +" "+ text+" "+num);
     		CONSTRUCTOR = CONSTRUCTOR+","+text+":"+choosebox+":"+num;
     		}
     	/*Tercero crear el quemas*/
 		try {
 			String respuesta = this.cliente.crearEsquema(CONSTRUCTOR);
-			System.out.println(CONSTRUCTOR);
-			System.out.println(respuesta);
+			System.out.println("\n\n"+"Constructor "+CONSTRUCTOR);
+			System.out.println("respuesta "+respuesta);
 			String message = "";
 			//si se crea
 			if ((respuesta.equals("esquema creado"))) { 
@@ -244,32 +274,21 @@ public class ControllerAdd {
     	}catch (Exception e) {
     		e.printStackTrace();}
     }
-  
-    public void updateJoinID(String scheme) {
-		Esquema respuesta = Controller.listaEsquemas.buscar(scheme);
-		System.out.println("Encontrado "+respuesta.getNombre());
-   		String[] datos = this.cliente.buscartodoslosdatos(respuesta.getNombre()).getDatos().split(";");
-    	this.posiblesids.clear();
-   		for (int i = 0; i<datos.length; i++ ) {
-			posiblesids.add(datos[i].split(",")[0]);
-		}
-		this.schemeID.setItems(posiblesids);
-		schemeID.getSelectionModel().select(0);
-
-    }
+ 
     @FXML
     public void addJoin(ActionEvent event) {
     	String scheme = this.schemeName.getSelectionModel().getSelectedItem();
-    	String id = this.schemeID.getSelectionModel().getSelectedItem();
-    	System.out.println("scheme "+scheme+" id "+id);
-    	/*bueno ya tengo el esquema y el id de la fila... ahora que */
-    	
+//    	System.out.println("\rscheme JOIN "+scheme);
+    	if (ComprobarJoin.contains(scheme)) {
+			UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\rBut, you can't join twice to the same Scheme.","Sorry bruh.."); info.showAndWait(); return;
+    	}
+    	ComprobarJoin.addLast(scheme);;
+    	this.setAll(scheme, true);    	
 	}
 
     private void clean() {
     	//liimpiar choicebox
     	this.posiblesjoins.clear();
-    	this.posiblesids.clear();
     	this.types.clear();
     	this.idnum.clear();
     	//textfields.

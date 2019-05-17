@@ -98,7 +98,7 @@
                   </VBox>
                   <VBox alignment="CENTER_LEFT" prefWidth="150.0" spacing="10.0" HBox.hgrow="NEVER">
                      <children>
-                        <TextField fx:id="textfieldFilas" onAction="#addButtonAction" promptText="rows number" style="-fx-background-color: lightyellow; -fx-background-radius: 8; -fx-border-radius: 8;">
+                        <TextField fx:id="textfieldFilas" onAction="#addButtonAction" promptText="number of rows" style="-fx-background-color: lightyellow; -fx-background-radius: 8; -fx-border-radius: 8;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="only integer numbers" />
                            </tooltip>
