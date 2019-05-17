@@ -267,9 +267,18 @@ public class Controller {
     	/*analizando escogencia....*/
     	String detail = searchSTR.getText();
     	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem();
+    	int selectedchoiceindex=this.choiceboxSearch.getSelectionModel().getSelectedIndex()-1;
     	System.out.println("Seleccionado en el Choices --->> "+selectedChoice); 
     	System.out.println("detail: "+detail);
-    	
+		String esquemaproximo="";
+    	while (selectedchoiceindex>0){
+    		if (Controller.listaEsquemas.contiene(this.choiceboxSearch.getItems().get(selectedchoiceindex))){
+    			esquemaproximo=this.choiceboxSearch.getItems().get(selectedchoiceindex);
+    			System.out.println(esquemaproximo+"AQUI ESTA EL ESQUEMA PROXIMO");
+    			break;
+			}
+    		else {selectedchoiceindex--;}
+		}
     	/*TEXT VACIO*/
     	if (this.verifyTextField(detail)){
     		detail=null; 
@@ -286,9 +295,22 @@ public class Controller {
 		Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
 		//variables locales
 		ArrayList<Integer> filasbuscadas = new ArrayList<> (); //filas por mostrar
-   		String datos = Controller.cliente.buscartodoslosdatos(usedDiagram.getNombre()).getDatos(); //datos de las filas del esquema.
+		Datos datoscompletos;
+        String datos="";
+        String respuesta="";
+		if (usedDiagram.getTamanos().contiene(selectedChoice)){
+		    datoscompletos = Controller.cliente.buscardatos(usedDiagram.getNombre(),detail,selectedChoice);
+            datos=datoscompletos.getDatos(); respuesta=datoscompletos.getRespuesta();
+		}else if (usedDiagram.getMijoins().contiene(selectedChoice)){
+		    datoscompletos = Controller.cliente.buscardatos(usedDiagram.getNombre(),detail,selectedChoice);
+			if (Controller.listaEsquemas.buscar(esquemaproximo).getMijoins().contiene(selectedChoice) && !esquemaproximo.equals(usedDiagram.getNombre()) && !datoscompletos.getRespuesta().equals("no se encontraron datos")){
+				datoscompletos = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(),detail,selectedChoice,esquemaproximo);
+                datos=datoscompletos.getDatos(); respuesta=datoscompletos.getRespuesta();
+			}else {datos=datoscompletos.getDatos(); respuesta=datoscompletos.getRespuesta();}
+		}else {datoscompletos = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(),detail,selectedChoice,esquemaproximo);datos=datoscompletos.getDatos(); respuesta=datoscompletos.getRespuesta();}
+		if (respuesta.equals("no se encontraron datos")){this.messenger("No matches for ", detail); return;}
+   		 //datos de las filas del esquema.
 		System.out.println("Datos "+datos);
-		
     	/*buscando con indices...*/
 		if (selectedChoice.equals("INDEX")) {
 			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
@@ -308,6 +330,7 @@ public class Controller {
 			
 	    /*buscando con columnas...*/
 		}else {
+			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
 			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
 			//verificar que por lo menos haya algun coincidencia. 
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
@@ -356,14 +379,13 @@ public class Controller {
 		for (int i=0; i< columnas.length; i++){
 			if (columnas[i].equals(selectedChoice)) {
 				String[] arrayDatos = datos.split(";");
-				for (int h=0; h< arrayDatos.length; h++){
-					System.out.println("ENTRA"+arrayDatos[h].split(",")[i-1]);
-					if (arrayDatos[h].split(",")[i-1].contentEquals(detail)) {
-						System.out.println("ENTRA "+arrayDatos[h]);
-						System.out.println(h);
-						filas.add(h);
-					}
-				}
+				for (int h=0; h< arrayDatos.length; h++) {
+                    System.out.println("ENTRA" + arrayDatos[h].split(",")[i - 1]);
+                    System.out.println("ENTRA " + arrayDatos[h]);
+                    System.out.println(h);
+                    filas.add(h);
+                }
+				break;
 			}
 		}return filas;
 	}

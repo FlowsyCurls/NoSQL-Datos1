@@ -46,9 +46,9 @@ public class Esquema {
         }
     }
     
-    public Esquema() {
-
+    public Esquema () {
     }
+
 
 
     private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
@@ -193,6 +193,7 @@ public class Esquema {
         }
         if (!this.tiene_filas){throw new EsquemaNuloException();}
         datos=datos.substring(0,datos.length()-1);
+        System.out.println(datos);
         return datos;
     }
 
@@ -230,8 +231,6 @@ public class Esquema {
 
             }
         }
-        System.out.println("esto envio a concatenar");
-        System.out.println(string.substring(0,string.length()-1));
         return string.substring(0,string.length()-1);
     }
 
