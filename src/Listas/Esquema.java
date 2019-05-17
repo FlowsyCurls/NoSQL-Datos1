@@ -47,6 +47,10 @@ public class Esquema {
         }
     }
 
+    public Esquema() {
+
+    }
+
 
     private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
