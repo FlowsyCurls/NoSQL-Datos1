@@ -46,9 +46,6 @@ public class Esquema {
         }
     }
     
-    public Esquema () {
-    }
-
     public Esquema() {
 
     }

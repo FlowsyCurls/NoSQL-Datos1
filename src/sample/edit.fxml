@@ -112,7 +112,7 @@
                            </HBox.margin>
                         </VBox>
                         <Region prefWidth="232.0" />
-                        <Button fx:id="cancel" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancel" prefWidth="100.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-background-insets: 1; -fx-border-color: lightgray;" text="Cancel" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+                        <Button fx:id="cancel" alignment="CENTER" cancelButton="true" contentDisplay="CENTER" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#cancel" prefWidth="100.0" style="-fx-border-radius: 10; -fx-background-radius: 10; -fx-background-insets: 1; -fx-border-color: lightgray;" text="Cancel" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
                            <font>
                               <Font name="Century Gothic Bold" size="16.0" />
                            </font>

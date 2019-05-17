@@ -17,7 +17,7 @@ public class Accionador {
         else if (accion.equals("insertar datos")){datos=this.insertardatos(datos);}
         else if (accion.equals("eliminar datos")){datos=this.eliminardatos(datos);}
         else if (accion.equals("buscar datos")){datos=this.buscardatos(datos);}
-//        else if (accion.equals("buscar datos por join")){datos=this.buscardatosporjoin(datos);}
+        else if (accion.equals("buscar datos por join")){datos=this.buscardatosporjoin(datos);}
         else if (accion.equals("buscar datos por indice")){datos=this.buscardatosporindice(datos);}
         else if (accion.equals("crear indice")){datos=this.crearindice(datos);}
         else if (accion.equals("eliminar indice")){datos=this.eliminarindice(datos);}
