@@ -204,75 +204,45 @@ public class Controller {
 		//readvalues
     	String detail = this.textfieldEdit.getText();
     	String prompt = this.textfieldEdit.getPromptText();
-    	if (this.verifyTextField(detail) && prompt.equals("diagram's detail") ) {
-			UserMessage message = new UserMessage(AlertType.INFORMATION,
-					"\n\rAlso you can choose \"Name\" or \"ID\", just.. \nwrite the respective case.",
-					"SORRY..!\nFirst, you have to select a diagram");
-			message.showAndWait();
-    		return;
-    	}
+    	if (this.verifyTextField(detail) && prompt.equals("diagram's detail") ) {UserMessage message = new UserMessage(AlertType.INFORMATION,"\n\rAlso you can choose \"Name\" or \"ID\", just.. \nwrite the respective case.","SORRY..!\nFirst, you have to select a diagram");message.showAndWait();return;}
     	//readchoice
     	String selectedChoice = this.choiceboxEdit.getSelectionModel().getSelectedItem();
-    	System.out.println("\rdetail: "+detail);
-    	System.out.println("selectedChoice: "+selectedChoice);
-    	//compare
-    	if (selectedChoice.equals("ID")) {
-    		System.out.println(Controller.listaEsquemas.buscar(prompt));
-    		System.out.println(Controller.listaEsquemas.buscar(detail));
-    		/*codigo 
-    		 * deberia
-    		 * que 
-    		 * hace 
-    		 * algo */
-    		return;
-    		}
-    	
-    	else if (selectedChoice.equals("NAME")) {
-    		System.out.println(Controller.listaEsquemas.buscar(prompt));
-    		System.out.println(Controller.listaEsquemas.buscar(detail));
-    		/*codigo 
-    		 * deberia
-    		 * que 
-    		 * hace 
-    		 * algo */
-    		return;
-    		}
-    	
-    	
+    	/*buscar por nombre*/
+    	if (selectedChoice.equals("NAME")) {
+    		Esquema buscado = new Esquema();
+    		if (this.verifyTextField(detail)) {buscado = Controller.listaEsquemas.buscar(prompt);}
+			else {buscado = Controller.listaEsquemas.buscar(detail);}
+		    if (buscado == null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");message.showAndWait(); this.textfieldEdit.clear(); return;} //si no existe.
+    		this.editWindow(buscado);
+			System.out.println("esquema buscado: "+buscado.getNombre()+" ,id: "+buscado.getID());
+    		return;}
+    	/*buscar por indice*/
     	else if (selectedChoice.equals("INDEX")) {
     		//validacion de la entrada.
     		if (!Controller.TryParse(detail, "INTEGER")) {
     			//si no hay numero ingresado.
-    			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {
-        			UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ¬¬","Try to write a number");
-        			message.showAndWait();
-        			this.textfieldEdit.clear();
-        		}else{
-        			//si numero no es entero.
-        			UserMessage message = new UserMessage(AlertType.ERROR,
-        					"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!",
-        					"Write a valid number");
-        			message.showAndWait();
-        			this.textfieldEdit.clear();
-    			}return;}
-    		//busqueda y abrir otra ventana.
-    		int inputInt = Integer.parseInt(detail);
-    		Esquema e = Controller.listaEsquemas.buscar(inputInt);
-    		if (e==null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");
-    			message.showAndWait();
-    			return;}
-        	this.editWindow(e);
-    		System.out.println("esquema: "+e.getNombre()+" ,id: "+e.getID());
-    		return;}
-	}private void setChoiceBoxEdit() { //setChoiceBoxEdit de editbuttonaction.
+    			if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ¬¬","Try to write a number");message.showAndWait();this.textfieldEdit.clear();return;}}
+    			else{UserMessage message = new UserMessage(AlertType.ERROR,"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!","Write a valid number");message.showAndWait();this.textfieldEdit.clear();}return;}
+		//busqueda y abrir otra ventana.
+		int inputInt = Integer.parseInt(detail);
+		Esquema buscado = Controller.listaEsquemas.buscar(inputInt);
+		if (buscado==null) { UserMessage message = new UserMessage(AlertType.INFORMATION, detail,"Your diagram was not found");message.showAndWait();return;}
+    	this.editWindow(buscado);
+		System.out.println("esquema: "+buscado.getNombre()+" ,id: "+buscado.getID());
+		return;
+	}
+	
+	private void setChoiceBoxEdit() { //setChoiceBoxEdit de editbuttonaction.
 //		this.choiceboxEdit.getItems().clear();
-    	this.availableType.addAll("ID","NAME","INDEX");
+    	this.availableType.addAll("NAME","INDEX");
 		this.choiceboxEdit.setItems(availableType); 
 		this.choiceboxEdit.getSelectionModel().select(2);
 		//de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
 //		this.availableChoices.add("Other..."); this.choiceboxSearch.setItems(availableChoices); 
 //		this.choiceboxSearch.getSelectionModel().select(0);
-	}private void editWindow(Esquema e) {
+	}
+	
+	private void editWindow(Esquema e) {
 	    try {
 	        Stage editStage = new Stage();
 	        Parent root;
@@ -305,8 +275,8 @@ public class Controller {
     		detail=null; 
     		this.searchSTR.clear();
     		System.out.println("Escrito en detail --->>  "+detail);
-    		return;
-    	}
+    		return;}
+    	
     	/*BUSQUEDA DE OTROS ESQUEMAS QUE COINCIDAN*/
     	if (selectedChoice.equals("OTHERS...") || selectedChoice==null){
     		this.loadDiagrams(detail);
@@ -317,45 +287,63 @@ public class Controller {
 		//variables locales
 		ArrayList<Integer> filasbuscadas = new ArrayList<> (); //filas por mostrar
    		String datos = Controller.cliente.buscartodoslosdatos(usedDiagram.getNombre()).getDatos(); //datos de las filas del esquema.
+   		
     	/*buscando con indices...*/
 		if (selectedChoice.equals("INDEX")) {
-//				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
-//			
-//			
-		}
-    	/*buscando con joins...*/
-		else if (selectedChoice.equals("JOINS")) {
-//				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)
-//			
-//			
-		}
-		else {
 			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
-			for (int i=0; i< columnas.length; i++){
-				if (columnas[i].equals(selectedChoice)) {
-					String[] arrayDatos = datos.split(";");
-					for (int h=0; h< arrayDatos.length; h++){
-						System.out.println("ENTRA"+arrayDatos[h].split(",")[i-1]);
-						if (arrayDatos[h].split(",")[i-1].contentEquals(detail)) {
-							System.out.println("ENTRA "+arrayDatos[h]);
-							System.out.println(h);
-							filasbuscadas.add(h);
-			}}}}}
-		//verificar que por lo menos haya algun coincidencia. 
-		if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
-		else {this.setCxF(datos, filasbuscadas); 
-		return;
+			filasbuscadas = SearchIndex(detail, datos, usedDiagram);
+			//verificar que por lo menos haya algun coincidencia. 
+			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+			else {this.setCxF(datos, filasbuscadas);}return;
+//				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
+
+    	/*buscando con joins...*/
+		}else if (selectedChoice.equals("JOINS")) {
+			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
+			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
+			//verificar que por lo menos haya algun coincidencia. 
+			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+			else {this.setCxF(datos, filasbuscadas);}return;
+//				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)
+			
+	    /*buscando con columnas...*/
+		}else {
+			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
+			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
+			//verificar que por lo menos haya algun coincidencia. 
+			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+			else {this.setCxF(datos, filasbuscadas);}
+			return;
 		}
 	}
 		
-//    private ArrayList<String> SearchIndex(String index, Esquema usedDiagram){
-//    	ArrayList<String> filasencontradas = new ArrayList<String>();
-//    	return filasencontradas;
-//    }
-//    private ArrayList<String> SearchJoins(String join, Esquema usedDiagram){
-//    	ArrayList<String> filasencontradas = new ArrayList<String>();
-//    	return filasencontradas;
-//    }
+    private ArrayList<Integer> SearchIndex(String detail, String datos, Esquema usedDiagram){
+		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
+		return filas;
+    }
+    
+    private ArrayList<Integer> SearchJoins(String detail, String datos, Esquema usedDiagram){
+		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
+		Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columna, nombre_joins)
+		return filas;
+    }
+    
+	private ArrayList<Integer> SearchAtributes(String detail, String selectedChoice, String datos, Esquema usedDiagram){
+		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
+		for (int i=0; i< columnas.length; i++){
+			if (columnas[i].equals(selectedChoice)) {
+				String[] arrayDatos = datos.split(";");
+				for (int h=0; h< arrayDatos.length; h++){
+					System.out.println("ENTRA"+arrayDatos[h].split(",")[i-1]);
+					if (arrayDatos[h].split(",")[i-1].contentEquals(detail)) {
+						System.out.println("ENTRA "+arrayDatos[h]);
+						System.out.println(h);
+						filas.add(h);
+					}
+				}
+			}
+		}return filas;
+	}
 	
 	private void messenger(String content, String detail) {
 		UserMessage message = new UserMessage(AlertType.INFORMATION,
@@ -516,8 +504,8 @@ public class Controller {
 		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("OTHERS...");
 		this.availableChoices.add("NAME");
-		this.availableChoices.add("INDEX");
 		this.availableChoices.add("JOINS");
+		this.availableChoices.add("INDEX");
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices); 
 		this.choiceboxSearch.getSelectionModel().select(0);
