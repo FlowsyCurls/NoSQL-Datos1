@@ -80,6 +80,7 @@ public class ListaEsquemas {
             if (this.head.getNodo()==esquema){
                 this.head=this.head.next;
                 this.largo--;
+                eliminarreferenciasdejoinde(esquema);
             }
             else {
                 Nodo<Esquema>tmp=this.head;
@@ -87,13 +88,22 @@ public class ListaEsquemas {
                     if (tmp.next.getNodo()==esquema){
                         tmp.next=tmp.next.next;
                         this.largo--;
+                        eliminarreferenciasdejoinde(esquema);
                         break;
+
                     }
                     else {
                         tmp=tmp.next;
                     }
                 }
             }
+        }
+    }
+    private void eliminarreferenciasdejoinde(Esquema esquema){
+        int cont=0;
+        while (cont>esquema.getMijoins().getLargo()){
+            this.buscar(esquema.getMijoins().buscar(cont)).joinde.eliminar(esquema.getNombre());
+            cont++;
         }
     }
     public Boolean contiene(String string){
