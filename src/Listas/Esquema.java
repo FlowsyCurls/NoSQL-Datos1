@@ -50,33 +50,27 @@ public class Esquema {
     
     public Esquema () {
     }
-    public void Meter_refe(NombreArbol dato,String key){
+    public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
 	    referencia hola=new referencia();
 	    if (dato==NombreArbol.ArbolB) {
 	    	ArbolB<String,Hashtable> datos=new ArbolB();
 	    	arboles.addlist(hola.setArbolB(datos, filas,key),cont);
-	    	cont++;
 	    }else if (dato==NombreArbol.ArbolRB) {
 	    	ArbolRB<String,Hashtable> datos=new ArbolRB();
 	    	arboles.addlist(hola.setArbolRB(datos, filas,key),cont);
-	    	cont++;
 	    }else if (dato==NombreArbol.ArbolAA) {
 	    	ArbolAA<String,Hashtable> datos=new ArbolAA();
 	    	arboles.addlist(hola.setArbolAA(datos, filas,key),cont);
-	    	cont++;
 	    }else if (dato==NombreArbol.ArbolBPlus) {
 	    	ArbolBPlus<String,Hashtable> datos=new ArbolBPlus();
 	    	arboles.addlist(hola.setArbolBPlus(datos, filas,key),cont);
-	    	cont++;
 	    }else if (dato==NombreArbol.ArbolBinario) {
 	    	ArbolBinario<String,Hashtable> datos=new ArbolBinario();
 	    	arboles.addlist(hola.setArbolBinario(datos, filas,key),cont);
-	    	cont++;
 	   	}else {
 	    	AVL<String,Hashtable> datos=new AVL();
 	    	arboles.addlist(hola.setArbolAVL(datos, filas,key),cont);
-	    	cont++;
-	    }
+	    }cont++;
     }
     public boolean repetidos(String key){
     	return arboles.verDupl(filas, key);
