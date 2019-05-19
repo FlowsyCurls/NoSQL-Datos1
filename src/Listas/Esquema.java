@@ -19,7 +19,7 @@ public class Esquema {
     private ListaTamano tamanos=new ListaTamano();
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
-    public Lista<Object> arboles=new Lista();
+    public Lista<Indice> arboles=new Lista();
     public int cont=0;
     
     public Esquema(String constructor) throws EsquemaNuloException, DatosUsadosException {
@@ -53,23 +53,35 @@ public class Esquema {
     public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
 	    referencia hola=new referencia();
 	    if (dato==NombreArbol.ArbolB) {
-	    	ArbolB<String,Hashtable> datos=new ArbolB();
-	    	arboles.addlist(hola.setArbolB(datos, filas,key),cont);
+	    	
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolB);
+	    	hola.setArbolB(prueba.getDato2(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
 	    }else if (dato==NombreArbol.ArbolRB) {
-	    	ArbolRB<String,Hashtable> datos=new ArbolRB();
-	    	arboles.addlist(hola.setArbolRB(datos, filas,key),cont);
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolRB);
+	    	hola.setArbolRB(prueba.getDato1(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
 	    }else if (dato==NombreArbol.ArbolAA) {
-	    	ArbolAA<String,Hashtable> datos=new ArbolAA();
-	    	arboles.addlist(hola.setArbolAA(datos, filas,key),cont);
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolAA);
+	    	hola.setArbolAA(prueba.getDato0(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
 	    }else if (dato==NombreArbol.ArbolBPlus) {
-	    	ArbolBPlus<String,Hashtable> datos=new ArbolBPlus();
-	    	arboles.addlist(hola.setArbolBPlus(datos, filas,key),cont);
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolBPlus);
+	    	hola.setArbolBPlus(prueba.getDato3(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
 	    }else if (dato==NombreArbol.ArbolBinario) {
-	    	ArbolBinario<String,Hashtable> datos=new ArbolBinario();
-	    	arboles.addlist(hola.setArbolBinario(datos, filas,key),cont);
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolBinario);
+	    	hola.setArbolBinario(prueba.getDato4(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
 	   	}else {
-	    	AVL<String,Hashtable> datos=new AVL();
-	    	arboles.addlist(hola.setArbolAVL(datos, filas,key),cont);
+	   		Indice prueba= new Indice(key,NombreArbol.AVL);
+	    	hola.setArbolAVL(prueba.getDato5(), filas, key);
+	    	arboles.addlist(prueba);
 	    }cont++;
     }
     public boolean repetidos(String key){
