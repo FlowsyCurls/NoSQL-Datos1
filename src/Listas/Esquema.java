@@ -19,7 +19,9 @@ public class Esquema {
     private ListaTamano tamanos=new ListaTamano();
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
-
+    public Lista<Object> arboles=new Lista();
+    public int cont=0;
+    
     public Esquema(String constructor) throws EsquemaNuloException, DatosUsadosException {
         String[] partes=constructor.split(",");
         this.tiene_filas=false;
@@ -48,9 +50,36 @@ public class Esquema {
     
     public Esquema () {
     }
-
-
-
+    public void Meter_refe(String dato,String key){
+    	if (arboles.verDupl(filas, key)) {
+	    	referencia hola=new referencia();
+	    	if (dato=="ArbolB") {
+	    		ArbolB<String,Hashtable> datos=new ArbolB();
+	    		arboles.addlist(hola.setArbolB(datos, filas,key),cont);
+	    		cont++;
+	    	}else if (dato=="ArbolNB") {
+	    		ArbolRB<String,Hashtable> datos=new ArbolRB();
+	    		arboles.addlist(hola.setArbolRB(datos, filas,key),cont);
+	    		cont++;
+	    	}else if (dato=="ArbolAA") {
+	    		ArbolAA<String,Hashtable> datos=new ArbolAA();
+	    		arboles.addlist(hola.setArbolAA(datos, filas,key),cont);
+	    		cont++;
+	    	}else if (dato=="ArbolBPlus") {
+	    		ArbolBPlus<String,Hashtable> datos=new ArbolBPlus();
+	    		arboles.addlist(hola.setArbolBPlus(datos, filas,key),cont);
+	    		cont++;
+	    	}else if (dato=="ArbolBinario") {
+	    		ArbolBinario<String,Hashtable> datos=new ArbolBinario();
+	    		arboles.addlist(hola.setArbolBinario(datos, filas,key),cont);
+	    		cont++;
+	    	}else {
+	    		AVL<String,Hashtable> datos=new AVL();
+	    		arboles.addlist(hola.setArbolAVL(datos, filas,key),cont);
+	    		cont++;
+	    	}
+    	}
+    }
     private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
         int cont=1;
