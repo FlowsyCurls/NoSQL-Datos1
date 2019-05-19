@@ -105,6 +105,11 @@ public class Server implements Runnable {
         
         System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2
         System.out.print(nuevo.search("cobra"));
+	
+	System.out.print("\n"+esquema.arboles.tamaño+"\n");
+        esquema.deleteIndice("dato1");
+        System.out.print("\n"+esquema.arboles.tamaño+"\n");//ejemplo de eliminacion de Indices
+        System.out.print("\n"+esquema.arboles.Search("dato1"));
 	    
         Thread hilo = new Thread(this);
         hilo.start();
