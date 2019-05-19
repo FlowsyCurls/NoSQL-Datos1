@@ -21,6 +21,8 @@ public class Esquema {
     public ListaString joinde = new ListaString();
     public Lista<Indice> arboles=new Lista();
     public int cont=0;
+    public ListaIndice columnasconindice=new ListaIndice();
+
     
     public Esquema(String constructor) throws EsquemaNuloException, DatosUsadosException {
         String[] partes=constructor.split(",");

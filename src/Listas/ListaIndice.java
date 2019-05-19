@@ -1,19 +1,19 @@
 package Listas;
 
-import sample.Indice;
+import sample.IndiceBoolean;
 
 public class ListaIndice {
     int largo;
-    Nodo<Indice> head= null;
+    Nodo<IndiceBoolean> head= null;
 
 
-    public void addLast (Indice e){
+    public void addLast (IndiceBoolean e){
         if (this.head==null){
-            this.head= new Nodo<Indice>(e);
+            this.head= new Nodo<IndiceBoolean>(e);
             largo++;
         }
         else {
-            Nodo <Indice> tmp= this.head;
+            Nodo<IndiceBoolean> tmp= this.head;
             while (tmp.next!= null) {
                 tmp = tmp.next;
             }
@@ -23,12 +23,12 @@ public class ListaIndice {
     }
 
     public void eliminar(String palabra){
-        if (this.head.getNodo().equals(palabra)){
+        if (this.head.getNodo().columna.equals(palabra)){
             this.head=this.head.next;
             largo-=1;
         }
         else{
-            Nodo<Indice>tmp=this.head;
+            Nodo<IndiceBoolean> tmp=this.head;
             while (tmp.next!=null){
                 if (tmp.next.getNodo().columna.equals(palabra)){
                     tmp.next=tmp.next.next;
@@ -42,15 +42,15 @@ public class ListaIndice {
         }
     }
 
-    public void addFirst(Indice e) {
-        Nodo<Indice> n = new Nodo<>(e);
+    public void addFirst(IndiceBoolean e) {
+        Nodo<IndiceBoolean> n = new Nodo<>(e);
         n.next=this.head;
         head=n;
         largo++;
     }
 
-    public Indice get(int index){
-        Nodo<Indice> tmp = this.head;
+    public IndiceBoolean get(int index){
+        Nodo<IndiceBoolean> tmp = this.head;
 //		System.out.println("Largo "+largo);
         int contador = 0;
         while (tmp != null) {
@@ -63,19 +63,19 @@ public class ListaIndice {
         }System.out.println("NO EXISTE INDICE");
         return null;
     }
-    public Indice buscarindice (String s){
+    public IndiceBoolean buscarindice (String s){
         int n=0;
-        Indice indice=new Indice("");
-        Nodo<Indice>tmp=this.head;
+        IndiceBoolean indiceBoolean =new IndiceBoolean("");
+        Nodo<IndiceBoolean> tmp=this.head;
         while (n<this.largo){
             if (tmp.getNodo().columna.equals(s)){
-                indice=tmp.getNodo();
+                indiceBoolean =tmp.getNodo();
                 break;
             }
             tmp=tmp.next;
             n++;
         }
-        return indice;
+        return indiceBoolean;
 
     }
 
@@ -88,11 +88,11 @@ public class ListaIndice {
         this.largo = largo;
     }
 
-    public Nodo <Indice> getHead() {
+    public Nodo <IndiceBoolean> getHead() {
         return head;
     }
 
-    public void setHead (Nodo<Indice> head) {
+    public void setHead (Nodo<IndiceBoolean> head) {
         this.head = head;
     }
     public void empty() {
