@@ -9,49 +9,48 @@ import Arboles.ArbolBinario;
 import Arboles.ArbolRB;
 public class Indice<t> {
 	private String nombre;
-	private ArbolAA dato0;
-	private ArbolRB dato1;
-	private ArbolB dato2;
-	private ArbolBPlus dato3;
-	private ArbolBinario dato4;
-	private AVL dato5;
+	private ArbolAA AA;
+	private ArbolRB RB;
+	private ArbolB B;
+	private ArbolBPlus BPlus;
+	private ArbolBinario Binario;
+	private AVL AVL;
 	
 	public Indice(String nombre,NombreArbol dato) {
 		this.nombre=nombre;
 		if (dato==NombreArbol.ArbolAA) {
-			
-			dato0=new ArbolAA();
+			AA=new ArbolAA();
 		}else if(dato==NombreArbol.ArbolRB) {
-			dato1=new ArbolRB();
+			RB=new ArbolRB();
 		}else if(dato==NombreArbol.ArbolB) {
-			dato2=new ArbolB();
+			B=new ArbolB();
 		}else if(dato==NombreArbol.ArbolBPlus) {
-			dato3=new ArbolBPlus();
+			BPlus=new ArbolBPlus();
 		}else if(dato==NombreArbol.ArbolBinario) {
-			dato4=new ArbolBinario();
+			Binario=new ArbolBinario();
 		}else {
-			dato5=new AVL();
+			AVL=new AVL();
 		}
 	}
 	public String getNombre() {
 		return nombre;
 	}
-	public ArbolAA getDato0() {
-		return dato0;
+	public ArbolAA getAA() {
+		return AA;
 	}
-	public ArbolRB getDato1() {
-		return dato1;
+	public ArbolRB getRB() {
+		return RB;
 	}
-	public ArbolB getDato2() {
-		return dato2;
+	public ArbolB getB() {
+		return B;
 	}
-	public ArbolBPlus getDato3() {
-		return dato3;
+	public ArbolBPlus getBPlus() {
+		return BPlus;
 	}
-	public ArbolBinario getDato4() {
-		return dato4;
+	public ArbolBinario getBinario() {
+		return Binario;
 	}
-	public AVL getDato5() {
-		return dato5;
+	public AVL getAVL() {
+		return AVL;
 	}
 }
