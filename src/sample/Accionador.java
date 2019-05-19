@@ -45,13 +45,13 @@ public class Accionador {
 
     private Datos crearEsquema(Datos datos) {
         try {
-        Esquema esquema = new Esquema(datos.getDatos());
-        if (Server.esquemas.contiene(esquema.getNombre())) {
-            datos.setRespuesta("nombre ya utilizado");
-        } else {
-            Server.esquemas.addLast(esquema);
-            datos.setRespuesta("esquema creado");
-        }
+            if (Server.esquemas.contiene(datos.getDatos().split(",")[0])) {
+                datos.setRespuesta("nombre ya utilizado");
+            } else {
+                Esquema esquema = new Esquema(datos.getDatos());
+                Server.esquemas.addLast(esquema);
+                datos.setRespuesta("esquema creado");
+            }
         System.out.println("se termina de crear esquema");
     }catch (NumberFormatException e){
             datos.setRespuesta("el tamano solo recibe enteros");

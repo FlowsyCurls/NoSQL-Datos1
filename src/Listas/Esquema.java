@@ -19,7 +19,9 @@ public class Esquema {
     private ListaTamano tamanos=new ListaTamano();
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
-
+    public Lista<Indice> arboles=new Lista();
+    public int cont=0;
+    
     public Esquema(String constructor) throws EsquemaNuloException, DatosUsadosException {
         String[] partes=constructor.split(",");
         this.tiene_filas=false;
@@ -48,9 +50,42 @@ public class Esquema {
     
     public Esquema () {
     }
-
-
-
+    public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
+	    referencia hola=new referencia();
+	    if (dato==NombreArbol.ArbolB) {	
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolB);
+	    	hola.setArbolB(prueba.getB(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
+	    }else if (dato==NombreArbol.ArbolRB) {
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolRB);
+	    	hola.setArbolRB(prueba.getRB(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
+	    }else if (dato==NombreArbol.ArbolAA) {
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolAA);
+	    	hola.setArbolAA(prueba.getAA(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
+	    }else if (dato==NombreArbol.ArbolBPlus) {
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolBPlus);
+	    	hola.setArbolBPlus(prueba.getBPlus(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
+	    }else if (dato==NombreArbol.ArbolBinario) {
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolBinario);
+	    	hola.setArbolBinario(prueba.getBinario(), filas, key);
+	    	arboles.addlist(prueba);
+	    	
+	    }else {
+	    	Indice prueba= new Indice(key,NombreArbol.AVL);
+	    	hola.setArbolAVL(prueba.getAVL(), filas, key);
+	    	arboles.addlist(prueba);
+	    }cont++;
+    }
+    public boolean repetidos(String key){
+    	return arboles.verDupl(filas, key);
+    }
     private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
         Hashtable fila=new Hashtable();
         int cont=1;

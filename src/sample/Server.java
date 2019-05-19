@@ -55,7 +55,7 @@ public class Server implements Runnable {
                 misocket.close();
             }
         } catch (BindException b) {
-        	System.out.println("\n\n\n\n\r\t\tEl server ya est· corriendo...");
+        	System.out.println("\n\n\n\n\r\t\tEl server ya est√° corriendo...");
     	} catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,6 +94,11 @@ public class Server implements Runnable {
         System.out.println(esquemas.buscar("Esquema2").buscartodos()+"2");
         System.out.println("\n\n");
         System.out.println(esquemas.buscar("Esquema3").buscardatosjoin("Esquema1","dato2","222")+":3");
+	    
+	esquema.Meter_refe(NombreArbol.AVL, "dato1");//esto hace el arbol con los indices
+        esquema.Meter_refe(NombreArbol.ArbolB,"dato2");//donde dato5 
+	System.out.print(esquema.arboles.Search(0).getAVL().search("perro"));//se tiene que espedificar cual arbol tiene los datos
+        System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2  
         Thread hilo = new Thread(this);
         hilo.start();
 
