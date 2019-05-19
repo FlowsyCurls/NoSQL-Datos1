@@ -173,10 +173,33 @@ public class Accionador {
     }
 
     private Datos buscardatosporindice(Datos datos){
-        return datos;
+	if ("ArbolAA"=="datos nombre del arbol") {
+    		//busque en el server su lista de esquemas, el esquema donde se hace la busqueda, buscar por el nombre de la columna(key), le espesifico el arbol donde hacer la  
+    		Server.esquemas.buscar("nombre esquema").arboles.Search("Nombre del nodo o su key").getAA().search("dato que quiero buscar");//busqueda del dato
+    	}else if ("Arbolb"=="datos nombre del arbol") {
+    		//y asi con todos los datos, solo que se tiene que espesificar el arbol donde se hace la busqueda
+    		Server.esquemas.buscar("nombre esquema").arboles.Search("Nombre del nodo o su key").getB().search("dato que quiero buscar");
+    	}else if ("ArbolBinario"=="datos nombre del arbol") {
+    		
+    		Server.esquemas.buscar("nombre esquema").arboles.Search("Nombre del nodo o su key").getBinario().search("dato que quiero buscar");
+    	}else if ("ArbolBinario"=="datos nombre del arbol") {
+    		
+    		Server.esquemas.buscar("nombre esquema").arboles.Search("Nombre del nodo o su key").getBPlus().search("dato que quiero buscar");
+    	}else if ("ArbolBPlus"=="datos nombre del arbol") {
+    		
+    		Server.esquemas.buscar("nombre esquema").arboles.Search("Nombre del nodo o su key").getRB().search("dato que quiero buscar");
+    	}else {
+    		
+    		Server.esquemas.buscar("nombre esquema").arboles.Search("Nombre del nodo o su key").getAVL().search("dato que quiero buscar");
+	}return datos;
     }
     private Datos crearindice(Datos datos){
-        return datos;
+	//Busco en el server su lista de esquemas, para buscar el esquema donde quiero hacer un arbol de indices y si no tiene datos repetidos se hace
+    	if (Server.esquemas.buscar("nombreesquema").repetidos("Nombre esquema")) {
+    		System.out.print("hay un dato repetido no se puede hacer");
+    	}else{//yo le espesifique que sea un ArbolB, pero eso datos lo tiene que declarar
+    		Server.esquemas.buscar("nombreesquema").Meter_refe(NombreArbol.ArbolB, "key o nombre de la columna");
+	}return datos;
     }
     private Datos eliminarindice(Datos datos){
         return datos;
