@@ -226,6 +226,7 @@ public class Accionador {
     }
 
     private Datos eliminarindice(Datos datos) {
+        Server.esquemas.buscar("nombreesquema").deleteIndice("nombre de la columna");
         return datos;
     }
 
