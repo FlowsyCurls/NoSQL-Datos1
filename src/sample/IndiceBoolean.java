@@ -6,6 +6,7 @@ public class IndiceBoolean {
     public Boolean tienearbolB=false;
     public Boolean tienearbolBPlus=false;
     public Boolean tienearbolBinario=false;
+    public Boolean tienearbolRB;
     public Boolean tieneAvl=false;
 
     public IndiceBoolean(String columna) {
@@ -13,7 +14,7 @@ public class IndiceBoolean {
     }
 
     public Boolean Estoyvacio(){// si esto es true se deberia borrar de la lista o saber que no tiene indices ya esa columna
-        if (!tienearbolAA && !tienearbolB && !tienearbolBinario && !tienearbolBPlus && !tieneAvl){
+        if (!tienearbolAA && !tienearbolB && !tienearbolBinario && !tienearbolBPlus && !tieneAvl && !tienearbolRB){
             return true;
         }else {return false;}
     }
@@ -68,5 +69,13 @@ public class IndiceBoolean {
 
     public void setTieneAvl(Boolean tieneAvl) {
         this.tieneAvl = tieneAvl;
+    }
+
+    public Boolean getTienearbolRB() {
+        return tienearbolRB;
+    }
+
+    public void setTienearbolRB(Boolean tienearbolRB) {
+        this.tienearbolRB = tienearbolRB;
     }
 }

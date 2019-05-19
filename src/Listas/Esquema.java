@@ -6,6 +6,7 @@ import Errores.DatosUsadosException;
 import Errores.EsquemaNuloException;
 import Errores.TamanoException;
 import sample.Controller;
+import sample.Datos;
 import sample.Server;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Esquema {
     public int cont=0;
     public ListaIndice columnasconindice=new ListaIndice();
 
-    
+
     public Esquema(String constructor) throws EsquemaNuloException, DatosUsadosException {
         String[] partes=constructor.split(",");
         this.tiene_filas=false;
@@ -497,6 +498,35 @@ public class Esquema {
             }
         }
         return string.substring(0,string.length()-1);
+    }
+
+    public String buscarporindice(Datos datos) throws DatoNoExistenteException, EsquemaNuloException {
+        Hashtable fila;
+        String dato= "";
+        if ("ArbolAA".equals("datos nombre del arbol")) {
+            //busque en el server su lista de esquemas, el esquema donde se hace la busqueda, buscar por el nombre de la columna(key), le espesifico el arbol donde hacer la
+             fila= (Hashtable) this.arboles.Search(datos.getColumna()).getAA().search(datos.getDato());//busqueda del dato
+        } else if ("Arbolb".equals(datos.getIndice())) {
+            //y asi con todos los datos, solo que se tiene que espesificar el arbol donde se hace la busqueda
+             fila= (Hashtable) this.arboles.Search(datos.getColumna()).getB().search(datos.getDato());
+        } else if ("ArbolBinario".equals(datos.getIndice())) {
+
+             fila= (Hashtable)this.arboles.Search(datos.getColumna()).getBinario().search(datos.getDato());
+        } else if ("ArbolBinario".equals(datos.getIndice())) {
+
+             fila= (Hashtable)this.arboles.Search(datos.getColumna()).getBPlus().search(datos.getDato());
+        } else if ("ArbolBPlus".equals(datos.getIndice())) {
+
+             fila= (Hashtable)this.arboles.Search(datos.getColumna()).getRB().search(datos.getDato());
+        } else {
+             fila= (Hashtable) this.arboles.Search(datos.getColumna()).getAVL().search(datos.getDato());
+        }
+        if (fila==null){
+            throw new  DatoNoExistenteException();
+        }else {
+            dato=this.crearstring(fila.get(this.getID()).toString(),this.getID());
+        }
+        return dato;
     }
 
 
