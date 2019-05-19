@@ -50,7 +50,9 @@ public class Esquema {
             cont++;
         }
     }
-    
+    public void deleteIndice(String nombre) {
+    	arboles.deleteNode(nombre);
+    }
     public Esquema () {
     }
     public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
