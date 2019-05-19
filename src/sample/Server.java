@@ -101,7 +101,7 @@ public class Server implements Runnable {
 	esquema.Meter_refe(NombreArbol.AVL, "dato1");//esto hace el arbol con los indices
         esquema.Meter_refe(NombreArbol.ArbolB,"dato2");
         Object tl = esquema.arboles.Search(0);
-        AVL nuevo= esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
+        AVL nuevo= (AVL) esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
         
         System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2
         System.out.print(nuevo.search("cobra"));
