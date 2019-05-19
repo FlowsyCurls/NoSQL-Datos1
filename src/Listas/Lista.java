@@ -3,32 +3,32 @@ package Listas;
 import java.util.HashSet;
 public class Lista<t>{
 	public NodoL<t> first;
-	public int largo;
+	public int tamaño;
 	
 	public NodoL<t> getNodo() {
 		return first;
 	}
 	public Lista() {
 		this.first=null;
-		largo =0;
+		tamaño=0;
 	}
-	public void addlist(t dato, int cont) {
+	public void addlist(t dato,String nombre) {
 		if (first==null) {
-			first=new NodoL<t>(dato,cont);
+			first=new NodoL<t>(dato,nombre);
 		}else {
 			NodoL<t> temp=first;
 			while (temp.getNext()!=null) {
 				temp=temp.getNext();
 				}
-			temp.next=new NodoL<t>(dato,cont);
+			temp.next=new NodoL<t>(dato,nombre);
 		}
-		largo++;
+		tamaño++;
 	}
-	public t Search(int referencia) {
+	public t Search(String nombre) {//metodo para buscar los indices por sus nombre de columna(key)
 		int cont=0;
 		NodoL<t> temp=first;
-		while (cont< largo) {
-			if (cont==referencia) {
+		while (cont<tamaño) {
+			if (temp.nombre.equals(nombre)) {
 				return temp.getNodo();
 			}else {
 				cont++;
@@ -44,8 +44,8 @@ public class Lista<t>{
 	private boolean Duplicado(ListaTables filas, HashSet<t> s,String key) {
 		int parada=filas.getLargo();
 		for (int i=0;parada>i;i++) {
-			if (s.contains(filas.buscar(i).get(key).toString())){
-				return false;
+			if (s.contains(filas.buscar(i).get(key).toString())){// me mete en un Hashset los elementos de la columna
+				return false;//y si lo vuelve a encontrar me da false
 			}s.add((t) filas.buscar(i).get(key).toString());
 		}return true;
 	}
@@ -53,12 +53,13 @@ public class Lista<t>{
 	public class NodoL<T>{
 	    private T nodo=null;
 	    public int num;
+	    public String nombre;
 	    public NodoL <T> next=null;
 	    
-	    public NodoL(T nodo,int num){
+	    public NodoL(T nodo,String nombre){
 	        this.nodo= nodo;
-	        this.num=num;
 	        this.next= null;
+	        this.nombre=nombre;
 	    }
 	    public T getNodo() {
 	        return nodo;
