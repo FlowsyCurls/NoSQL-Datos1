@@ -2,7 +2,7 @@ package Listas;
 
 import java.util.HashSet;
 public class Lista<t>{
-	private NodoL<t> first;
+	public NodoL<t> first;
 	public int tamaño;
 	
 	public NodoL<t> getNodo() {
@@ -12,24 +12,17 @@ public class Lista<t>{
 		this.first=null;
 		tamaño=0;
 	}
-	public void addlist(t dato,int num) {
+	public void addlist(t dato, int cont) {
 		if (first==null) {
-			first=new NodoL<t>(dato,num);
+			first=new NodoL<t>(dato,cont);
 		}else {
 			NodoL<t> temp=first;
 			while (temp.getNext()!=null) {
 				temp=temp.getNext();
 				}
-			temp.next=new NodoL<t>(dato,num);
+			temp.next=new NodoL<t>(dato,cont);
 		}
 		tamaño++;
-	}
-	public void printL() {
-		NodoL<t> res = first;	
-		while (res!=null) {
-			System.out.print(res.getNodo()+"\n");
-			res = res.getNext();
-		}
 	}
 	public t Search(int referencia) {
 		int cont=0;
@@ -51,11 +44,12 @@ public class Lista<t>{
 	private boolean Duplicado(ListaTables filas, HashSet<t> s,String key) {
 		int parada=filas.getLargo();
 		for (int i=0;parada>i;i++) {
-			if (s.contains(filas.buscar(i).get(key))){
+			if (s.contains(filas.buscar(i).get(key).toString())){
 				return false;
 			}s.add((t) filas.buscar(i).get(key).toString());
 		}return true;
 	}
+	
 	public class NodoL<T>{
 	    private T nodo=null;
 	    public int num;
