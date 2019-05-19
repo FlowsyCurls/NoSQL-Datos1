@@ -3,31 +3,31 @@ package Listas;
 import java.util.HashSet;
 public class Lista<t>{
 	public NodoL<t> first;
-	public int tamaño;
+	public int largo;
 	
 	public NodoL<t> getNodo() {
 		return first;
 	}
 	public Lista() {
 		this.first=null;
-		tamaño=0;
+		largo =0;
 	}
-	public void addlist(t dato) {
+	public void addlist(t dato, int cont) {
 		if (first==null) {
-			first=new NodoL<t>(dato);
+			first=new NodoL<t>(dato,cont);
 		}else {
 			NodoL<t> temp=first;
 			while (temp.getNext()!=null) {
 				temp=temp.getNext();
 				}
-			temp.next=new NodoL<t>(dato);
+			temp.next=new NodoL<t>(dato,cont);
 		}
-		tamaño++;
+		largo++;
 	}
 	public t Search(int referencia) {
 		int cont=0;
 		NodoL<t> temp=first;
-		while (cont<tamaño) {
+		while (cont< largo) {
 			if (cont==referencia) {
 				return temp.getNodo();
 			}else {
@@ -55,8 +55,9 @@ public class Lista<t>{
 	    public int num;
 	    public NodoL <T> next=null;
 	    
-	    public NodoL(T nodo){
+	    public NodoL(T nodo,int num){
 	        this.nodo= nodo;
+	        this.num=num;
 	        this.next= null;
 	    }
 	    public T getNodo() {
