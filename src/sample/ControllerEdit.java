@@ -117,7 +117,7 @@ public class ControllerEdit {
         structuresBox.getSelectionModel().selectedItemProperty().addListener( 
         		(ObservableValue<? extends String> observable, String oldValue, String newValue) -> this.updateStructuresKey(esquema.getNombre())); 
         this.posibleStructures.clear();
-        this.posibleStructures.addAll("Simple List", "Binary","R-N","B","B+","AVL","AA");
+        this.posibleStructures.addAll("Simple List", "Binary","R-B","B","B+","AVL","AA");
         this.structuresBox.setItems(this.posibleStructures);
 		structuresBox.getSelectionModel().select(0); 
 		veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8)");
@@ -336,8 +336,14 @@ public class ControllerEdit {
     void handleButtonAddStructure(ActionEvent event) {
     	String Structure = this.structuresBox.getSelectionModel().getSelectedItem();
     	String Key = this.structureskey.getSelectionModel().getSelectedItem();
-    	System.out.println("\n--> "+"Estructura: "+Structure+"  _  Llave: "+Key);
-    	Controller.cliente.crearindice(esquema.getNombre(), Key, Key);
+    	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
+    	
+    	/*ver esto a ver si est[a bien*/
+    	ver esto a ver si esta bien;
+    	si esos son los nombres o que;
+    	
+    	String respuesta = Controller.cliente.crearindice(esquema.getNombre(), Key, Structure);
+    	System.out.println(respuesta);
     	log.debug("Se logra guardar en la estructura --> "+"Estructura: "+Structure+"  _  Llave: "+Key);
 
     }

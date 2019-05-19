@@ -594,3 +594,371 @@
 2019-05-19 14:25:44 [Thread-0] DEBUG sample.Server - se logro enviar datos
 2019-05-19 14:25:44 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
 2019-05-19 14:25:44 [JavaFX Application Thread] DEBUG sample.ControllerEdit - TableColumns Finished --> table cargado...
+2019-05-19 14:37:45 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:37:45 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:37:45 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:37:45 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:37:45 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:37:45 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:37:45 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:37:45 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:37:45 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:37:47 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:37:47 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:37:47 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:37:47 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:37:47 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:37:47 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:37:47 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:37:47 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:37:47 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:37:47 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:38:24 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:38:24 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:38:24 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:38:24 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:38:24 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:38:24 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:38:24 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:38:24 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:38:24 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:38:25 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:38:25 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:38:25 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:38:25 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:38:25 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:38:25 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:38:25 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:38:25 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:38:25 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:38:25 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:38:26 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:38:26 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:38:26 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:38:26 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:38:26 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:38:26 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:38:26 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:38:26 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:38:26 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:38:26 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:39:24 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:39:24 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:39:24 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:39:24 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:39:24 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:39:24 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:39:24 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:39:24 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:39:24 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:39:25 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:39:25 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:39:25 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:39:25 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:39:25 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:39:25 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:39:25 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:39:25 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:39:25 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:39:25 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:40:23 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:23 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:23 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:23 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:23 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:23 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:23 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:23 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:23 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:24 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:24 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:24 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:24 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:24 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:24 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:24 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:24 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:24 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:24 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:25 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:25 [JavaFX Application Thread] DEBUG sample.ControllerEdit - TableColumns Finished --> table cargado...
+2019-05-19 14:40:26 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: Simple List  _  Llave: DAto1
+2019-05-19 14:40:33 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:33 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:33 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:33 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:33 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:33 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:33 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:33 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:33 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:35 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:35 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:35 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:35 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:35 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:35 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:35 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:35 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:35 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:35 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:36 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:36 [JavaFX Application Thread] DEBUG sample.ControllerEdit - TableColumns Finished --> table cargado...
+2019-05-19 14:40:37 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:37 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:37 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:37 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:37 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:37 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:37 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:37 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:37 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:37 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: Simple List  _  Llave: DAto1
+2019-05-19 14:40:41 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:41 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:41 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:41 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:41 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:41 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:41 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:41 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:41 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:41 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: Simple List  _  Llave: DAto1
+2019-05-19 14:40:42 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:40:42 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:40:42 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:40:42 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:40:42 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:40:42 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:40:42 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:40:42 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:40:42 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:40:42 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: Simple List  _  Llave: DAto1
+2019-05-19 14:43:20 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:20 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:20 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:20 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:20 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:20 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:20 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:20 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:20 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:21 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:21 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:21 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:21 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:21 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:21 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:21 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:21 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:21 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:21 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.ControllerEdit - TableColumns Finished --> table cargado...
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:22 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:22 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: ArbolBinary  _  Llave: DAto1
+2019-05-19 14:43:32 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:32 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:32 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:32 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:32 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:32 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:32 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:32 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:32 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:32 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: ArbolRB  _  Llave: DAto1
+2019-05-19 14:43:35 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:35 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:35 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:35 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:35 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:35 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:35 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:35 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:35 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:35 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: ArbolB  _  Llave: DAto1
+2019-05-19 14:43:37 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:37 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:37 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:37 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:37 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:37 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:37 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:37 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:37 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:37 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: ArbolB+  _  Llave: DAto1
+2019-05-19 14:43:38 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:38 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:38 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:38 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:38 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:38 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:38 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:38 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:38 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:38 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: ArbolAVL  _  Llave: DAto1
+2019-05-19 14:43:39 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:43:39 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:43:39 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:43:39 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:43:39 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:43:39 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:43:39 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:43:39 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:43:39 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:43:39 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: ArbolAA  _  Llave: DAto1
+2019-05-19 14:45:45 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:45:45 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:45:45 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:45:45 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:45:45 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:45:45 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:45:45 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:45:45 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:45:45 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:45:46 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:45:46 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:45:46 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:45:46 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:45:46 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:45:46 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:45:46 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:45:46 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:45:46 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:45:46 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:45:47 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:45:47 [JavaFX Application Thread] DEBUG sample.ControllerEdit - TableColumns Finished --> table cargado...
+2019-05-19 14:46:28 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:46:28 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:46:28 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:46:28 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:46:28 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:46:28 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:46:28 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:46:28 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:46:28 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - TableColumns Finished --> table cargado...
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:46:30 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:46:30 [JavaFX Application Thread] DEBUG sample.ControllerEdit - TableColumns Finished --> table cargado...
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: Simple List  _  Llave: DAto1
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - unirse
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se acepto cliente
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se recibio objeto
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - se envio datos
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - entrada se conecto
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se creo objeto
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se creo abertura de datos
+2019-05-19 14:46:32 [Thread-0] DEBUG sample.Server - se logro enviar datos
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.Controller - se creo objeto
+2019-05-19 14:46:32 [JavaFX Application Thread] DEBUG sample.ControllerEdit - Se logra guardar en la estructura --> Estructura: Simple List  _  Llave: DAto1

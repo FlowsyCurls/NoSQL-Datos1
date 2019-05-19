@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Listas.Esquema;
-import Listas.ListaString;
 
 public class Cliente {
     private static Logger log = LoggerFactory.getLogger(Controller.class);

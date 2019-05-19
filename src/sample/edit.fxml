@@ -135,7 +135,7 @@
                            </HBox.margin>
                         </Button>
                         <Region minWidth="200.0" />
-                        <Button alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addStructure" prefHeight="60.0" prefWidth="131.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d2b11d; -fx-border-width: 5;" text="Save with Structure" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                        <Button alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAddStructure" prefHeight="60.0" prefWidth="131.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d2b11d; -fx-border-width: 5;" text="Save with Structure" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                            <font>
                               <Font name="Century Gothic Bold" size="15.0" />
                            </font>
