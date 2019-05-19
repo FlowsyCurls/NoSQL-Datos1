@@ -202,16 +202,25 @@ public class Accionador {
 
     private Datos buscardatosporindice(Datos datos) {
         Esquema esquema = Server.esquemas.buscar(datos.getNombre());
+        try {
+            datos.setDato(esquema.buscarporindice(datos));
+            datos.setRespuesta("dato encontrado");
+        } catch (DatoNoExistenteException e) {
+            datos.setRespuesta("el dato no existe");
+        } catch (EsquemaNuloException e) {
+            datos.setRespuesta("esquema esta vacio");
+        }
         return datos;
     }
 
     private Datos crearindice(Datos datos) {
         //Busco en el server su lista de esquemas, para buscar el esquema donde quiero hacer un arbol de indices y si no tiene datos repetidos se hace
         Esquema esquema = Server.esquemas.buscar(datos.getNombre());
-        if (esquema.repetidos("Nombre esquema")) {
-            System.out.print("hay un dato repetido no se puede hacer");
+        if (esquema.repetidos(datos.getColumna())) {
+            datos.setRespuesta("existen datos repetidos");
         } else {//yo le espesifique que sea un ArbolB, pero eso datos lo tiene que declarar
             esquema.Meter_refe(this.pasaraEnum(datos.getIndice()), datos.getColumna());
+            datos.setRespuesta("indice creado");
         }
         return datos;
     }
