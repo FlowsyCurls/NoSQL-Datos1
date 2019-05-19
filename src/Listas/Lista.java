@@ -24,6 +24,23 @@ public class Lista<t>{
 		}
 		tamaño++;
 	}
+	public void deleteNode(String dato) {  
+	if (this.first.nombre.equals(dato)){
+            this.first=this.first.next;
+            tamaño--;
+        }else{//Se le pone el nombre de la columna que se desea eliminar de la lista arboles
+            NodoL<t>tmp=this.first;
+            while (tmp.next!=null){
+                if (tmp.next.nombre.equals(dato)){
+                    tmp.next=tmp.next.next;
+                    tamaño--;
+                    break;
+                }else {
+                    tmp=tmp.next;
+		}
+	    }
+	}
+	}
 	public t Search(String nombre) {//metodo para buscar los indices por sus nombre de columna(key)
 		int cont=0;
 		NodoL<t> temp=first;
