@@ -96,12 +96,9 @@ public class Server implements Runnable {
         System.out.println(esquemas.buscar("Esquema3").buscardatosjoin("Esquema1","dato2","222")+":3");
 	    
 	esquema.Meter_refe(NombreArbol.AVL, "dato1");//esto hace el arbol con los indices
-        esquema.Meter_refe(NombreArbol.ArbolB,"dato2");
-        AVL nuevo= (AVL) esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
-        
-        System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2
-        System.out.print(nuevo.search("cobra"));
-	    
+        esquema.Meter_refe(NombreArbol.ArbolB,"dato2");//donde dato5 
+	System.out.print(esquema.arboles.Search(0).getAVL().search("perro"));//se tiene que espedificar cual arbol tiene los datos
+        System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2  
         Thread hilo = new Thread(this);
         hilo.start();
 
