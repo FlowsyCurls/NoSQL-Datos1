@@ -51,36 +51,36 @@ public class Esquema {
     public Esquema () {
     }
     public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
-	    referencia hola=new referencia();
-	    if (dato==NombreArbol.ArbolB) {	
-	    	Indice prueba= new Indice(key,NombreArbol.ArbolB);
-	    	hola.setArbolB(prueba.getB(), filas, key);
-	    	arboles.addlist(prueba);
+    	referencia hola=new referencia();//la clase referencia me mete los datos al arbol
+	    if (dato==NombreArbol.ArbolB) {
+	    	Indice prueba= new Indice(key,NombreArbol.ArbolB);/// aqui vamos a meter a la lista de indices su Indice(arbol), su nombre de columna(key)
+	    	hola.setArbolB(prueba.getB(), filas, key);///para asi poder buscar facilmente en su lista de indices, un indice por su nombre de columna
+	    	arboles.addlist(prueba,key);//hay que hacer un caso para cada arbol
 	    	
 	    }else if (dato==NombreArbol.ArbolRB) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolRB);
 	    	hola.setArbolRB(prueba.getRB(), filas, key);
-	    	arboles.addlist(prueba);
+	    	arboles.addlist(prueba,key);
 	    	
 	    }else if (dato==NombreArbol.ArbolAA) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolAA);
 	    	hola.setArbolAA(prueba.getAA(), filas, key);
-	    	arboles.addlist(prueba);
+	    	arboles.addlist(prueba,key);
 	    	
 	    }else if (dato==NombreArbol.ArbolBPlus) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolBPlus);
 	    	hola.setArbolBPlus(prueba.getBPlus(), filas, key);
-	    	arboles.addlist(prueba);
+	    	arboles.addlist(prueba,key);
 	    	
 	    }else if (dato==NombreArbol.ArbolBinario) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolBinario);
 	    	hola.setArbolBinario(prueba.getBinario(), filas, key);
-	    	arboles.addlist(prueba);
+	    	arboles.addlist(prueba,key);
 	    	
-	    }else {
-	    	Indice prueba= new Indice(key,NombreArbol.AVL);
+	   	}else {
+	   		Indice prueba= new Indice(key,NombreArbol.AVL);
 	    	hola.setArbolAVL(prueba.getAVL(), filas, key);
-	    	arboles.addlist(prueba);
+	    	arboles.addlist(prueba,key);
 	    }cont++;
     }
     public boolean repetidos(String key){
