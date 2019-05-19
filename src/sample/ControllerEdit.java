@@ -107,7 +107,7 @@ public class ControllerEdit {
 		/* Obtener cada columna String*/ columnas = esquema.obtenercolumnasparaedit().getStringArraycolumnas(esquema.obtenercolumnasparaedit());
 		/* Obtener cada datos String*/ String datos = Controller.cliente.buscardatosparaedit(esquema.getNombre()).getDatos();
 		setTexts();
-		System.out.println("se llama");
+		System.out.println("se llama setEsquema");
 		setCxF(datos);
 	}
 	
@@ -116,7 +116,8 @@ public class ControllerEdit {
 		this.idText.setText(esquema.getID());
         structuresBox.getSelectionModel().selectedItemProperty().addListener( 
         		(ObservableValue<? extends String> observable, String oldValue, String newValue) -> this.updateStructuresKey(esquema.getNombre())); 
-		this.posibleStructures.addAll("Simple List", "Binary","R-N","B","B+","AVL","AA");
+        this.posibleStructures.clear();
+        this.posibleStructures.addAll("Simple List", "Binary","R-N","B","B+","AVL","AA");
         this.structuresBox.setItems(this.posibleStructures);
 		structuresBox.getSelectionModel().select(0); 
 		veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8)");
@@ -233,7 +234,6 @@ public class ControllerEdit {
 		}
 		this.structureskey.setItems(posibleKeys);
 		structureskey.getSelectionModel().select(0);
-
     }
 
 	@FXML
@@ -333,10 +333,11 @@ public class ControllerEdit {
     }
 	
     @FXML
-    void addStructure(ActionEvent event) {
+    void handleButtonAddStructure(ActionEvent event) {
     	String Structure = this.structuresBox.getSelectionModel().getSelectedItem();
     	String Key = this.structureskey.getSelectionModel().getSelectedItem();
     	System.out.println("\n--> "+"Estructura: "+Structure+"  _  Llave: "+Key);
+    	Controller.cliente.crearindice(esquema.getNombre(), Key, Key);
     	log.debug("Se logra guardar en la estructura --> "+"Estructura: "+Structure+"  _  Llave: "+Key);
 
     }
