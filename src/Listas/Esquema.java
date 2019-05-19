@@ -52,35 +52,34 @@ public class Esquema {
     }
     public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
 	    referencia hola=new referencia();
-	    if (dato==NombreArbol.ArbolB) {
-	    	
+	    if (dato==NombreArbol.ArbolB) {	
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolB);
-	    	hola.setArbolB(prueba.getDato2(), filas, key);
+	    	hola.setArbolB(prueba.getB(), filas, key);
 	    	arboles.addlist(prueba);
 	    	
 	    }else if (dato==NombreArbol.ArbolRB) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolRB);
-	    	hola.setArbolRB(prueba.getDato1(), filas, key);
+	    	hola.setArbolRB(prueba.getRB(), filas, key);
 	    	arboles.addlist(prueba);
 	    	
 	    }else if (dato==NombreArbol.ArbolAA) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolAA);
-	    	hola.setArbolAA(prueba.getDato0(), filas, key);
+	    	hola.setArbolAA(prueba.getAA(), filas, key);
 	    	arboles.addlist(prueba);
 	    	
 	    }else if (dato==NombreArbol.ArbolBPlus) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolBPlus);
-	    	hola.setArbolBPlus(prueba.getDato3(), filas, key);
+	    	hola.setArbolBPlus(prueba.getBPlus(), filas, key);
 	    	arboles.addlist(prueba);
 	    	
 	    }else if (dato==NombreArbol.ArbolBinario) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolBinario);
-	    	hola.setArbolBinario(prueba.getDato4(), filas, key);
+	    	hola.setArbolBinario(prueba.getBinario(), filas, key);
 	    	arboles.addlist(prueba);
 	    	
-	   	}else {
-	   		Indice prueba= new Indice(key,NombreArbol.AVL);
-	    	hola.setArbolAVL(prueba.getDato5(), filas, key);
+	    }else {
+	    	Indice prueba= new Indice(key,NombreArbol.AVL);
+	    	hola.setArbolAVL(prueba.getAVL(), filas, key);
 	    	arboles.addlist(prueba);
 	    }cont++;
     }
