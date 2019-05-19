@@ -12,15 +12,15 @@ public class Lista<t>{
 		this.first=null;
 		tamaño=0;
 	}
-	public void addlist(t dato, int cont) {
+	public void addlist(t dato) {
 		if (first==null) {
-			first=new NodoL<t>(dato,cont);
+			first=new NodoL<t>(dato);
 		}else {
 			NodoL<t> temp=first;
 			while (temp.getNext()!=null) {
 				temp=temp.getNext();
 				}
-			temp.next=new NodoL<t>(dato,cont);
+			temp.next=new NodoL<t>(dato);
 		}
 		tamaño++;
 	}
@@ -55,9 +55,8 @@ public class Lista<t>{
 	    public int num;
 	    public NodoL <T> next=null;
 	    
-	    public NodoL(T nodo,int num){
+	    public NodoL(T nodo){
 	        this.nodo= nodo;
-	        this.num=num;
 	        this.next= null;
 	    }
 	    public T getNodo() {
