@@ -3,14 +3,14 @@ package Listas;
 import java.util.HashSet;
 public class Lista<t>{
 	public NodoL<t> first;
-	public int tamaño;
+	public int largo;
 	
 	public NodoL<t> getNodo() {
 		return first;
 	}
 	public Lista() {
 		this.first=null;
-		tamaño=0;
+		largo=0;
 	}
 	public void addlist(t dato,String nombre) {
 		if (first==null) {
@@ -22,19 +22,19 @@ public class Lista<t>{
 				}
 			temp.next=new NodoL<t>(dato,nombre);
 		}
-		tamaño++;
+		largo++;
 	}
 	public boolean deleteNode(String dato) {  
 		if (this.first.nombre.equals(dato)){
 			this.first=this.first.next;
-            		tamaño--;
+            		largo--;
             		return true;
 		}else{//Se le pone el nombre de la columna que se desea eliminar de la lista arboles
 			NodoL<t>tmp=this.first;
 			while (tmp.next!=null){
 				if (tmp.next.nombre.equals(dato)){
 					tmp.next=tmp.next.next;
-                    			tamaño--;
+                    			largo--;
                     			return true;
 				}else {
 					tmp=tmp.next;
@@ -45,7 +45,7 @@ public class Lista<t>{
 	public t Search(String nombre) {//metodo para buscar los indices por sus nombre de columna(key)
 		int cont=0;
 		NodoL<t> temp=first;
-		while (cont<tamaño) {
+		while (cont<largo) {
 			if (temp.nombre.equals(nombre)) {
 				return temp.getNodo();
 			}else {

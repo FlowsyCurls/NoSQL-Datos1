@@ -100,15 +100,15 @@ public class Server implements Runnable {
 	    
 	esquema.Meter_refe(NombreArbol.AVL, "dato1");//esto hace el arbol con los indices
         esquema.Meter_refe(NombreArbol.ArbolB,"dato2");
-        Object tl = esquema.arboles.Search(0);
-        AVL nuevo= (AVL) esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
+//        Object tl = esquema.arboles.Search(0);
+//        AVL nuevo= (AVL) esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
         
         System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2
-        System.out.print(nuevo.search("cobra"));
+//        System.out.print(nuevo.search("cobra"));
 	
-	System.out.print("\n"+esquema.arboles.tamaño+"\n");
+	System.out.print("\n"+esquema.arboles.largo+"\n");
         esquema.deleteIndice("dato1");
-        System.out.print("\n"+esquema.arboles.tamaño+"\n");//ejemplo de eliminacion de Indices
+        System.out.print("\n"+esquema.arboles.largo+"\n");//ejemplo de eliminacion de Indices
         System.out.print("\n"+esquema.arboles.Search("dato1"));
 	    
         Thread hilo = new Thread(this);

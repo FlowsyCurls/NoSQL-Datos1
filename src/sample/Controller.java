@@ -18,6 +18,7 @@ import Listas.Esquema;
 import Listas.ListaEsquemas;
 import Listas.Nodo;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,6 +73,10 @@ public class Controller {
     private ChoiceBox<String> choiceboxEdit = new ChoiceBox<String>(); 
 	private ObservableList<String> availableType = FXCollections.observableArrayList();
     
+	@FXML
+    private ChoiceBox<String> indexBox = new ChoiceBox<String>(); 
+	private ObservableList<String> availableIndex = FXCollections.observableArrayList();
+	
 	@FXML
     private ChoiceBox<String> choiceboxSearch = new ChoiceBox<String>(); 
 	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
@@ -237,9 +242,6 @@ public class Controller {
         this.availableType.addAll("NAME","INDEX");
         this.choiceboxEdit.setItems(availableType);
         this.choiceboxEdit.getSelectionModel().select(0);
-        //de una vez agregamos la opcion buscar esquema especifico a setChoiceSearch
-//		this.availableChoices.add("Other..."); this.choiceboxSearch.setItems(availableChoices);
-//		this.choiceboxSearch.getSelectionModel().select(0);
     }
 
     private void editWindow(Esquema e) {
@@ -268,6 +270,7 @@ public class Controller {
     	String detail = searchSTR.getText();
     	String selectedChoice = this.choiceboxSearch.getSelectionModel().getSelectedItem();
     	int selectedchoiceindex=this.choiceboxSearch.getSelectionModel().getSelectedIndex()-1;
+    	
     	System.out.println("Seleccionado en el Choices --->> "+selectedChoice); 
     	System.out.println("detail: "+detail);
 		String esquemaproximo="";
@@ -311,6 +314,7 @@ public class Controller {
 		if (respuesta.equals("no se encontraron datos")){this.messenger("No matches for ", detail); return;}
    		 //datos de las filas del esquema.
 		System.out.println("Datos "+datos);
+		
     	/*buscando con indices...*/
 		if (selectedChoice.equals("INDEX")) {
 			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
@@ -320,14 +324,13 @@ public class Controller {
 			else {this.setCxF(datos, filasbuscadas);}return;
 //				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
 
-//    	/*buscando con joins...*/
-//		}else if (selectedChoice.equals("JOINS")) {
-//			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
-//			//verificar que por lo menos haya algun coincidencia. 
-//			if (filasbuscadas == null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
-//			else {this.setCxF(datos, filasbuscadas);}return;
-//				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)
-			
+////    	/*buscando con joins...*/
+////		}else if (selectedChoice.equals("JOINS")) {
+////			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
+////			//verificar que por lo menos haya algun coincidencia. 
+////			if (filasbuscadas == null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+////			else {this.setCxF(datos, filasbuscadas);}return;
+////				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)	
 	    /*buscando con columnas...*/
 		}else {
 			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
@@ -343,6 +346,21 @@ public class Controller {
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
 		return filas;
     }
+    
+    private void setIndexPosibilitys(Esquema esq, String column) {
+    	availableIndex.clear();
+    	this.availableIndex.add("Linked List");
+    	if (esq.columnasconindice.buscarindice(column).tienearbolAA) this.availableIndex.add("AA");
+    	if (esq.columnasconindice.buscarindice(column).tieneAvl) this.availableIndex.add("AVL");
+    	if (esq.columnasconindice.buscarindice(column).tienearbolBinario) this.availableIndex.add("Binary");
+    	if (esq.columnasconindice.buscarindice(column).tienearbolB) this.availableIndex.add("B");
+    	if (esq.columnasconindice.buscarindice(column).tienearbolBPlus) this.availableIndex.add("B+");
+    	if (esq.columnasconindice.buscarindice(column).tienearbolRB) this.availableIndex.add("R-B");
+    	this.indexBox.setItems(availableIndex);
+		this.indexBox.getSelectionModel().select(0);
+    }
+    
+    
     
 //    private ArrayList<Integer> SearchJoins(String detail, String Datos, Esquema usedDiagram) throws EsquemaNuloException{
 //		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
@@ -373,6 +391,8 @@ public class Controller {
 //		}
 //		return filas;
 //    }
+    
+    
     
 	private ArrayList<Integer> SearchAtributes(String detail, String selectedChoice, String datos, Esquema usedDiagram){
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
@@ -457,6 +477,9 @@ public class Controller {
 	/*PARA MOSTRAR DIAGRAMA SELECCIONADO*/
     public void displaySelectedDiagram(MouseEvent event) throws IOException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem();
+    	choiceboxSearch.getSelectionModel().selectedItemProperty().addListener( 
+        		(ObservableValue<? extends String> observable, String oldValue, 
+        				String newValue) -> this.setIndexPosibilitys(listaEsquemas.buscar(selectedDiagram), newValue)); 
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
 		if (selectedDiagram == null) { 
 			searchSTR.setPromptText("diagram detail"); //set to default. 
@@ -552,8 +575,9 @@ public class Controller {
 //		this.availableChoices.add("JOINS");
 		this.availableChoices.add("INDEX");
     	this.availableChoices.addAll(arrayList);
-		this.choiceboxSearch.setItems(availableChoices); 
+		this.choiceboxSearch.setItems(availableChoices);
 		this.choiceboxSearch.getSelectionModel().select(0);
+		
     }
     
     private void showTable() {

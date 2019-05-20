@@ -6,7 +6,7 @@ public class IndiceBoolean {
     public Boolean tienearbolB=false;
     public Boolean tienearbolBPlus=false;
     public Boolean tienearbolBinario=false;
-    public Boolean tienearbolRB;
+    public Boolean tienearbolRB=false;
     public Boolean tieneAvl=false;
 
     public IndiceBoolean(String columna) {

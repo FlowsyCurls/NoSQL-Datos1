@@ -117,7 +117,7 @@ public class ControllerEdit {
         structuresBox.getSelectionModel().selectedItemProperty().addListener( 
         		(ObservableValue<? extends String> observable, String oldValue, String newValue) -> this.updateStructuresKey(esquema.getNombre())); 
         this.posibleStructures.clear();
-        this.posibleStructures.addAll("Simple List", "Binary","R-B","B","B+","AVL","AA");
+        this.posibleStructures.addAll("Binary","R-B","B","B+","AVL","AA");
         this.structuresBox.setItems(this.posibleStructures);
 		structuresBox.getSelectionModel().select(0); 
 		veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8)");
@@ -336,12 +336,16 @@ public class ControllerEdit {
     void handleButtonAddStructure(ActionEvent event) {
     	String Structure = this.structuresBox.getSelectionModel().getSelectedItem();
     	String Key = this.structureskey.getSelectionModel().getSelectedItem();
+    	if (esquema.columnasconindice.buscarindice(Key).Noexiste() != true) {
+	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure,"Hey! You can't index two times with \nthe same structure"); message.show();
+	    	return;}
+    	if (Structure.equals("Binary")) Structure = "ArbolBinario";
+    	else if (Structure.equals("R-B")) Structure = "ArbolRB";
+    	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
+    	else if (Structure.equals("AA")) Structure = "ArbolAA";
+    	else if (Structure.equals("B")) Structure = "ArbolB";
+    	else if (Structure.equals("AVL")) Structure = "ALV";
     	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
-    	
-    	/*ver esto a ver si est[a bien*/
-    	ver esto a ver si esta bien;
-    	si esos son los nombres o que;
-    	
     	String respuesta = Controller.cliente.crearindice(esquema.getNombre(), Key, Structure);
     	System.out.println(respuesta);
     	log.debug("Se logra guardar en la estructura --> "+"Estructura: "+Structure+"  _  Llave: "+Key);

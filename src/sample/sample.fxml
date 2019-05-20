@@ -62,7 +62,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <Region minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" HBox.hgrow="SOMETIMES" />
+                  <Region minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="9.0" HBox.hgrow="SOMETIMES" />
                   <StackPane>
                      <children>
                         <ImageView fitHeight="90.0" fitWidth="285.0" pickOnBounds="true" preserveRatio="true">
@@ -72,7 +72,18 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <Region maxWidth="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="115.0" HBox.hgrow="SOMETIMES" />
+                  <Region maxWidth="210.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="0.0" HBox.hgrow="SOMETIMES" />
+                  <ChoiceBox fx:id="indexBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="105.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: lightgray;">
+                     <tooltip>
+                        <Tooltip opacity="0.8" text="choose category before searching" />
+                     </tooltip>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <HBox.margin>
+                        <Insets right="5.0" top="100.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
                   <VBox spacing="12.0">
                      <HBox.margin>
                         <Insets right="7.0" top="57.0" />
