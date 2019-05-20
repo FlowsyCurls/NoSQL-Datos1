@@ -220,7 +220,6 @@ public class Accionador {
             esquema.Meter_refe(this.pasaraEnum(datos.getIndice()), datos.getColumna());
             datos.setRespuesta("indice creado");
         } else {//yo le espesifique que sea un ArbolB, pero eso datos lo tiene que declarar
-            esquema.Meter_refe(this.pasaraEnum(datos.getIndice()), datos.getColumna());
             datos.setRespuesta("existen datos repetidos");
         }
         return datos;
