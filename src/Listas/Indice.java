@@ -32,6 +32,49 @@ public class Indice<t> {
 			AVL=new AVL();
 		}
 	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public void setAA(ArbolAA aA) {
+		AA = aA;
+	}
+	public void setRB(ArbolRB rB) {
+		RB = rB;
+	}
+	public void setB(ArbolB b) {
+		B = b;
+	}
+	public void setBPlus(ArbolBPlus bPlus) {
+		BPlus = bPlus;
+	}
+	public void setBinario(ArbolBinario binario) {
+		Binario = binario;
+	}
+	public void setAVL(AVL aVL) {
+		AVL = aVL;
+	}
+	
+	
+	public ArbolAA generateAA() {
+		return AA =new ArbolAA();
+	}
+	public ArbolRB generateRB() {
+		return RB = new ArbolRB();
+	}
+	public ArbolB generateB() {
+		return B =new ArbolB();
+	}
+	public ArbolBPlus generateBPlus() {
+		return BPlus = new ArbolBPlus();
+	}
+	public ArbolBinario generateBinario() {
+		return Binario = new ArbolBinario();
+	}
+	public Arboles.AVL generateAVL() {
+		return AVL = new AVL();
+	}
+	
+	
 	public String getNombre() {
 		return nombre;
 	}
