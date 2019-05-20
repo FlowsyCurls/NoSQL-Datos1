@@ -1,5 +1,4 @@
 package Listas;
-import java.util.Hashtable;
 
 import Arboles.AVL;
 import Arboles.ArbolAA;
@@ -7,14 +6,14 @@ import Arboles.ArbolB;
 import Arboles.ArbolBPlus;
 import Arboles.ArbolBinario;
 import Arboles.ArbolRB;
-public class Indice<t> {
+public class Indice {
 	private String nombre;
-	private ArbolAA AA;
-	private ArbolRB RB;
-	private ArbolB B;
-	private ArbolBPlus BPlus;
-	private ArbolBinario Binario;
-	private AVL AVL;
+	private ArbolAA AA=null;
+	private ArbolRB RB=null;
+	private ArbolB B=null;
+	private ArbolBPlus BPlus=null;
+	private ArbolBinario Binario=null;
+	private AVL AVL=null;
 	
 	public Indice(String nombre,NombreArbol dato) {
 		this.nombre=nombre;
@@ -32,49 +31,15 @@ public class Indice<t> {
 			AVL=new AVL();
 		}
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public boolean estoyvacio() {
+		if (((AA == null) && (RB == null) && (B == null) && (BPlus == null) && (Binario == null) && (AVL == null))) {
+			return true;
+		}
+		else {return false;}
 	}
-	public void setAA(ArbolAA aA) {
-		AA = aA;
-	}
-	public void setRB(ArbolRB rB) {
-		RB = rB;
-	}
-	public void setB(ArbolB b) {
-		B = b;
-	}
-	public void setBPlus(ArbolBPlus bPlus) {
-		BPlus = bPlus;
-	}
-	public void setBinario(ArbolBinario binario) {
-		Binario = binario;
-	}
-	public void setAVL(AVL aVL) {
-		AVL = aVL;
-	}
-	
-	
-	public ArbolAA generateAA() {
-		return AA =new ArbolAA();
-	}
-	public ArbolRB generateRB() {
-		return RB = new ArbolRB();
-	}
-	public ArbolB generateB() {
-		return B =new ArbolB();
-	}
-	public ArbolBPlus generateBPlus() {
-		return BPlus = new ArbolBPlus();
-	}
-	public ArbolBinario generateBinario() {
-		return Binario = new ArbolBinario();
-	}
-	public Arboles.AVL generateAVL() {
-		return AVL = new AVL();
-	}
-	
-	
+
+
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -95,5 +60,29 @@ public class Indice<t> {
 	}
 	public AVL getAVL() {
 		return AVL;
+	}
+
+	public void setAA(ArbolAA AA) {
+		this.AA = AA;
+	}
+
+	public void setRB(ArbolRB RB) {
+		this.RB = RB;
+	}
+
+	public void setB(ArbolB b) {
+		B = b;
+	}
+
+	public void setBPlus(ArbolBPlus BPlus) {
+		this.BPlus = BPlus;
+	}
+
+	public void setBinario(ArbolBinario binario) {
+		Binario = binario;
+	}
+
+	public void setAVL(Arboles.AVL AVL) {
+		this.AVL = AVL;
 	}
 }

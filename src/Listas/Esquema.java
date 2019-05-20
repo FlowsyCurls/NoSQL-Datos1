@@ -57,9 +57,29 @@ public class Esquema {
             cont++;
         }
     }
-    public boolean deleteIndice(String nombre) {
-    	return arboles.deleteNode(nombre);
+    public boolean deleteIndice(String columna,String Arbol) {
+        Indice indice=arboles.Search(columna);
+        if ("ArbolAA".equals(Arbol)) {
+            indice.setAA(null);
+        } else if ("ArbolB".equals(Arbol)) {
+            indice.setB(null);
+        } else if ("ArbolBinario".equals(Arbol)) {
+            indice.setBinario(null);
+        } else if ("ArbolBPlus".equals(Arbol)) {
+            indice.setBPlus(null);
+        } else if ("ArbolRB".equals(Arbol)) {
+            indice.setRB(null);
+        } else {
+            indice.setAVL(null);
+        }
+        if (indice.estoyvacio()){
+            return arboles.deleteNode(columna);
+        }
+        return true;
     }
+
+
+
     public Esquema () {
     }
     public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
@@ -96,26 +116,6 @@ public class Esquema {
 	    }
         contador++;
     }
-	public boolean VNReferencia(String columna){
-    	return (columnasconindice.buscarindice(columna).Estoyvacio())? true:false;
-	}
-	public void NReferencia(String columna,NombreArbol dato){
-		Indice nuevo=arboles.Search(columna);//El nodo donde quiero hacer un nuevo arbol
-		referencia hola=new referencia();//la clase que me mete las varas al arbol
-		if (dato==NombreArbol.ArbolB){
-			nuevo.setB(hola.setArbolB(nuevo.generateB(), filas, columna));
-		}else if (dato==NombreArbol.ArbolRB) {
-			nuevo.setRB(hola.setArbolRB(nuevo.generateRB(), filas, columna));
-		}else if (dato==NombreArbol.ArbolAA) {
-			nuevo.setAA(hola.setArbolAA(nuevo.generateAA(), filas, columna));
-		}else if (dato==NombreArbol.ArbolBPlus) {
-			nuevo.setBPlus(hola.setArbolBPlus(nuevo.generateBPlus(), filas, columna));
-		}else if (dato==NombreArbol.ArbolBinario) {
-			nuevo.setBinario(hola.setArbolBinario(nuevo.generateBinario(), filas, columna));
-		}else {
-				nuevo.setAVL(hola.setArbolAVL(nuevo.generateAVL(), filas, columna));
-		}
-	}
     public boolean repetidos(String key){
     	return arboles.verDupl(filas, key);
     }
