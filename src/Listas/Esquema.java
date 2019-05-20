@@ -50,8 +50,8 @@ public class Esquema {
             cont++;
         }
     }
-    public void deleteIndice(String nombre) {
-    	arboles.deleteNode(nombre);
+    public boolean deleteIndice(String nombre) {
+    	return arboles.deleteNode(nombre);
     }
     public Esquema () {
     }
