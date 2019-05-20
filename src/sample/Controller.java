@@ -382,12 +382,15 @@ public class Controller {
     private void setIndexPosibilitys(Esquema esq, String column) {
     	try{availableIndex.clear();
     	this.availableIndex.add("Linked List");
+    	System.out.println("entro aca para anadir los indices");
+    	System.out.println(esq.getNombre()+column);
     	if (esq.columnasconindice.buscarindice(column).tienearbolAA) this.availableIndex.add("AA");
     	if (esq.columnasconindice.buscarindice(column).tieneAvl) this.availableIndex.add("AVL");
     	if (esq.columnasconindice.buscarindice(column).tienearbolBinario) this.availableIndex.add("Binary");
     	if (esq.columnasconindice.buscarindice(column).tienearbolB) this.availableIndex.add("B");
     	if (esq.columnasconindice.buscarindice(column).tienearbolBPlus) this.availableIndex.add("B+");
     	if (esq.columnasconindice.buscarindice(column).tienearbolRB) this.availableIndex.add("R-B");
+		System.out.println(	esq.columnasconindice.buscarindice(column).Estoyvacio());
     	this.indexBox.setItems(availableIndex);
 		this.indexBox.getSelectionModel().select(0);}
     	catch (NullPointerException r) {

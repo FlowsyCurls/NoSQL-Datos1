@@ -3,7 +3,7 @@ package Listas;
 import sample.IndiceBoolean;
 
 public class ListaIndice {
-    int largo;
+    int largo=0;
     Nodo<IndiceBoolean> head= null;
 
 

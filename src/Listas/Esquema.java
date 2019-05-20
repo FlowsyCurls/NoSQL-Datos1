@@ -7,6 +7,7 @@ import Errores.EsquemaNuloException;
 import Errores.TamanoException;
 import sample.Controller;
 import sample.Datos;
+import sample.IndiceBoolean;
 import sample.Server;
 
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class Esquema {
     private ListaTamano tamanos=new ListaTamano();
     private ListaString mijoins =new ListaString();
     public ListaString joinde = new ListaString();
-    public Lista<Indice> arboles=new Lista();
-    public int cont=0;
+    public Lista<Indice> arboles=new Lista<>();
+    public int contador =0;
     public ListaIndice columnasconindice=new ListaIndice();
 
 
@@ -47,6 +48,12 @@ public class Esquema {
             } else {
                 getMijoins().addFirst(nombre);
             }
+            cont++;
+        }
+        ListaString lista=this.obtenercolumnasparaedit();
+        cont=0;
+        while (cont<lista.getLargo()){
+            this.columnasconindice.addLast(new IndiceBoolean(lista.buscar(cont)));
             cont++;
         }
     }
@@ -86,7 +93,8 @@ public class Esquema {
 	   		Indice prueba= new Indice(key,NombreArbol.AVL);
 	    	hola.setArbolAVL(prueba.getAVL(), filas, key);
 	    	arboles.addlist(prueba,key);
-	    }cont++;
+	    }
+        contador++;
     }
     public boolean repetidos(String key){
     	return arboles.verDupl(filas, key);

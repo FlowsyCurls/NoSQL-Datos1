@@ -341,9 +341,10 @@ public class ControllerEdit {
     	String Key = this.structureskey.getSelectionModel().getSelectedItem();
     	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure,"Hey! You can't index two times with \nthe same structure"); 
     	IndiceBoolean tmp = esquema.columnasconindice.buscarindice(Key);
+    	System.out.println(esquema.columnasconindice.getLargo());
     	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
-
-    	if (tmp.Noexiste()==false) {
+    	if (!tmp.Noexiste()) {
+    		System.out.println("si existe esta columna");
     		if(tmp.tienearbolAA && Structure.equals("AA")) {message.show(); return;}
     		else if(tmp.tienearbolBinario && Structure.equals("Binary")) {message.show(); return;}
     		else if(tmp.tienearbolRB && Structure.equals("R-B")) {message.show(); return;}
