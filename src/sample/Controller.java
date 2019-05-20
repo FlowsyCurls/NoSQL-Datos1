@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import Errores.EsquemaNuloException;
 import Listas.Esquema;
 import Listas.ListaEsquemas;
+import Listas.ListaString;
 import Listas.Nodo;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -80,6 +81,10 @@ public class Controller {
 	@FXML
     private ChoiceBox<String> choiceboxSearch = new ChoiceBox<String>(); 
 	private ObservableList<String> availableChoices = FXCollections.observableArrayList(); 
+	
+	@FXML
+    private ChoiceBox<String> choiceboxSearchINDEX = new ChoiceBox<String>(); 
+	private ObservableList<String> availableColumnaseditable = FXCollections.observableArrayList(); 
     
 	@FXML private TextField textfieldFilas;
    
@@ -88,6 +93,8 @@ public class Controller {
    
     @FXML // fx:id="search" 
     private TextField searchSTR =  new TextField(); 
+    
+    @FXML private TextField searchINDEX =  new TextField(); 
     
     //FMLX nothingMessage 
 	private  StackPane stack = new StackPane(); 
@@ -145,7 +152,10 @@ public class Controller {
     @FXML  //evento de anadir 
 	public void addButtonAction(ActionEvent event) throws IOException { 
     	String inputString = this.textfieldFilas.getText();
-    	if (inputString.isEmpty()) {this.textfieldFilas.clear(); return;}
+    	if (inputString.isEmpty()) {
+    		this.textfieldFilas.clear(); 
+    		return;
+    	}
     	else if (!Controller.TryParse(inputString, "INTEGER")) {
 			UserMessage message = new UserMessage(AlertType.ERROR,
 					"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!",
@@ -158,6 +168,7 @@ public class Controller {
 		if (inputInt==0) inputInt=1;
     	this.addWindow(inputInt);
 	}public static boolean TryParse(String cadena, String tipo){
+		
 		if (tipo == "INTEGER") {
 			try {Integer.parseInt(cadena);return true;} 
 			catch (NumberFormatException e) {return false;}
@@ -223,11 +234,19 @@ public class Controller {
             return;}
         /*buscar por indice*/
         else if (selectedChoice.equals("INDEX")) {
-            //validacion de la entrada.
-            if (!Controller.TryParse(detail, "INTEGER")) {
-                //si no hay numero ingresado.
-                if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...   ï¿½ï¿½","Try to write a number");message.showAndWait();this.textfieldEdit.clear();return;}}
-            else{UserMessage message = new UserMessage(AlertType.ERROR,"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!","Write a valid number");message.showAndWait();this.textfieldEdit.clear();}return;}
+        	//si no hay numero ingresado, ni esquema seleccionado.
+        	if (!prompt.equals("diagram's detail") && this.verifyTextField(detail)) {
+            	UserMessage message = new UserMessage(AlertType.ERROR,"\n\r\tJust sayin'...  ¬¬","Try to write a number");
+            	message.showAndWait();
+            	this.textfieldEdit.clear();
+            	return;
+            } else if (!Controller.TryParse(detail, "INTEGER")) { //si el numero ingresado no es valido.
+            	UserMessage message = new UserMessage(AlertType.ERROR,"\n\rNot double, not long, not float. \nJust integer... \n\t\tPLEASE..!","Write a valid number");
+            	message.showAndWait();
+            	this.textfieldEdit.clear();
+            	return;
+            }
+        }
         //busqueda y abrir otra ventana.
         int inputInt = Integer.parseInt(detail);
         Esquema buscado = Controller.listaEsquemas.buscar(inputInt);
@@ -316,13 +335,12 @@ public class Controller {
 		System.out.println("Datos "+datos);
 		
     	/*buscando con indices...*/
-		if (selectedChoice.equals("INDEX")) {
-			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
-			filasbuscadas = SearchIndex(detail, datos, usedDiagram);
-			//verificar que por lo menos haya algun coincidencia. 
-			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
-			else {this.setCxF(datos, filasbuscadas);}return;
-//				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
+//		if (selectedChoice.equals("INDEX")) {
+//			filasbuscadas = SearchIndex(detail, datos, usedDiagram, indexBox.getSelectionModel().getSelectedItem());
+//			//verificar que por lo menos haya algun coincidencia. 
+//			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+//			else {this.setCxF(datos, filasbuscadas);}return;
+////				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
 
 ////    	/*buscando con joins...*/
 ////		}else if (selectedChoice.equals("JOINS")) {
@@ -332,9 +350,14 @@ public class Controller {
 ////			else {this.setCxF(datos, filasbuscadas);}return;
 ////				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)	
 	    /*buscando con columnas...*/
-		}else {
-			System.out.println("NO ESTA AUN VALIDADA LA ENTRADA DE ESTE PARAMETRO "+selectedChoice);
+		String Structure = indexBox.getSelectionModel().getSelectedItem();
+		if (Structure.equals("Linked List")) {
 			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
+			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+			else {this.setCxF(datos, filasbuscadas);}
+			return;
+		}else {
+			filasbuscadas = SearchIndex(detail, datos, usedDiagram, selectedChoice, Structure );
 			//verificar que por lo menos haya algun coincidencia. 
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
 			else {this.setCxF(datos, filasbuscadas);}
@@ -342,13 +365,22 @@ public class Controller {
 		}
 	}
 		
-    private ArrayList<Integer> SearchIndex(String detail, String datos, Esquema usedDiagram){
+    private ArrayList<Integer> SearchIndex(String detail, String datos, Esquema usedDiagram, String Key, String Structure){
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
+    	if (Structure.equals("Binary")) Structure = "ArbolBinario";
+    	else if (Structure.equals("R-B")) Structure = "ArbolRB";
+    	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
+    	else if (Structure.equals("AA")) Structure = "ArbolAA";
+    	else if (Structure.equals("B")) Structure = "ArbolB";
+    	else if (Structure.equals("AVL")) Structure = "ALV";
+    	usedDiagram.arboles.Search(Key);
+    	String respuesta = cliente.buscardatosporindice(usedDiagram.getNombre(), detail, Key, Structure).getDatos();
+    	System.out.println("respuesta busqueda por indice "+respuesta);
 		return filas;
     }
     
     private void setIndexPosibilitys(Esquema esq, String column) {
-    	availableIndex.clear();
+    	try{availableIndex.clear();
     	this.availableIndex.add("Linked List");
     	if (esq.columnasconindice.buscarindice(column).tienearbolAA) this.availableIndex.add("AA");
     	if (esq.columnasconindice.buscarindice(column).tieneAvl) this.availableIndex.add("AVL");
@@ -357,7 +389,10 @@ public class Controller {
     	if (esq.columnasconindice.buscarindice(column).tienearbolBPlus) this.availableIndex.add("B+");
     	if (esq.columnasconindice.buscarindice(column).tienearbolRB) this.availableIndex.add("R-B");
     	this.indexBox.setItems(availableIndex);
-		this.indexBox.getSelectionModel().select(0);
+		this.indexBox.getSelectionModel().select(0);}
+    	catch (NullPointerException r) {
+    		return;
+    	}
     }
     
     
@@ -393,7 +428,6 @@ public class Controller {
 //    }
     
     
-    
 	private ArrayList<Integer> SearchAtributes(String detail, String selectedChoice, String datos, Esquema usedDiagram){
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
 		for (int i=0; i< columnas.length; i++){
@@ -408,6 +442,9 @@ public class Controller {
 				break;
 			}
 		}return filas;
+	}
+	
+	public void searchIndexButtonAction(ActionEvent event) throws IOException, NullPointerException {
 	}
 	
 	private void messenger(String content, String detail) {
@@ -477,7 +514,16 @@ public class Controller {
 	/*PARA MOSTRAR DIAGRAMA SELECCIONADO*/
     public void displaySelectedDiagram(MouseEvent event) throws IOException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem();
-    	choiceboxSearch.getSelectionModel().selectedItemProperty().addListener( 
+    	this.availableColumnaseditable.clear();
+    	ListaString t = listaEsquemas.buscar(selectedDiagram).obtenercolumnasparaedit();
+    	Nodo<String> tmp = t.getHead();
+    	while(tmp!=null) {
+    		availableColumnaseditable.add(tmp.getNodo());
+    		tmp=tmp.next;
+    	}
+        this.choiceboxSearchINDEX.setItems(availableColumnaseditable);
+        this.choiceboxSearchINDEX.getSelectionModel().select(0);
+    	choiceboxSearchINDEX.getSelectionModel().selectedItemProperty().addListener( 
         		(ObservableValue<? extends String> observable, String oldValue, 
         				String newValue) -> this.setIndexPosibilitys(listaEsquemas.buscar(selectedDiagram), newValue)); 
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
@@ -571,9 +617,9 @@ public class Controller {
     private void setChoiceBoxSearch(ArrayList<String> arrayList) {  //acomodar los keys en choicebox. 
 		this.choiceboxSearch.getItems().clear();
 		this.availableChoices.add("OTHERS...");
-		this.availableChoices.add("NAME");
+//		this.availableChoices.add("NAME");
 //		this.availableChoices.add("JOINS");
-		this.availableChoices.add("INDEX");
+//		this.availableChoices.add("INDEX");
     	this.availableChoices.addAll(arrayList);
 		this.choiceboxSearch.setItems(availableChoices);
 		this.choiceboxSearch.getSelectionModel().select(0);

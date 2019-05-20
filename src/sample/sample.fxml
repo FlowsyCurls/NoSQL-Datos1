@@ -81,12 +81,12 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                      <HBox.margin>
-                        <Insets right="5.0" top="100.0" />
+                        <Insets right="5.0" top="136.0" />
                      </HBox.margin>
                   </ChoiceBox>
-                  <VBox spacing="12.0">
+                  <VBox spacing="10.0">
                      <HBox.margin>
-                        <Insets right="7.0" top="57.0" />
+                        <Insets right="7.0" top="53.0" />
                      </HBox.margin>
                      <children>
                         <ChoiceBox fx:id="choiceboxEdit" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1;">
@@ -98,6 +98,14 @@
                            </cursor>
                         </ChoiceBox>
                         <ChoiceBox fx:id="choiceboxSearch" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1;">
+                           <tooltip>
+                              <Tooltip opacity="0.8" text="choose category before searching" />
+                           </tooltip>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ChoiceBox>
+                        <ChoiceBox fx:id="choiceboxSearchINDEX" layoutX="10.0" layoutY="53.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1;">
                            <tooltip>
                               <Tooltip opacity="0.8" text="choose category before searching" />
                            </tooltip>
@@ -131,6 +139,14 @@
                            <cursor>
                               <Cursor fx:constant="TEXT" />
                            </cursor></TextField>
+                        <TextField fx:id="searchINDEX" onAction="#searchButtonAction" promptText="diagram's detail" style="-fx-background-color: lightyellow; -fx-background-radius: 8; -fx-border-radius: 8;">
+                           <tooltip>
+                              <Tooltip opacity="0.8" text="only letters" />
+                           </tooltip>
+                           <cursor>
+                              <Cursor fx:constant="TEXT" />
+                           </cursor>
+                        </TextField>
                      </children>
                      <HBox.margin>
                         <Insets bottom="5.0" top="7.0" />
@@ -175,6 +191,24 @@
                            </cursor>
                         </Button>
                         <Button focusTraversable="false" mnemonicParsing="false" onAction="#searchButtonAction" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-insets: 1;" textFill="WHITE">
+                           <font>
+                              <Font name="Berlin Sans FB Demi Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="150.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Media/buscar.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button focusTraversable="false" mnemonicParsing="false" onAction="#searchIndexButtonAction" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-background-insets: 1;" textFill="WHITE">
                            <font>
                               <Font name="Berlin Sans FB Demi Bold" size="15.0" />
                            </font>

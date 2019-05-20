@@ -1,6 +1,7 @@
 package pruebas;
 
-import Listas.NodoList;
+import Listas.SimpleList_Comparable;
+import Listas.SimpleNode_Comparable;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -13,7 +14,7 @@ public class MainPrueba extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception{
-    	NodoList<Integer> list = new NodoList<>();
+    	SimpleList_Comparable<Integer> list = new SimpleList_Comparable<>();
     	list.addLast(8);
     	list.addLast(4);
     	list.addLast(6);
@@ -24,7 +25,7 @@ public class MainPrueba extends Application {
     	list.addLast(2);
     	list.addLast(9);
     	list.addLast(1);
-    	list.getMin();
+    	list.getMax();
     	list.selectionSort();
     	
     }

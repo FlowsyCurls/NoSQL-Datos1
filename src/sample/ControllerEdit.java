@@ -3,11 +3,14 @@ package sample;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import Listas.Esquema;
+import Listas.ListaString;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -226,7 +229,7 @@ public class ControllerEdit {
 	
     public void updateStructuresKey(String scheme) {
 		Esquema esquema_con_columnas = Controller.listaEsquemas.buscar(scheme);
-		ArrayList<String>  keys_columnas = esquema_con_columnas.obtenercolumnas().getArraycolumnas(esquema_con_columnas.obtenercolumnas());
+		ArrayList<String>  keys_columnas = esquema_con_columnas.obtenercolumnasparaedit().getArraycolumnas(esquema_con_columnas.obtenercolumnasparaedit());
 		System.out.println("Encontrado "+esquema_con_columnas.getNombre());
     	this.posibleKeys.clear();
    		for (int i = 0; i<keys_columnas.size(); i++ ) {
@@ -336,9 +339,18 @@ public class ControllerEdit {
     void handleButtonAddStructure(ActionEvent event) {
     	String Structure = this.structuresBox.getSelectionModel().getSelectedItem();
     	String Key = this.structureskey.getSelectionModel().getSelectedItem();
-    	if (esquema.columnasconindice.buscarindice(Key).Noexiste() != true) {
-	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure,"Hey! You can't index two times with \nthe same structure"); message.show();
-	    	return;}
+    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure,"Hey! You can't index two times with \nthe same structure"); 
+    	IndiceBoolean tmp = esquema.columnasconindice.buscarindice(Key);
+    	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
+
+    	if (tmp.Noexiste()==false) {
+    		if(tmp.tienearbolAA && Structure.equals("AA")) {message.show(); return;}
+    		else if(tmp.tienearbolBinario && Structure.equals("Binary")) {message.show(); return;}
+    		else if(tmp.tienearbolRB && Structure.equals("R-B")) {message.show(); return;}
+    		else if(tmp.tienearbolBPlus && Structure.equals("B+")) {message.show(); return;}
+    		else if(tmp.tienearbolB && Structure.equals("B")) {message.show(); return;}
+    		else if(tmp.tieneAvl && Structure.equals("AVL")) {message.show(); return;}
+    	}
     	if (Structure.equals("Binary")) Structure = "ArbolBinario";
     	else if (Structure.equals("R-B")) Structure = "ArbolRB";
     	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
@@ -348,6 +360,24 @@ public class ControllerEdit {
     	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
     	String respuesta = Controller.cliente.crearindice(esquema.getNombre(), Key, Structure);
     	System.out.println(respuesta);
+    	if (respuesta.equals("indice creado")) {
+    		if (Structure.equals("ArbolBinario")) tmp.tienearbolBinario = true;
+    		else if (Structure.equals("ArbolRB")) tmp.tienearbolRB = true;
+    		else if (Structure.equals("ArbolBPlus")) tmp.tienearbolBPlus = true;
+    		else if (Structure.equals("ArbolAA")) tmp.tienearbolAA = true;
+    		else if (Structure.equals("ArbolB")) tmp.tienearbolB = true;
+    		else if (Structure.equals("ALV")) tmp.tieneAvl = true;
+    	}
+//        	UserMessage dialog = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure+" : "+Key,"Hey! \nIndex successfully created ");
+//        	dialog.show();
+//    		final Timer timer = new Timer();
+//            timer.schedule(new TimerTask() {
+//                public void run() {
+//                	dialog.close();
+//                    timer.cancel(); //this will cancel the timer of the system
+//                }
+//            }, 1500);
+//    	}
     	log.debug("Se logra guardar en la estructura --> "+"Estructura: "+Structure+"  _  Llave: "+Key);
 
     }
