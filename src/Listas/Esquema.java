@@ -513,19 +513,20 @@ public class Esquema {
     public String buscarporindice(Datos datos) throws DatoNoExistenteException, EsquemaNuloException {
         Hashtable fila;
         String dato= "";
-        if ("ArbolAA".equals("datos nombre del arbol")) {
+        if ("ArbolAA".equals(datos.getIndice())) {
+            System.out.println(this.arboles.Search(datos.getColumna()).getAA());
             //busque en el server su lista de esquemas, el esquema donde se hace la busqueda, buscar por el nombre de la columna(key), le espesifico el arbol donde hacer la
              fila= (Hashtable) this.arboles.Search(datos.getColumna()).getAA().search(datos.getDato());//busqueda del dato
-        } else if ("Arbolb".equals(datos.getIndice())) {
+        } else if ("ArbolB".equals(datos.getIndice())) {
             //y asi con todos los datos, solo que se tiene que espesificar el arbol donde se hace la busqueda
              fila= (Hashtable) this.arboles.Search(datos.getColumna()).getB().search(datos.getDato());
         } else if ("ArbolBinario".equals(datos.getIndice())) {
 
              fila= (Hashtable)this.arboles.Search(datos.getColumna()).getBinario().search(datos.getDato());
-        } else if ("ArbolBinario".equals(datos.getIndice())) {
+        } else if ("ArbolBPlus".equals(datos.getIndice())) {
 
              fila= (Hashtable)this.arboles.Search(datos.getColumna()).getBPlus().search(datos.getDato());
-        } else if ("ArbolBPlus".equals(datos.getIndice())) {
+        } else if ("ArbolRB".equals(datos.getIndice())) {
 
              fila= (Hashtable)this.arboles.Search(datos.getColumna()).getRB().search(datos.getDato());
         } else {
@@ -607,5 +608,13 @@ public class Esquema {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public ListaIndice getColumnasconindice() {
+        return columnasconindice;
+    }
+
+    public void setColumnasconindice(ListaIndice columnasconindice) {
+        this.columnasconindice = columnasconindice;
     }
 }

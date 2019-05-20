@@ -203,7 +203,8 @@ public class Accionador {
     private Datos buscardatosporindice(Datos datos) {
         Esquema esquema = Server.esquemas.buscar(datos.getNombre());
         try {
-            datos.setDato(esquema.buscarporindice(datos));
+            datos.setDatos(esquema.buscarporindice(datos));
+            System.out.println("salgo de aqui");
             datos.setRespuesta("dato encontrado");
         } catch (DatoNoExistenteException e) {
             datos.setRespuesta("el dato no existe");
