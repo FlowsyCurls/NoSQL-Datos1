@@ -226,7 +226,10 @@ public class Accionador {
     }
 
     private Datos eliminarindice(Datos datos) {
-        Server.esquemas.buscar("nombreesquema").deleteIndice("nombre de la columna");
+        Esquema esquema=Server.esquemas.buscar(datos.getNombre());
+        esquema.deleteIndice(datos.getColumna());
+        datos.setRespuesta("Indice eliminado");
+        //Server.esquemas.buscar("nombreesquema").deleteIndice("nombre de la columna");
         return datos;
     }
 
