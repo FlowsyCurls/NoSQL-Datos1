@@ -96,6 +96,26 @@ public class Esquema {
 	    }
         contador++;
     }
+	public boolean VNReferencia(String columna){
+    	return (columnasconindice.buscarindice(columna).Estoyvacio())? true:false;
+	}
+	public void NReferencia(String columna,NombreArbol dato){
+		Indice nuevo=arboles.Search(columna);//El nodo donde quiero hacer un nuevo arbol
+		referencia hola=new referencia();//la clase que me mete las varas al arbol
+		if (dato==NombreArbol.ArbolB){
+			nuevo.setB(hola.setArbolB(nuevo.generateB(), filas, columna));
+		}else if (dato==NombreArbol.ArbolRB) {
+			nuevo.setRB(hola.setArbolRB(nuevo.generateRB(), filas, columna));
+		}else if (dato==NombreArbol.ArbolAA) {
+			nuevo.setAA(hola.setArbolAA(nuevo.generateAA(), filas, columna));
+		}else if (dato==NombreArbol.ArbolBPlus) {
+			nuevo.setBPlus(hola.setArbolBPlus(nuevo.generateBPlus(), filas, columna));
+		}else if (dato==NombreArbol.ArbolBinario) {
+			nuevo.setBinario(hola.setArbolBinario(nuevo.generateBinario(), filas, columna));
+		}else {
+				nuevo.setAVL(hola.setArbolAVL(nuevo.generateAVL(), filas, columna));
+		}
+	}
     public boolean repetidos(String key){
     	return arboles.verDupl(filas, key);
     }
