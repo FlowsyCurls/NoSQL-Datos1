@@ -131,8 +131,10 @@ public class Accionador {
             datos.setDatos(esquema.buscardatos(datos.getDato(), datos.getColumna()));
             datos.setRespuesta("datos enviados");
         } catch (StringIndexOutOfBoundsException e) {
+            datos.setDatos("");
             datos.setRespuesta("no se encontraron datos");
         } catch (EsquemaNuloException e) {
+            datos.setDatos("");
             datos.setRespuesta("el esquema esta vacio");
         }
         return datos;
@@ -144,8 +146,10 @@ public class Accionador {
             datos.setDatos(esquema.buscartodos());
             datos.setRespuesta("datos enviados");
         } catch (StringIndexOutOfBoundsException e) {
+            datos.setDatos("");
             datos.setRespuesta("no se encontraron datos");
         } catch (EsquemaNuloException e) {
+            datos.setDatos("");
             datos.setRespuesta("el esquema esta vacio");
         }
         return datos;
@@ -157,8 +161,10 @@ public class Accionador {
             datos.setDatos(esquema.buscardatosjoin(datos.getNombre_join(), datos.getColumna(), datos.getDato()));
             datos.setRespuesta("datos enviados");
         } catch (StringIndexOutOfBoundsException e) {
+            datos.setDatos("");
             datos.setRespuesta("no se encontraron datos");
         } catch (EsquemaNuloException e) {
+            datos.setDatos("");
             datos.setRespuesta("el esquema esta vacio");
         }
         return datos;
@@ -208,8 +214,10 @@ public class Accionador {
             System.out.println("salgo de aqui");
             datos.setRespuesta("dato encontrado");
         } catch (DatoNoExistenteException e) {
+            datos.setDatos("");
             datos.setRespuesta("el dato no existe");
         } catch (EsquemaNuloException e) {
+            datos.setDatos("");
             datos.setRespuesta("esquema esta vacio");
         }
         return datos;

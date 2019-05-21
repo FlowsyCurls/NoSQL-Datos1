@@ -78,6 +78,16 @@ public class ListaIndice {
         return indiceBoolean;
 
     }
+    public Boolean nohayindices(){
+        int cont=0;
+        while (cont<this.largo){
+            if (!this.get(cont).Estoyvacio()){
+                return false;
+            }
+            cont++;
+        }
+        return true;
+    }
 
 
     public int getLargo() {
