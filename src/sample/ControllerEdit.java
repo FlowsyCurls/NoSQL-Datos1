@@ -357,7 +357,7 @@ public class ControllerEdit {
     	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
     	else if (Structure.equals("AA")) Structure = "ArbolAA";
     	else if (Structure.equals("B")) Structure = "ArbolB";
-    	else if (Structure.equals("AVL")) Structure = "ALV";
+    	else if (Structure.equals("AVL")) Structure = "AVL";
     	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
     	String respuesta = Controller.cliente.crearindice(esquema.getNombre(), Key, Structure);
     	System.out.println(respuesta);
@@ -367,7 +367,7 @@ public class ControllerEdit {
     		else if (Structure.equals("ArbolBPlus")) tmp.tienearbolBPlus = true;
     		else if (Structure.equals("ArbolAA")) tmp.tienearbolAA = true;
     		else if (Structure.equals("ArbolB")) tmp.tienearbolB = true;
-    		else if (Structure.equals("ALV")) tmp.tieneAvl = true;
+    		else if (Structure.equals("AVL")) tmp.tieneAvl = true;
     	}
 //        	UserMessage dialog = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure+" : "+Key,"Hey! \nIndex successfully created ");
 //        	dialog.show();

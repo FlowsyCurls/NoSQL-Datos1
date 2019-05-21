@@ -77,6 +77,27 @@ public class Esquema {
         }
         return true;
     }
+    public boolean VNReferencia(String columna){
+        if (arboles.Search(columna)==null){ return true;}
+        else {return false;}
+    }
+    public void NReferencia(String columna,NombreArbol dato) {
+        Indice nuevo = arboles.Search(columna);//El nodo donde quiero hacer un nuevo arbol
+        referencia hola = new referencia();//la clase que me mete las varas al arbol
+        if (dato == NombreArbol.ArbolB) {
+            nuevo.setB(hola.setArbolB(nuevo.generateB(), filas, columna));
+        } else if (dato == NombreArbol.ArbolRB) {
+            nuevo.setRB(hola.setArbolRB(nuevo.generateRB(), filas, columna));
+        } else if (dato == NombreArbol.ArbolAA) {
+            nuevo.setAA(hola.setArbolAA(nuevo.generateAA(), filas, columna));
+        } else if (dato == NombreArbol.ArbolBPlus) {
+            nuevo.setBPlus(hola.setArbolBPlus(nuevo.generateBPlus(), filas, columna));
+        } else if (dato == NombreArbol.ArbolBinario) {
+            nuevo.setBinario(hola.setArbolBinario(nuevo.generateBinario(), filas, columna));
+        } else {
+            nuevo.setAVL(hola.setArbolAVL(nuevo.generateAVL(), filas, columna));
+        }
+    }
 
 
 

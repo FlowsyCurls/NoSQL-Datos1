@@ -403,7 +403,7 @@ public class Controller {
     	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
     	else if (Structure.equals("AA")) Structure = "ArbolAA";
     	else if (Structure.equals("B")) Structure = "ArbolB";
-    	else if (Structure.equals("AVL")) Structure = "ALV";
+    	else if (Structure.equals("AVL")) Structure = "AVL";
     	System.out.println(usedDiagram.getNombre());
     	System.out.println(detail);
     	System.out.println(Key);

@@ -218,9 +218,16 @@ public class Accionador {
         //Busco en el server su lista de esquemas, para buscar el esquema donde quiero hacer un arbol de indices y si no tiene datos repetidos se hace
         Esquema esquema = Server.esquemas.buscar(datos.getNombre());
         if (esquema.repetidos(datos.getColumna())) {
-            esquema.Meter_refe(this.pasaraEnum(datos.getIndice()), datos.getColumna());
-            datos.setRespuesta("indice creado");
-        } else {//yo le espesifique que sea un ArbolB, pero eso datos lo tiene que declarar
+            if (esquema.VNReferencia(datos.getColumna())) {
+                System.out.println("Voy a crear un nuevo indice");
+                esquema.Meter_refe(this.pasaraEnum(datos.getIndice()), datos.getColumna());
+                datos.setRespuesta("indice creado");
+            }else{//Se debe cambiar esa vara de nombreArbol por el arbol que se desea crear
+                System.out.println("Voy a crear un nuevo arbol");
+                esquema.NReferencia(datos.getColumna(),this.pasaraEnum(datos.getIndice()));
+                datos.setRespuesta("indice creado");//se anade a los demas arboles de la columna
+            }
+        }else {//yo le espesifique que sea un ArbolB, pero eso datos lo tiene que declarar
             datos.setRespuesta("existen datos repetidos");
         }
         return datos;

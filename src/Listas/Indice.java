@@ -37,6 +37,29 @@ public class Indice {
 		}
 		else {return false;}
 	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;}
+
+
+
+	public ArbolAA generateAA() {
+		return AA =new ArbolAA();
+	}
+	public ArbolRB generateRB() {
+		return RB = new ArbolRB();
+	}
+	public ArbolB generateB() {
+		return B =new ArbolB();
+	}
+	public ArbolBPlus generateBPlus() {
+		return BPlus = new ArbolBPlus();
+	}
+	public ArbolBinario generateBinario() {
+		return Binario = new ArbolBinario();
+	}
+	public Arboles.AVL generateAVL() {
+		return AVL = new AVL();
+	}
 
 
 

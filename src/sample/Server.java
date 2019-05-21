@@ -97,19 +97,19 @@ public class Server implements Runnable {
         System.out.println(esquemas.buscar("Esquema2").buscartodos()+"2");
         System.out.println("\n\n");
         System.out.println(esquemas.buscar("Esquema3").buscardatosjoin("Esquema1","dato2","222")+":3");
-	    
-	esquema.Meter_refe(NombreArbol.AVL, "dato1");//esto hace el arbol con los indices
-        esquema.Meter_refe(NombreArbol.ArbolB,"dato2");
-//        Object tl = esquema.arboles.Search(0);
-//        AVL nuevo= (AVL) esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
-        
-        System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2
-//        System.out.print(nuevo.search("cobra"));
-	
-	System.out.print("\n"+esquema.arboles.largo+"\n");
-        esquema.deleteIndice("dato1");
-        System.out.print("\n"+esquema.arboles.largo+"\n");//ejemplo de eliminacion de Indices
-        System.out.print("\n"+esquema.arboles.Search("dato1"));
+//	    System.out.println(esquema.VNReferencia("dato1"));
+//	    esquema.Meter_refe(NombreArbol.AVL, "dato1");//esto hace el arbol con los indices
+//        System.out.println(esquema.VNReferencia("dato1"));
+////        Object tl = esquema.arboles.Search(0);
+////        AVL nuevo= (AVL) esquema.arboles.Search(0);//busco en la lista el nodo 0, que tiene el primer arbol, problema tengo que hacer casting
+//
+//        System.out.print(esquema.repetidos("dato2")+"\n");//ver que si tiene repetidos la columna de dato2
+////        System.out.print(nuevo.search("cobra"));
+//
+//	System.out.print("\n"+esquema.arboles.largo+"\n");
+//
+//        System.out.print("\n"+esquema.arboles.largo+"\n");//ejemplo de eliminacion de Indices
+//        System.out.print("\n"+esquema.arboles.Search("dato1"));
 	    
         Thread hilo = new Thread(this);
         hilo.start();
