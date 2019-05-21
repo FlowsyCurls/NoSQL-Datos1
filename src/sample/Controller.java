@@ -153,10 +153,12 @@ public class Controller {
 			int cont=0;
 			while (cont<listaEsquemastmp.getLargo()) {
 				System.out.println(listaEsquemastmp.buscar(cont).getNombre());
-				listaEsquemastmp.buscar(cont).setColumnasconindice(Controller.listaEsquemas.buscar(listaEsquemastmp.buscar(cont).getNombre()).getColumnasconindice());
-				cont++;
+				if (listaEsquemas.buscar(listaEsquemastmp.buscar(cont).getNombre())!=null) {
+					listaEsquemastmp.buscar(cont).setColumnasconindice(Controller.listaEsquemas.buscar(listaEsquemastmp.buscar(cont).getNombre()).getColumnasconindice());
+				}cont++;
 			}
 		}
+		System.out.println("termino de anadir los indices");
 		Controller.listaEsquemas=listaEsquemastmp;
     }
 

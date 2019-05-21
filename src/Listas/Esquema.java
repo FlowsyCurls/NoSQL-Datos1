@@ -162,7 +162,7 @@ public class Esquema {
     public boolean repetidos(String key){
     	return arboles.verDupl(filas, key);
     }
-    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException {
+    private void crearfila(String[] partes) throws NumberFormatException, EsquemaNuloException, DatosUsadosException, ArrayIndexOutOfBoundsException {
         Hashtable fila=new Hashtable();
         int cont=1;
         this.ID=partes[cont].split(":")[0];

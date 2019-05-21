@@ -394,12 +394,12 @@ public class ControllerEdit {
     	if (tmp.Noexiste()) {message.show(); return;}
 		System.out.println("si existe esta columna");
 		//Cambiar la entrada antes, mejor.
-    	if (Structure.equals("Binary")) Structure = "ArbolBinario";
-    	else if (Structure.equals("R-B")) Structure = "ArbolRB";
-    	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
-    	else if (Structure.equals("AA")) Structure = "ArbolAA";
-    	else if (Structure.equals("B")) Structure = "ArbolB";
-    	else if (Structure.equals("AVL")) Structure = "AVL";
+    	if (Structure.equals("Binary")) {Structure = "ArbolBinario";}
+    	else if (Structure.equals("R-B")) {Structure = "ArbolRB";}
+    	else if (Structure.equals("B+")) {Structure = "ArbolBPlus";}
+    	else if (Structure.equals("AA")) {Structure = "ArbolAA";}
+    	else if (Structure.equals("B")) {Structure = "ArbolB";}
+    	else if (Structure.equals("AVL")) {Structure = "AVL";}
     	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
     	System.out.println("ahora a ver si tiene el arbol");
     	String respuesta = "";
@@ -422,7 +422,8 @@ public class ControllerEdit {
 			respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
 		}
     	System.out.println(respuesta);
-    	if (respuesta.equals("indice eliminado")) {
+		System.out.println(Structure);
+    	if (respuesta.equals("Indice eliminado")) {
     		if (Structure.equals("ArbolBinario")) tmp.tienearbolBinario = false;
     		else if (Structure.equals("ArbolRB")) tmp.tienearbolRB = false;
     		else if (Structure.equals("ArbolBPlus")) tmp.tienearbolBPlus = false;

@@ -73,6 +73,8 @@ public class Accionador {
             datos.setRespuesta("No existe esquema de join indicado");
         } catch (DatosUsadosException e) {
             datos.setRespuesta("Hay columnas repetidas");
+        }catch (ArrayIndexOutOfBoundsException e){
+            datos.setRespuesta("no se especifico uno de los parametros");
         }
         return datos;
     }
