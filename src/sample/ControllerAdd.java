@@ -59,22 +59,27 @@ public class ControllerAdd {
 	private static  NodoList<String> ComprobarJoin;
 	private int posx = 5, posy = 5, columns=0;
 	private boolean typessetted =false;
-	private NodoList<ChoiceBox<String>> children1 = new NodoList<ChoiceBox<String>>();
-	private NodoList<TextField> children2 = new NodoList<TextField>(), children3 = new NodoList<TextField>();
+	private NodoList<ChoiceBox<String>> children1;
+	private NodoList<TextField> children2, children3;
 	//guardado
 	
 	private boolean saved = false;
 	//cliente
 	private Cliente cliente = new Cliente();
+	private int tmpcolumns;
 	//statics
     public static Logger log = LoggerFactory.getLogger(ControllerAdd.class);
  
     /*METHODOS*/
     //initializer 
     public void initialize() throws IOException {
-    	ComprobarJoin = new NodoList<>();
+    	children1 = new NodoList<ChoiceBox<String>>();
+    	children2 = new NodoList<TextField>();
+    	children3 = new NodoList<TextField>();
+    	ComprobarJoin =  new NodoList<String>();
     }
     public void drawing(int columns, String selectedType) throws IOException {
+    	this.tmpcolumns=columns;
 		if (this.columns==0) {
 			this.columns=columns;
 			this.drawing(this.columns, null);
@@ -83,9 +88,9 @@ public class ControllerAdd {
 		    this.scrollpane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		    this.scrollpane.setPannable(true);
 		    return;}
-		try{ if (selectedType.equals("_")) {
-				this.setAll("_", false);
-		}} catch (NullPointerException n) {}
+//		try{ if (selectedType.equals("_")) {
+//				this.setAll("_", false);
+//		}} catch (NullPointerException n) {}
 		while (columns!=0) {
 			this.setAll(selectedType, false);
 			columns--;
@@ -229,20 +234,20 @@ public class ControllerAdd {
     	/*Segundo guardar y verificar las columnas.*/
     	int index = this.children1.getLargo();
     	String choosebox="", text="", num=""; int i=1;	
-//		System.out.println("CANTIDAD  >>>>>><<<<< "+this.screen.getChildren().size());
+		System.out.println("CANTIDAD  >>>>>><<<<< "+this.screen.getChildren().size());
 
     	//DENTRO DE CADA FILA DE HIJOS
     	for (i=0; i<index; i++ ){
     		choosebox= this.children1.get(i).getSelectionModel().getSelectedItem();
-//    		System.out.println("\nCHOOSEBOX  >>>>>><<<<< "+choosebox);
+    		System.out.println("\nCHOOSEBOX  >>>>>><<<<< "+choosebox);
     		text = this.children2.get(i).getText();
-//    		System.out.println("\nTEXT >>>>>><<<<< "+text);
+    		System.out.println("\nTEXT >>>>>><<<<< "+text);
     		num = this.children3.get(i).getText();
-//    		System.out.println("\nNUM >>>>>><<<<< "+num);
+    		System.out.println("\nNUM >>>>>><<<<< "+num);
     		if (text.isEmpty() || num.isEmpty()) { UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\r"+"Required to fill all the spaces","Oh Oh..!"); info.showAndWait();return;}
-//    		System.out.println("\nI  >>>>>><<<<< "+i);
-//    		System.out.println("INDEX  >>>>>><<<<< "+index);
-//    		System.out.println("COLUMNA  >>>>>><<<<< "+choosebox +" "+ text+" "+num);
+    		System.out.println("\nI  >>>>>><<<<< "+i);
+    		System.out.println("INDEX  >>>>>><<<<< "+index);
+    		System.out.println("COLUMNA  >>>>>><<<<< "+choosebox +" "+ text+" "+num);
     		CONSTRUCTOR = CONSTRUCTOR+","+text+":"+choosebox+":"+num;
     		}
     	/*Tercero crear el quemas*/
@@ -256,12 +261,10 @@ public class ControllerAdd {
 				UserMessage info = new UserMessage(AlertType.CONFIRMATION,"NO","Woohoo..! \r\tScheme succesfully created! \n\n\rDo you want to build another one?");
 				Optional<ButtonType> result = info.showAndWait();
 				if ((result.get() == ButtonType.YES)){
-					int tmp = this.columns;
-					this.clean(); 
-					this.drawing(tmp, null);return;}
+					otra();
+					return;}
 				this.saved = true;
 				this.cancel(event);
-				return;
 			}else{
 				//si no se crea
 				if ((respuesta.equals("nombre ya utilizado"))) { message="This name is already in use."; }
@@ -302,6 +305,11 @@ public class ControllerAdd {
     	this.posx=5; this.posy=5; this.columns = 0;
     	
     }
+    private void otra() throws IOException {
+    	this.clean();
+    	this.initialize();
+    	int tmp = this.tmpcolumns;
+    	System.out.println(tmp);
+		this.drawing(tmp, null);
 
-}
-;
+}}
