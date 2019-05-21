@@ -182,7 +182,10 @@ public class ControllerEdit {
                     	firstNameCol.setMinWidth(50);
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
                     	return new ReadOnlyStringWrapper(cellValue);
-                    }
+                    }else if (!esquema.columnasconindice.buscarindice(columnas[index]).Estoyvacio()){
+						firstNameCol.setEditable(false);
+						return new ReadOnlyStringWrapper(cellValue);
+					}
                     firstNameCol.setMinWidth(150);
                 	firstNameCol.setResizable(true);
                 	return new ReadOnlyStringWrapper(cellValue);}});
@@ -326,13 +329,19 @@ public class ControllerEdit {
 	@FXML
     void handleButtonDelete(ActionEvent event) throws NullPointerException, IOException {
     	//casilla de nombre de la fila a eliminar.
-    	String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
-    	String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
-		if (!respuesta.equals("datos eliminados")) { 
-	    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t"+respuesta, "Sorry..");
-	    	message.show();}
-    	log.debug("Se logra editar el esquema --> "+ esquema.getNombre());
-		this.setEsquema();
+		if (esquema.columnasconindice.nohayindices()) {
+			String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
+			String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
+			if (!respuesta.equals("datos eliminados")) {
+				UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t" + respuesta, "Sorry..");
+				message.show();
+			}
+			log.debug("Se logra editar el esquema --> " + esquema.getNombre());
+			this.setEsquema();
+		}else {
+			UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t" + "no se puede eliminar filas si existen indices", "Sorry..");
+			message.show();
+		}
     }
 	
     @FXML
@@ -369,6 +378,7 @@ public class ControllerEdit {
     		else if (Structure.equals("ArbolB")) tmp.tienearbolB = true;
     		else if (Structure.equals("AVL")) tmp.tieneAvl = true;
     	}
+		this.showTable();
 //        	UserMessage dialog = new UserMessage(AlertType.INFORMATION, "\n\r"+Structure+" : "+Key,"Hey! \nIndex successfully created ");
 //        	dialog.show();
 //    		final Timer timer = new Timer();
@@ -431,6 +441,7 @@ public class ControllerEdit {
     		else if (Structure.equals("ArbolB")) tmp.tienearbolB = false;
     		else if (Structure.equals("AVL")) tmp.tieneAvl = false;
     	}
+    	this.showTable();
     }
     	
     @FXML
