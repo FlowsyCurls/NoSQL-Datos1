@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -22,6 +21,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="baseSample" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1100.0" style="-fx-background-color: #192251;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
@@ -49,19 +49,23 @@
             </MenuBar>
             <HBox prefHeight="150.0" prefWidth="1100.0" VBox.vgrow="NEVER">
                <children>
-                  <Region prefHeight="100.0" prefWidth="0.0" HBox.hgrow="SOMETIMES" />
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="227.0" HBox.hgrow="SOMETIMES">
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
+                  <VBox alignment="CENTER" prefHeight="173.0" prefWidth="233.0" spacing="15.0">
                      <children>
-                        <Label contentDisplay="CENTER" text="Diagrams" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS" underline="true" wrapText="true">
+                        <Text fx:id="timeText" fill="#fc0000" strokeType="OUTSIDE" strokeWidth="0.0" text="TIME">
                            <font>
-                              <Font name="Bauhaus 93" size="40.0" />
+                              <Font size="50.0" />
                            </font>
-                        </Label>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagrams" underline="true">
+                           <font>
+                              <Font name="Bauhaus 93" size="50.0" />
+                           </font>
+                        </Text>
                      </children>
-                  </StackPane>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
                   <Region minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="9.0" HBox.hgrow="SOMETIMES" />
                   <StackPane>
                      <children>
