@@ -186,6 +186,45 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
 		if (end > i)
 			quickSort(i, end);	
     }
+    public void change(int index,T value){
+        Nodo<T>tmp=this.head;
+        while (index>0){
+            tmp=tmp.next;
+            index--;
+        }
+        tmp.setNodo(value);
+    }
+
+    public void mergesort(SimpleList_Comparable<T> nodoList){
+        mergesort(nodoList,0,nodoList.getLargo()-1);
+    }
+    private void mergesort(SimpleList_Comparable<T> A, int izq, int der){
+        if (izq<der){
+            int m=(izq+der)/2;
+            mergesort(A,izq, m);
+            mergesort(A,m+1, der);
+            this.merge(A,izq, m, der);
+        }
+    }
+    private void merge(SimpleList_Comparable<T> A, int izq, int m, int der){
+        int i, j, k;
+        SimpleList_Comparable<T> B=new SimpleList_Comparable<>();
+        for (i=0; i<A.getLargo(); i++){
+            B.addLast(null);
+        }
+        //array auxiliar
+        for (i=izq; i<=der; i++){ //copia ambas mitades en el array auxiliar
+            B.change(i,A.get(i));}
+
+        i=izq; j=m+1; k=izq;
+        while (i<=m && j<=der) {//copia el siguiente elemento más grande
+            if (B.get(i).compareTo(B.get(j))<=0)
+                A.change(k++,B.get(i++));
+            else
+                A.change(k++,B.get(j++));}
+        while (i<=m){ //copia los elementos que quedan de la
+            A.change(k++,B.get(i++));} //primera mitad (si los hay)
+    }
     
     public void print() {
         Nodo<T> curr = this.head;
