@@ -54,23 +54,26 @@ public class Esquema {
             cont++;
         }
     }
-    public boolean deleteIndice(String columna,String Arbol) {
+    public boolean deleteIndice(String columna,String Arbol) throws DatoNoExistenteException {
         Indice indice=arboles.Search(columna);
-        if ("ArbolAA".equals(Arbol)) {
-            indice.setAA(null);
-        } else if ("ArbolB".equals(Arbol)) {
-            indice.setB(null);
-        } else if ("ArbolBinario".equals(Arbol)) {
-            indice.setBinario(null);
-        } else if ("ArbolBPlus".equals(Arbol)) {
-            indice.setBPlus(null);
-        } else if ("ArbolRB".equals(Arbol)) {
-            indice.setRB(null);
-        } else {
-            indice.setAVL(null);
-        }
-        if (indice.estoyvacio()){
-            return arboles.deleteNode(columna);
+        if (indice==null){throw new DatoNoExistenteException();}
+        else {
+            if ("ArbolAA".equals(Arbol)) {
+                indice.setAA(null);
+            } else if ("ArbolB".equals(Arbol)) {
+                indice.setB(null);
+            } else if ("ArbolBinario".equals(Arbol)) {
+                indice.setBinario(null);
+            } else if ("ArbolBPlus".equals(Arbol)) {
+                indice.setBPlus(null);
+            } else if ("ArbolRB".equals(Arbol)) {
+                indice.setRB(null);
+            } else {
+                indice.setAVL(null);
+            }
+            if (indice.estoyvacio()) {
+                return arboles.deleteNode(columna);
+            }
         }
         return true;
     }
