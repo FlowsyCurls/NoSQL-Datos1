@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -324,13 +325,14 @@ public class Controller {
     		this.searchSTR.clear();
     		System.out.println("Escrito en detail --->>  "+detail);
     		return;}
-
+    	/*timer*/
+		long initial = System.nanoTime();
     	/*BUSQUEDA DE OTROS ESQUEMAS QUE COINCIDAN*/
     	if (selectedChoice.equals("OTHERS...") || selectedChoice==null){
     		this.loadDiagrams(detail);
+    		Timer(System.nanoTime()-initial);
     		this.searchSTR.clear();
     		return;}
-		long initial = System.nanoTime();
     	//buscar esquema solicitado
 		Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
 		//variables locales
@@ -353,7 +355,6 @@ public class Controller {
 		System.out.println("Datos "+datos);
 	    /*buscando con columnas...*/
 			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
-			initial = System.nanoTime();
 			Timer(System.nanoTime()-initial);
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
 			else {this.setCxF(datos, filasbuscadas);}
@@ -361,8 +362,10 @@ public class Controller {
 
 	}
 	private void Timer(long l) {
-		System.out.println("tiempo "+l);
-		this.timeText.setText(String.valueOf(l));
+		System.out.println("tiempo en nano"+l);
+//		l=l/1000000;
+//		System.out.println("tiempo en mili"+l);
+		this.timeText.setText(String.valueOf(l)+" ns");
 	}
 	
 	public void searchIndexButtonAction(ActionEvent event) throws IOException, NullPointerException {
@@ -399,7 +402,6 @@ public class Controller {
 			this.messenger("No matches for ", detail);
 			return;
 		} else {
-			initial = System.nanoTime();
 			Timer(System.nanoTime()-initial);
 			this.setCxF(datos, filasbuscadas);
 			return;
