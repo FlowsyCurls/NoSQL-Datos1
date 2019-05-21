@@ -1,10 +1,7 @@
 package sample;
 
-import Errores.DatoNoExistenteException;
+import Errores.*;
 
-import Errores.DatosUsadosException;
-import Errores.EsquemaNuloException;
-import Errores.TamanoException;
 import Listas.Esquema;
 import Listas.ListaString;
 import Listas.NombreArbol;
@@ -108,6 +105,8 @@ public class Accionador {
             datos.setRespuesta("El dato del ID ya existe");
         } catch (EsquemaNuloException e) {
             datos.setRespuesta("no existen datos en esquema de join");
+        } catch (DatorepetidoenarbolException e) {
+            datos.setRespuesta("no se puede crear duplicados si tiene indice");
         }
         return datos;
     }

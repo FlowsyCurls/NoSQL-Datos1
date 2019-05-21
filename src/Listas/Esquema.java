@@ -1,10 +1,7 @@
 package Listas;
 
-import Errores.DatoNoExistenteException;
+import Errores.*;
 
-import Errores.DatosUsadosException;
-import Errores.EsquemaNuloException;
-import Errores.TamanoException;
 import sample.Controller;
 import sample.Datos;
 import sample.IndiceBoolean;
@@ -81,20 +78,22 @@ public class Esquema {
     	int parada=fila.size();
     	for (int i=0;parada>i;i++) {
     		String columna =fila.keySet().toArray()[i].toString();//me da el nombre de la columna del dato
-    		Indice nuevo=arboles.Search(columna);//segun que columna, me busqueda el indice que tenga ese nombre
-    		if (nuevo.getAA()!=null) {//ver que arbol tiene datos y cuales no
-    			nuevo.getAA().insert(fila.get(columna).toString(), fila);
-    		}else if (nuevo.getAVL()!=null) {
-    			nuevo.getAVL().insert(fila.get(columna).toString(), fila);
-    		}else if (nuevo.getB()!=null) {
-    			nuevo.getB().insert(fila.get(columna).toString(), fila);
-    		}else if (nuevo.getBinario()!=null) {
-    			nuevo.getBinario().insert(fila.get(columna).toString(), fila);
-    		}else if (nuevo.getBPlus()!=null) {
-    			nuevo.getBPlus().insert(fila.get(columna).toString(), fila);
-    		}else{
-    			nuevo.getRB().insert(fila.get(columna).toString(), fila);
-    		}
+    		Indice nuevo=arboles.Search(columna);
+    		if (nuevo!=null) {//segun que columna, me busqueda el indice que tenga ese nombre
+                if (nuevo.getAA() != null) {//ver que arbol tiene datos y cuales no
+                    nuevo.getAA().insert(fila.get(columna).toString(), fila);
+                } if (nuevo.getAVL() != null) {
+                    nuevo.getAVL().insert(fila.get(columna).toString(), fila);
+                } if (nuevo.getB() != null) {
+                    nuevo.getB().insert(fila.get(columna).toString(), fila);
+                } if (nuevo.getBinario() != null) {
+                    nuevo.getBinario().insert(fila.get(columna).toString(), fila);
+                } if (nuevo.getBPlus() != null) {
+                    nuevo.getBPlus().insert(fila.get(columna).toString(), fila);
+                } if (nuevo.getRB() !=null) {
+                    nuevo.getRB().insert(fila.get(columna).toString(), fila);
+                }
+            }
     	}
     }
     public boolean VNReferencia(String columna){
@@ -204,7 +203,7 @@ public class Esquema {
         this.filas.addLast(fila);
     }
 
-    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException {
+    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException, DatorepetidoenarbolException {
         System.out.println(fila);
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
@@ -240,7 +239,31 @@ public class Esquema {
             this.filas.head.setNodo(base);
             tiene_filas=true;
         }
-        else {this.filas.addLast(base);}
+        else {
+            if (this.arboles.largo>0){
+                if (this.tienerepetido(base)){throw new DatorepetidoenarbolException();
+                }
+                this.MeterFilaArbol(base);}
+            this.filas.addLast(base);}
+    }
+    private Boolean tienerepetido(Hashtable fila){
+        ListaString columnas=this.obtenercolumnasparaedit();
+        int cont=0;
+        while (cont<columnas.getLargo()){
+            String columna=columnas.buscar(cont);
+            Indice indice=this.arboles.Search(columna);
+            if (indice==null){}
+            else {
+                System.out.println("estoy comprobando si existe dato"+this.filas.existe(fila.get(columna).toString(),columna));
+                if (this.filas.existe(fila.get(columna).toString(),columna)){
+                    System.out.println("tengo repetidos");
+                    return true;
+                }
+            }
+            cont++;
+        }
+        System.out.println("no tengo repetidos");
+        return false;
     }
 
     public void eliminarfila(String dato) throws DatosUsadosException {

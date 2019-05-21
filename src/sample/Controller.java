@@ -413,12 +413,12 @@ public class Controller {
     	String respuesta = datosencotrados.getRespuesta();
     	System.out.println("respuesta busqueda por indice "+respuesta);
     	String filas=datosencotrados.getDatos();
+    	if (respuesta.equals("el dato no existe")){filas="";}
 		return filas;
     }
     
     private void setIndexPosibilitys(Esquema esq, String column) {
     	try{availableIndex.clear();
-    	this.availableIndex.add("Linked List");
     	System.out.println("entro aca para anadir los indices");
     	System.out.println(esq.getNombre()+column);
     	if (esq.columnasconindice.buscarindice(column).tienearbolAA) this.availableIndex.add("AA");

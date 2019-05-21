@@ -52,6 +52,7 @@ public class Server implements Runnable {
                 datos=accionador.realizar_accion(datos);
                 DataOutputStream datosenvio = new DataOutputStream(misocket.getOutputStream());
                 log.debug("se creo abertura de datos");
+                System.out.println(objectMapper.writeValueAsString(datos));
                 datosenvio.writeUTF(objectMapper.writeValueAsString(datos));
                 log.debug("se logro enviar datos");
                 datosenvio.close();

@@ -209,8 +209,12 @@ public class ControllerAddRows {
 		System.out.println("FILAS recibidas  >>>>>><<<<< "+fila);
 		System.out.println("Respuesta "+respuesta);
 		/*verificar si se inserta*/
-		if (respuesta.equals("datos anadidos")) { return true;
-		}else{ 	//sino solo muestra mensaje y retorna.
+		if (respuesta.equals("datos anadidos")) { return true;}
+		else if (respuesta.equals("no se puede crear duplicados si tiene indice")){
+				UserMessage message = new UserMessage(AlertType.INFORMATION, fila+"\n\n\r"+respuesta, "no se puede crear datos duplicados en las columnas que tienen indice");message.show();
+				return false;
+			}
+		else{ 	//sino solo muestra mensaje y retorna.
 			UserMessage message = new UserMessage(AlertType.INFORMATION, fila+"\n\n\r"+respuesta, "Sorry an ERROR has ocurred while adding");message.show(); 
 			 return false;}
 		}
