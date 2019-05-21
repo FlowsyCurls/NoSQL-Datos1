@@ -46,6 +46,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Controller { 
@@ -56,6 +57,8 @@ public class Controller {
 	//FXML// 
 	@FXML // fx:id="base" 
 	public  AnchorPane baseSample= new AnchorPane(); 
+	
+	@FXML private Text timeText = new Text();
 	
 	@FXML // fx:id="diagramsList" 
 	private ListView<String> diagramsList = new ListView<String>(); 
@@ -321,12 +324,13 @@ public class Controller {
     		this.searchSTR.clear();
     		System.out.println("Escrito en detail --->>  "+detail);
     		return;}
-    	
+
     	/*BUSQUEDA DE OTROS ESQUEMAS QUE COINCIDAN*/
     	if (selectedChoice.equals("OTHERS...") || selectedChoice==null){
     		this.loadDiagrams(detail);
     		this.searchSTR.clear();
     		return;}
+		long initial = System.nanoTime();
     	//buscar esquema solicitado
 		Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
 		//variables locales
@@ -347,29 +351,20 @@ public class Controller {
 		if (respuesta.equals("no se encontraron datos")){this.messenger("No matches for ", detail); return;}
    		 //datos de las filas del esquema.
 		System.out.println("Datos "+datos);
-		
-    	/*buscando con indices...*/
-//		if (selectedChoice.equals("INDEX")) {
-//			filasbuscadas = SearchIndex(detail, datos, usedDiagram, indexBox.getSelectionModel().getSelectedItem());
-//			//verificar que por lo menos haya algun coincidencia. 
-//			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
-//			else {this.setCxF(datos, filasbuscadas);}return;
-////				respuesta = Controller.cliente.buscardatosporindice(usedDiagram.getNombre(), columna, detail);
-
-////    	/*buscando con joins...*/
-////		}else if (selectedChoice.equals("JOINS")) {
-////			filasbuscadas = SearchJoins(detail, datos, usedDiagram);
-////			//verificar que por lo menos haya algun coincidencia. 
-////			if (filasbuscadas == null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
-////			else {this.setCxF(datos, filasbuscadas);}return;
-////				respuesta = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), dato, columna, nombre_joins)	
 	    /*buscando con columnas...*/
 			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
+			initial = System.nanoTime();
+			Timer(System.nanoTime()-initial);
 			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
 			else {this.setCxF(datos, filasbuscadas);}
 			return;
 
 	}
+	private void Timer(long l) {
+		System.out.println("tiempo "+l);
+		this.timeText.setText(String.valueOf(l));
+	}
+	
 	public void searchIndexButtonAction(ActionEvent event) throws IOException, NullPointerException {
 		this.SearchforIndex();
 	}
@@ -384,9 +379,15 @@ public class Controller {
 		String selectedChoice = this.choiceboxSearchINDEX.getSelectionModel().getSelectedItem();
 		Esquema usedDiagram = Controller.listaEsquemas.buscar(searchSTR.getPromptText());
 		//variables locales
+		long initial = System.nanoTime();
 		ArrayList<Integer> filasbuscadas = new ArrayList<>(); //filas por mostrar
 		Datos datoscompletos;
 		String Structure = indexBox.getSelectionModel().getSelectedItem();
+		if (Structure == null) {
+			System.out.println("Columna no tiene estructuras");
+			this.searchINDEX.clear();
+			return;
+		}
 		System.out.println("Seleccionado en el Choices --->> " + selectedChoice);
 		System.out.println("detail: " + detail);
 
@@ -398,13 +399,15 @@ public class Controller {
 			this.messenger("No matches for ", detail);
 			return;
 		} else {
+			initial = System.nanoTime();
+			Timer(System.nanoTime()-initial);
 			this.setCxF(datos, filasbuscadas);
+			return;
 		}
-		return;
-
 	}
 		
     private String SearchIndex(String detail, Esquema usedDiagram, String Key, String Structure){
+    	if (Structure ==null) {return null;}
     	if (Structure.equals("Binary")) Structure = "ArbolBinario";
     	else if (Structure.equals("R-B")) Structure = "ArbolRB";
     	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
@@ -440,40 +443,7 @@ public class Controller {
     		return;
     	}
     }
-    
-    
-    
-//    private ArrayList<Integer> SearchJoins(String detail, String Datos, Esquema usedDiagram) throws EsquemaNuloException{
-//		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
-//		ArrayList<String[]> tmpfilas = this.toStringArray(Datos.split(";"));
-//		String[] datos = Datos.split(";");
-//		printArray(columnas,"columans");
-//		int j=1;
-//		boolean encuentro = false;
-//		for (int i=0; i< tmpfilas.size(); i++){
-//			if (tmpfilas.get(0)[i].equals("_")){
-//				j+=i; encuentro=true; break;
-//			}
-//		}if (encuentro==false) return null;
-//		System.out.println("\n------> \n Nombre Esquema:"+usedDiagram.getNombre()+"\n detail: "+detail+
-//				"\n indice J: "+j+"\n NOMBREJOIN: "+columnas[j]+"\n COLUMNA: "+columnas[j+1]+"\n");
-//		Datos Joins = Controller.cliente.buscardatosporjoin(usedDiagram.getNombre(), detail, columnas[j+1], columnas[j]);
-//		System.out.println("Respuesta "+Joins.getRespuesta());
-////		if (Joins.getRespuesta())
-//		System.out.println("Joins "+Joins);
-//		String[] joins = Joins.getDatos().split(";");
-//		for (int i=0; i< datos.length; i++){
-//			int z = 0;
-//			while (z < joins.length) {
-//				if (datos[i].contentEquals(joins[z])) {
-//					filas.add(i);
-//				}z++;
-//			}
-//		}
-//		return filas;
-//    }
-    
-    
+ 
 	private ArrayList<Integer> SearchAtributes(String detail, String selectedChoice, String datos, Esquema usedDiagram){
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
 		for (int i=0; i< columnas.length; i++){
