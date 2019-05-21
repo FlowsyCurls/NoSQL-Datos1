@@ -180,26 +180,30 @@ public class ControllerAddRows {
 			UserMessage message = new UserMessage(AlertType.CONFIRMATION, null, "Are you sure you want to CANCEL the operation?");
 			Optional<ButtonType> result = message.showAndWait();
 			if ((result.get() == ButtonType.CANCEL)){return;}}
-	        Stage newedit_Stage = new Stage();
-			Parent root;
-	        FXMLLoader loader;
-	        loader = new FXMLLoader(getClass().getResource("edit.fxml"));
-	        root=loader.load();
-	        newedit_Stage.setTitle("Edit Diagram");
-	        ControllerEdit controller= loader.getController();
-	        Scene scene = new Scene(root);
-	        newedit_Stage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
-	        newedit_Stage.setResizable(false);
-	        newedit_Stage.getIcons().add(new Image("/Media/edit.png"));
-			Stage addrow_Stage=(Stage) this.cancel.getScene().getWindow();
-			veil.setVisible(false);
-			if (this.saved) {
-				System.out.println("\nfinal fila  >>>>>><<<<< "+fila);
-				if (addRows(addrow_Stage)) {
-			        controller.getEsquema(esquema.getNombre());	
-			        prevedit_Stage.close();
-			        newedit_Stage.show();
-				}
+        Stage newedit_Stage = new Stage();
+		Parent root;
+        FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("edit.fxml"));
+        root=loader.load();
+        newedit_Stage.setTitle("Edit Diagram");
+        ControllerEdit controller= loader.getController();
+        Scene scene = new Scene(root);
+        newedit_Stage.setScene(scene);//me crea una nuevo escenario y me carga todo lo del fxml
+        newedit_Stage.setResizable(false);
+        newedit_Stage.getIcons().add(new Image("/Media/edit.png"));
+		Stage addrow_Stage=(Stage) this.cancel.getScene().getWindow();
+		veil.setVisible(false);
+		if (this.saved) {
+			System.out.println("\nfinal fila  >>>>>><<<<< "+fila);
+			if (addRows(addrow_Stage)) {
+		        controller.getEsquema(esquema.getNombre());	
+		        prevedit_Stage.close();
+		        newedit_Stage.show();
+			}
+		}else {
+	        controller.getEsquema(esquema.getNombre());	
+	        prevedit_Stage.close();
+	        newedit_Stage.show();
 			}
     }
 	
