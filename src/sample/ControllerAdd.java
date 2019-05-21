@@ -56,7 +56,7 @@ public class ControllerAdd {
 
 
 	//variables posicionamiento
-	private static  NodoList<String> ComprobarJoin = new NodoList<>();
+	private static  NodoList<String> ComprobarJoin;
 	private int posx = 5, posy = 5, columns=0;
 	private boolean typessetted =false;
 	private NodoList<ChoiceBox<String>> children1 = new NodoList<ChoiceBox<String>>();
@@ -72,6 +72,7 @@ public class ControllerAdd {
     /*METHODOS*/
     //initializer 
     public void initialize() throws IOException {
+    	ComprobarJoin = new NodoList<>();
     }
     public void drawing(int columns, String selectedType) throws IOException {
 		if (this.columns==0) {
@@ -298,7 +299,8 @@ public class ControllerAdd {
     	Controller.counter = 0;
 		this.typessetted=false;
     	this.screen.getChildren().clear();
-    	this.posx=5; this.posy=5; this.columns = 0; 
+    	this.posx=5; this.posy=5; this.columns = 0;
+    	
     }
 
 }

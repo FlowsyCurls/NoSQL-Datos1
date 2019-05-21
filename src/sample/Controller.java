@@ -368,7 +368,11 @@ public class Controller {
 			return;
 
 	}
-	public void SearchforIndex () throws EsquemaNuloException {
+	public void searchIndexButtonAction(ActionEvent event) throws IOException, NullPointerException {
+		this.SearchforIndex();
+	}
+
+	private void SearchforIndex () throws EsquemaNuloException {
 		String detail = searchINDEX.getText();
 		if (this.verifyTextField(detail)){
 			detail=null;
@@ -482,10 +486,6 @@ public class Controller {
 				break;
 			}
 		}return filas;
-	}
-	
-	public void searchIndexButtonAction(ActionEvent event) throws IOException, NullPointerException {
-    	this.SearchforIndex();
 	}
 	
 	private void messenger(String content, String detail) {
