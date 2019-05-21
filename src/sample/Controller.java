@@ -77,6 +77,7 @@ public class Controller {
 	@FXML
     private ChoiceBox<String> indexBox = new ChoiceBox<String>(); 
 	private ObservableList<String> availableIndex = FXCollections.observableArrayList();
+	private boolean bug = false;
 	
 	@FXML
     private ChoiceBox<String> choiceboxSearch = new ChoiceBox<String>(); 
@@ -563,13 +564,18 @@ public class Controller {
     	}
         this.choiceboxSearchINDEX.setItems(availableColumnaseditable);
         this.choiceboxSearchINDEX.getSelectionModel().select(0);
-    	choiceboxSearchINDEX.getSelectionModel().selectedItemProperty().addListener( 
-        		(ObservableValue<? extends String> observable, String oldValue, 
-        				String newValue) -> this.setIndexPosibilitys(listaEsquemas.buscar(selectedDiagram), newValue)); 
+    	if (!bug) {
+    		this.setIndexPosibilitys(listaEsquemas.buscar(selectedDiagram), choiceboxSearchINDEX.getSelectionModel().getSelectedItem());
+    		choiceboxSearchINDEX.getSelectionModel().selectedItemProperty().addListener( 
+    				(ObservableValue<? extends String> observable, String oldValue, 
+    						String newValue) -> this.setIndexPosibilitys(listaEsquemas.buscar(selectedDiagram), newValue));
+    		bug =true;
+    	}
     	System.out.println("SELECTED DIAGRAM IN LISTVIEW: "+selectedDiagram); 
 		if (selectedDiagram == null) { 
 			searchSTR.setPromptText("diagram detail"); //set to default. 
-			textfieldEdit.setPromptText("diagram detail"); //set to default. 
+			textfieldEdit.setPromptText("diagram detail"); //set to default.
+			searchINDEX.setPromptText("diagram detail");
 			screen.getChildren().clear(); //clean screen 
 			stack.getChildren().clear(); //clean stack 
 			this.nothingMessage();//mensaje visual. 
@@ -577,7 +583,8 @@ public class Controller {
 		this.clean();
 		//nombre general del esquema (CURSO, PROFESOR, EDIFICIO...) 
 		searchSTR.setPromptText(selectedDiagram); //set to watching.
-		textfieldEdit.setPromptText(selectedDiagram); //set to default. 
+		textfieldEdit.setPromptText(selectedDiagram); //set to default.
+		searchINDEX.setPromptText(selectedDiagram);
     	for (int i=0; i< this.jdata.size(); i++){
     		System.out.println(this.datosObservable.get(i));}
     	//obtener esquema

@@ -17,17 +17,27 @@ import Listas.Esquema;
 public class Cliente {
     private static Logger log = LoggerFactory.getLogger(Controller.class);
     private ObjectMapper objectMapper=new ObjectMapper();
-    private int puerto=9500;
+    private int puerto;
     private InetAddress IP;
     private Datos datos=new Datos();
     public Cliente() {
         try {
+    		this.puerto  = convertPropertyToInt(this.getPropertyKey("puerto"));
             IP=InetAddress.getLocalHost();
+            System.out.println(IP);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
     }
-
+    
+	/*//metodo para obtener del property el dato guardado con ese key*/
+	public String getPropertyKey(String key) {
+		return ReadPropertyFile.main(key);
+	}
+	private int convertPropertyToInt(String key) {
+		return Integer.parseInt(key);	
+	}
+	/*____*/
 
     public String crearEsquema(String constructor){
         this.datos.setAccion("crear esquema");
