@@ -384,6 +384,55 @@ public class ControllerEdit {
     }
 
     @FXML
+    void handleButtonDeleteStructure(ActionEvent event) {
+    	String Structure = this.structuresBox.getSelectionModel().getSelectedItem();
+    	String Key = this.structureskey.getSelectionModel().getSelectedItem();
+    	UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t"+Key+" -> "+Structure,"Hey! You can't delete something \nnon-existent"); 
+    	IndiceBoolean tmp = esquema.columnasconindice.buscarindice(Key);
+    	System.out.println(esquema.columnasconindice.getLargo());
+    	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
+    	if (tmp.Noexiste()) {message.show(); return;}
+		System.out.println("si existe esta columna");
+		//Cambiar la entrada antes, mejor.
+    	if (Structure.equals("Binary")) Structure = "ArbolBinario";
+    	else if (Structure.equals("R-B")) Structure = "ArbolRB";
+    	else if (Structure.equals("B+")) Structure = "ArbolBPlus";
+    	else if (Structure.equals("AA")) Structure = "ArbolAA";
+    	else if (Structure.equals("B")) Structure = "ArbolB";
+    	else if (Structure.equals("AVL")) Structure = "AVL";
+    	System.out.println("\n--> "+"\n  Estructura: "+Structure+"  \n  Llave: "+Key+"\n");
+    	System.out.println("ahora a ver si tiene el arbol");
+    	String respuesta = "";
+    	if(tmp.tienearbolAA && Structure.equals("ArbolAA")) {
+    		respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
+		}
+		else if(tmp.tienearbolBinario && Structure.equals("ArbolBinario")) {
+			respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
+		}
+		else if(tmp.tienearbolRB && Structure.equals("ArbolRB")) {
+			respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
+		}
+		else if(tmp.tienearbolBPlus && Structure.equals("ArbolBPlus")) {
+			respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
+		}
+		else if(tmp.tienearbolB && Structure.equals("ArbolB")) {
+			respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
+		}
+		else if(tmp.tieneAvl && Structure.equals("AVL")) {
+			respuesta = Controller.cliente.eliminarindice(esquema.getNombre(), Key, Structure);
+		}
+    	System.out.println(respuesta);
+    	if (respuesta.equals("indice eliminado")) {
+    		if (Structure.equals("ArbolBinario")) tmp.tienearbolBinario = false;
+    		else if (Structure.equals("ArbolRB")) tmp.tienearbolRB = false;
+    		else if (Structure.equals("ArbolBPlus")) tmp.tienearbolBPlus = false;
+    		else if (Structure.equals("ArbolAA")) tmp.tienearbolAA = false;
+    		else if (Structure.equals("ArbolB")) tmp.tienearbolB = false;
+    		else if (Structure.equals("AVL")) tmp.tieneAvl = false;
+    	}
+    }
+    	
+    @FXML
 	void refresh(ActionEvent event) throws IOException {
 		this.setEsquema();
 		this.addfield.clear();

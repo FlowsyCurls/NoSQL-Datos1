@@ -553,10 +553,12 @@ public class Controller {
 		    	tmp=tmp.next;}return;} 
  
 	/*PARA MOSTRAR DIAGRAMA SELECCIONADO*/
-    public void displaySelectedDiagram(MouseEvent event) throws IOException {
+    public void displaySelectedDiagram(MouseEvent event) throws IOException, NullPointerException {
     	String selectedDiagram = diagramsList.getSelectionModel().getSelectedItem();
     	this.availableColumnaseditable.clear();
-    	ListaString t = listaEsquemas.buscar(selectedDiagram).obtenercolumnasparaedit();
+    	ListaString t = new ListaString();
+    	try{t = listaEsquemas.buscar(selectedDiagram).obtenercolumnasparaedit();}
+    	catch (NullPointerException r) {return;}
     	Nodo<String> tmp = t.getHead();
     	while(tmp!=null) {
     		availableColumnaseditable.add(tmp.getNodo());

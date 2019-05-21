@@ -135,15 +135,24 @@
                            </HBox.margin>
                         </Button>
                         <Region minWidth="200.0" />
-                        <Button alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAddStructure" prefHeight="60.0" prefWidth="131.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d2b11d; -fx-border-width: 5;" text="Save with Structure" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
-                           <font>
-                              <Font name="Century Gothic Bold" size="15.0" />
-                           </font>
+                        <HBox spacing="5.0">
                            <HBox.margin>
-                              <Insets bottom="5.0" right="5.0" />
+                              <Insets />
                            </HBox.margin>
-                        </Button>
-                        <VBox prefHeight="200.0" prefWidth="150.0" spacing="5.0" HBox.hgrow="NEVER">
+                           <children>
+                              <Button alignment="TOP_CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonAddStructure" prefHeight="58.0" prefWidth="78.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d2b11d; -fx-border-width: 5;" text="Save Index" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                              <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonDeleteStructure" prefHeight="58.0" prefWidth="78.0" style="-fx-background-insets: 1; -fx-background-radius: 15; -fx-border-radius: 15; -fx-border-color: #d2b11d; -fx-border-width: 5;" text="Delete Index" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                                 <font>
+                                    <Font name="Century Gothic Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <VBox prefWidth="150.0" spacing="3.0" HBox.hgrow="NEVER">
                            <children>
                               <ChoiceBox fx:id="structuresBox" prefHeight="31.0" prefWidth="150.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;" />
                               <ChoiceBox fx:id="structureskey" prefWidth="120.0" style="-fx-background-radius: 15; -fx-border-radius: 15; -fx-background-insets: 1; -fx-background-color: beige;" VBox.vgrow="ALWAYS" />
