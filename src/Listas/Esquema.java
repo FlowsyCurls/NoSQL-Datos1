@@ -77,6 +77,26 @@ public class Esquema {
         }
         return true;
     }
+	public void MeterFilaArbol(Hashtable fila){
+    	int parada=fila.size();
+    	for (int i=0;parada>i;i++) {
+    		String columna =fila.keySet().toArray()[i].toString();//me da el nombre de la columna del dato
+    		Indice nuevo=arboles.Search(columna);//segun que columna, me busqueda el indice que tenga ese nombre
+    		if (nuevo.getAA()!=null) {//ver que arbol tiene datos y cuales no
+    			nuevo.getAA().insert(fila.get(columna).toString(), fila);
+    		}else if (nuevo.getAVL()!=null) {
+    			nuevo.getAVL().insert(fila.get(columna).toString(), fila);
+    		}else if (nuevo.getB()!=null) {
+    			nuevo.getB().insert(fila.get(columna).toString(), fila);
+    		}else if (nuevo.getBinario()!=null) {
+    			nuevo.getBinario().insert(fila.get(columna).toString(), fila);
+    		}else if (nuevo.getBPlus()!=null) {
+    			nuevo.getBPlus().insert(fila.get(columna).toString(), fila);
+    		}else{
+    			nuevo.getRB().insert(fila.get(columna).toString(), fila);
+    		}
+    	}
+    }
     public boolean VNReferencia(String columna){
         if (arboles.Search(columna)==null){ return true;}
         else {return false;}
