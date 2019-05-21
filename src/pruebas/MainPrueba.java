@@ -25,8 +25,9 @@ public class MainPrueba extends Application {
     	list.addLast(2);
     	list.addLast(9);
     	list.addLast(1);
-    	list.getMax();
+    	list.print();
     	list.selectionSort();
+    	list.print();
     	
     }
 }
