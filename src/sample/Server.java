@@ -20,7 +20,7 @@ public class Server implements Runnable {
     public static Logger log = LoggerFactory.getLogger(Server.class);
     public static ListaEsquemas esquemas= new ListaEsquemas();
     private Accionador accionador=new Accionador();
-    private int puerto=9500;
+    private int puerto;
 
 
 
@@ -29,7 +29,12 @@ public class Server implements Runnable {
 	public static void main(String[] args) throws IOException {
         Server server=new Server();
     }
-
+    public String getPropertyKey(String key) {
+        return ReadPropertyFile.main(key);
+    }
+    private int convertPropertyToInt(String key) {
+        return Integer.parseInt(key);
+    }
 
 
     @SuppressWarnings("resource")
@@ -111,7 +116,7 @@ public class Server implements Runnable {
 //
 //        System.out.print("\n"+esquema.arboles.largo+"\n");//ejemplo de eliminacion de Indices
 //        System.out.print("\n"+esquema.arboles.Search("dato1"));
-	    
+        this.puerto  = convertPropertyToInt(this.getPropertyKey("puerto"));
         Thread hilo = new Thread(this);
         hilo.start();
 

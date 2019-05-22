@@ -143,7 +143,7 @@ public class Controller {
 		Datos Datos = cliente.recibirEsquemas();
 		if (!Datos.getRespuesta().equals("constructores enviados")) {
 			System.out.println(Datos.getRespuesta());
-			System.out.println("NO CARGOOOOOO MIIIIIIIEEEEERRRRRDAAAA"); 
+			System.out.println("NO CARGO");
 			return;}
 		ListaEsquemas listaEsquemastmp= new ListaEsquemas();
 		Nodo<String> tmp = Datos.getConstructores().getHead();
@@ -725,35 +725,5 @@ public class Controller {
 		"\n\rSorry something gone wrong. \n\tJejeps..!","Try again later.");
 		message.showAndWait();return;
     }
-    
-	public void hola() throws IOException { 
-	        System.out.println("estoy en la funcion"); 
-	        ObjectNode perro = objectMapper.createObjectNode(); 
-	        perro.put("hola", 82).put("charanco","tornado"); 
-	        perro.put("hola", "tornado"); 
-	        System.out.println(perro); 
-	   try { 
-	       Integer.parseInt("23.4"); 
-	       } 
-	       catch (NumberFormatException e){ 
-	           e.getCause(); 
-	       } 
-	} 
-	 
-	@SuppressWarnings({ "rawtypes", "unchecked", "resource", "unused" })
-	public void table() throws IOException { 
-	        Hashtable hashtable= new Hashtable(); 
-	        hashtable.put("hello", "pico" ); 
-	        hashtable.put("Paco",85); 
-	        hashtable.put("Paco",89); 
-	        Hashtable holga = new Hashtable(); 
-	        holga= (Hashtable) hashtable.clone(); 
-	        System.out.println(objectMapper.readValue(objectMapper.writeValueAsString(holga),Hashtable.class)); 
-	        System.out.println(holga); 
-	        Socket client = new Socket(InetAddress.getLocalHost(), 9500);
-	        DataInputStream datosentrada = new DataInputStream(client.getInputStream());
-	        log.debug("entrada se conecto"); 
-	        Datos datosrecibidos = objectMapper.readValue(datosentrada.readUTF(), Datos.class); 
-	        log.debug("se creo objeto"); 
-	    }
+
 }
