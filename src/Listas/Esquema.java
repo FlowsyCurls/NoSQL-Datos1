@@ -7,7 +7,6 @@ import sample.Datos;
 import sample.IndiceBoolean;
 import sample.Server;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 
@@ -105,19 +104,19 @@ public class Esquema {
     }
     public void NReferencia(String columna,NombreArbol dato) {
         Indice nuevo = arboles.Search(columna);//El nodo donde quiero hacer un nuevo arbol
-        referencia hola = new referencia();//la clase que me mete las varas al arbol
+        referencia referencia = new referencia();//la clase que me mete las varas al arbol
         if (dato == NombreArbol.ArbolB) {
-            nuevo.setB(hola.setArbolB(nuevo.generateB(), filas, columna));
+            nuevo.setB(referencia.setArbolB(nuevo.generateB(), filas, columna));
         } else if (dato == NombreArbol.ArbolRB) {
-            nuevo.setRB(hola.setArbolRB(nuevo.generateRB(), filas, columna));
+            nuevo.setRB(referencia.setArbolRB(nuevo.generateRB(), filas, columna));
         } else if (dato == NombreArbol.ArbolAA) {
-            nuevo.setAA(hola.setArbolAA(nuevo.generateAA(), filas, columna));
+            nuevo.setAA(referencia.setArbolAA(nuevo.generateAA(), filas, columna));
         } else if (dato == NombreArbol.ArbolBPlus) {
-            nuevo.setBPlus(hola.setArbolBPlus(nuevo.generateBPlus(), filas, columna));
+            nuevo.setBPlus(referencia.setArbolBPlus(nuevo.generateBPlus(), filas, columna));
         } else if (dato == NombreArbol.ArbolBinario) {
-            nuevo.setBinario(hola.setArbolBinario(nuevo.generateBinario(), filas, columna));
+            nuevo.setBinario(referencia.setArbolBinario(nuevo.generateBinario(), filas, columna));
         } else {
-            nuevo.setAVL(hola.setArbolAVL(nuevo.generateAVL(), filas, columna));
+            nuevo.setAVL(referencia.setArbolAVL(nuevo.generateAVL(), filas, columna));
         }
     }
 
@@ -126,35 +125,35 @@ public class Esquema {
     public Esquema () {
     }
     public void Meter_refe(NombreArbol dato,String key){//segun el tipo de dato que se meta me genera un arbol con las columnas
-    	referencia hola=new referencia();//la clase referencia me mete los datos al arbol
+    	referencia referencia=new referencia();//la clase referencia me mete los datos al arbol
 	    if (dato==NombreArbol.ArbolB) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolB);/// aqui vamos a meter a la lista de indices su Indice(arbol), su nombre de columna(key)
-	    	hola.setArbolB(prueba.getB(), filas, key);///para asi poder buscar facilmente en su lista de indices, un indice por su nombre de columna
+	    	referencia.setArbolB(prueba.getB(), filas, key);///para asi poder buscar facilmente en su lista de indices, un indice por su nombre de columna
 	    	arboles.addlist(prueba,key);//hay que hacer un caso para cada arbol
 	    	
 	    }else if (dato==NombreArbol.ArbolRB) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolRB);
-	    	hola.setArbolRB(prueba.getRB(), filas, key);
+	    	referencia.setArbolRB(prueba.getRB(), filas, key);
 	    	arboles.addlist(prueba,key);
 	    	
 	    }else if (dato==NombreArbol.ArbolAA) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolAA);
-	    	hola.setArbolAA(prueba.getAA(), filas, key);
+	    	referencia.setArbolAA(prueba.getAA(), filas, key);
 	    	arboles.addlist(prueba,key);
 	    	
 	    }else if (dato==NombreArbol.ArbolBPlus) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolBPlus);
-	    	hola.setArbolBPlus(prueba.getBPlus(), filas, key);
+	    	referencia.setArbolBPlus(prueba.getBPlus(), filas, key);
 	    	arboles.addlist(prueba,key);
 	    	
 	    }else if (dato==NombreArbol.ArbolBinario) {
 	    	Indice prueba= new Indice(key,NombreArbol.ArbolBinario);
-	    	hola.setArbolBinario(prueba.getBinario(), filas, key);
+	    	referencia.setArbolBinario(prueba.getBinario(), filas, key);
 	    	arboles.addlist(prueba,key);
 	    	
 	   	}else {
 	   		Indice prueba= new Indice(key,NombreArbol.AVL);
-	    	hola.setArbolAVL(prueba.getAVL(), filas, key);
+	    	referencia.setArbolAVL(prueba.getAVL(), filas, key);
 	    	arboles.addlist(prueba,key);
 	    }
         contador++;
@@ -276,11 +275,33 @@ public class Esquema {
         else {
             if (this.filas.getLargo()>1){
                 this.filas.eliminar(dato,this.ID);
+                this.recreararbol(this.ID);
             }
             else{
                 this.tiene_filas=false;
+                this.recreararbol(this.ID);
             }
         }
+    }
+    public void recreararbol(String columna){
+        Indice nuevo=arboles.Search(columna);
+        referencia referencia= new referencia();
+        if (nuevo!=null) {//segun que columna, me busqueda el indice que tenga ese nombre
+            if (nuevo.getAA() != null) {//ver que arbol tiene datos y cuales no
+                nuevo.setAA(referencia.setArbolAA(nuevo.generateAA(), filas, columna));
+            } if (nuevo.getAVL() != null) {
+                nuevo.setAVL(referencia.setArbolAVL(nuevo.generateAVL(), filas, columna));
+            } if (nuevo.getB() != null) {
+                nuevo.setB(referencia.setArbolB(nuevo.generateB(), filas, columna));
+            } if (nuevo.getBinario() != null) {
+                nuevo.setBinario(referencia.setArbolBinario(nuevo.generateBinario(), filas, columna));
+            } if (nuevo.getBPlus() != null) {
+                nuevo.setBPlus(referencia.setArbolBPlus(nuevo.generateBPlus(), filas, columna));
+            } if (nuevo.getRB() !=null) {
+                nuevo.setRB(referencia.setArbolRB(nuevo.generateRB(), filas, columna));
+            }
+        }
+
     }
 
     public String buscardatos(String dato,String nombre) throws StringIndexOutOfBoundsException, EsquemaNuloException {
@@ -410,17 +431,6 @@ public class Esquema {
         return listaString;
     }
 
-    public ArrayList<String> getMijoinsArray() {
-        ArrayList<String> array = new ArrayList<String>();
-        Nodo<String> tmp = this.mijoins.getHead();
-        for (int i=0; i<this.mijoins.getLargo(); i++) {
-            array.add(tmp.getNodo());
-            tmp = tmp.getNext();
-        }
-        return array;
-    }
-
-
     public void cambiarnombrecolumna(String nombre, String nuevonombre){
         int cont=0;
         while (cont<this.filas.getLargo()){
@@ -444,10 +454,12 @@ public class Esquema {
             if (esquema.existe(nuevodato, esquema.getID())) {
                 System.out.println("voy a cambiar dato en join");
                 fila.replace(columna, this.filas.convertir(nuevodato, columna));
+                this.recreararbol(columna);
             }else {
                 throw new DatoNoExistenteException(nombre);}
         }else {
             fila.replace(columna, this.filas.convertir(nuevodato, columna));
+            this.recreararbol(columna);
         }
     }
 
