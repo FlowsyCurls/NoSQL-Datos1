@@ -129,7 +129,7 @@ public class ControllerEdit {
 	private void setCxF(String datos){
 		this.clean();
    		/*SI NO EXISTEN FILAS*/
-   		if (datos == null) {
+   		if (datos == null || datos.equals("")) {
    			ControllerEdit.numerofilas = 0;
    	   		filas = new ArrayList<String[]>();
    			showTable();
@@ -214,7 +214,7 @@ public class ControllerEdit {
 		log.debug("TableColumns Finished --> "+"table cargado..."); 
 	this.tableview.setEditable(true);
 	}
-	
+
 	private void deleteChoiceBox() {
 		if (ControllerEdit.numerofilas == 0 ) {
 			this.posiblesids.clear();

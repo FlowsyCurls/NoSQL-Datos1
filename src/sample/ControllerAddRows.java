@@ -133,9 +133,9 @@ public class ControllerAddRows {
 		/*filas Array*/ArrayList<String[]>filas = new ArrayList<>();
 		filas = ControllerEdit.toStringArray(datos.split(";"));
 		/*Agregar posibles joins*/
-		if (ControllerEdit.numerofilas == 0 ) {
-			this.posiblesids.clear();
-		}
+//		if (ControllerEdit.numerofilas == 0 ) {
+//			this.posiblesids.clear();
+//		}
 		for (int id = 0; id < filas.size() ; id++) {
 	    	posiblesids.add(filas.get(id)[0]);
 		}

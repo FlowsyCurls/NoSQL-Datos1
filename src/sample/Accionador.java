@@ -50,8 +50,10 @@ public class Accionador {
             datos.setDatos(esquema.buscardatosparaedit());
             datos.setRespuesta("datos enviados");
         } catch (StringIndexOutOfBoundsException e) {
+            datos.setDatos("");
             datos.setRespuesta("no se encontraron datos");
         } catch (EsquemaNuloException e) {
+            datos.setDatos("");
             datos.setRespuesta("el esquema esta vacio");
         }
         return datos;
@@ -109,7 +111,10 @@ public class Accionador {
             datos.setRespuesta("no existen datos en esquema de join");
         } catch (DatorepetidoenarbolException e) {
             datos.setRespuesta("no se puede crear duplicados si tiene indice");
+        }catch (ArrayIndexOutOfBoundsException e){
+            datos.setRespuesta("no se relleno alguna columna");
         }
+
         return datos;
     }
 

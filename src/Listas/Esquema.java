@@ -205,7 +205,7 @@ public class Esquema {
         this.filas.addLast(fila);
     }
 
-    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException, DatorepetidoenarbolException {
+    public void anadirfila(String fila) throws TamanoException, DatoNoExistenteException, NumberFormatException, DatosUsadosException, EsquemaNuloException, DatorepetidoenarbolException, ArrayIndexOutOfBoundsException {
         System.out.println(fila);
         Hashtable base= (Hashtable) this.filas.head.getNodo().clone();
         String[] datos= fila.split(",");
@@ -405,7 +405,7 @@ public class Esquema {
         Boolean usado=false;
         int cont=0;
         while (cont< joinde.largo) {
-            if (Server.esquemas.buscar(joinde.buscar(cont)).existe(dato,this.nombre)){
+            if (Server.esquemas.buscar(joinde.buscar(cont)).getTiene_filas() && Server.esquemas.buscar(joinde.buscar(cont)).existe(dato,this.nombre)){
                 usado=true;
                 break;
             }
