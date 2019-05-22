@@ -96,7 +96,7 @@ public class ListaEsquemas {
     }
     private void eliminarreferenciasdejoinde(Esquema esquema){
         int cont=0;
-        while (cont>esquema.getMijoins().getLargo()){
+        while (cont<esquema.getMijoins().getLargo()){
             this.buscar(esquema.getMijoins().buscar(cont)).joinde.eliminar(esquema.getNombre());
             cont++;
         }
