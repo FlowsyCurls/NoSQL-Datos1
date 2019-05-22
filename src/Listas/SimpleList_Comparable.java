@@ -118,7 +118,7 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
     
     public void bubbleSort() {
         for (int j = 0; j < largo-1; j++) {
-        	print();
+//        	print();
             for (int i = 0; i < largo-j-1; i++) {
             	if (get(i).compareTo(get(i+1)) > 0) {
             		swap(i, i+1);
@@ -129,14 +129,15 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
     
     public void selectionSort() {
         for (int i = 0; i < largo-1; i++) {
-        	print();
+//        	print();
         	int min = i;
             for (int z = i+1; z < largo; z++) {
                 if (get(z).compareTo(get(min)) < 0){
                     min = z;
                 }
             }swap(min,i);   
-        }System.out.print("Sorted ");print();
+        }
+//        System.out.print("Sorted ");print();
     }
     
     /*Function to sort array using insertion sort*/
@@ -150,10 +151,11 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
 //            	System.out.println("\t"+get(j)+" mayor que "+key);
                 set(j+1, get(j)); 
                 j = j-1;
-            }print();
+            }
+//            print();
 //            System.out.println("\rSorted, ahora insertar -> "+key);
             set(j+1,key);
-            print();
+//            print();
         }
     } 
     
@@ -210,6 +212,7 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
             mergesort(A,m+1, der);
             this.merge(A,izq, m, der);
         }
+        
     }
     private void merge(SimpleList_Comparable<T> A, int izq, int m, int der){
         int i, j, k;

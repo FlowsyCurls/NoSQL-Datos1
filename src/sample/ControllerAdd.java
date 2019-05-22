@@ -283,7 +283,8 @@ public class ControllerAdd {
     public void addJoin(ActionEvent event) {
     	String scheme = this.schemeName.getSelectionModel().getSelectedItem();
 //    	System.out.println("\rscheme JOIN "+scheme);
-    	if (ComprobarJoin.contains(scheme)) {
+    	if (scheme ==null) return;
+    	else if (ComprobarJoin.contains(scheme)) {
 			UserMessage info = new UserMessage(AlertType.INFORMATION,"\n\rBut, you can't join twice to the same Scheme.","Sorry bruh.."); info.showAndWait(); return;
     	}
     	ComprobarJoin.addLast(scheme);;
