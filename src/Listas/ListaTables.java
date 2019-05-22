@@ -24,12 +24,6 @@ public class ListaTables {
             largo++;
         }
     }
-    public void addFirst(Hashtable e) {
-        Nodo<Hashtable> n = new Nodo<>(e);
-        n.next=this.head;
-        head=n;
-        largo++;
-    }
 
     public Hashtable buscar (int n) {
         Nodo<Hashtable> tmp = this.head;

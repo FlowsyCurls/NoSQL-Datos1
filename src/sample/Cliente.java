@@ -143,48 +143,4 @@ public class Cliente {
         }
         return datosrecibidos;
     }
-    public String acciones(Cliente cliente, Esquema e, String accion, String newvalue, String columna, int index)throws IOException{
-    	String i= String.valueOf(index);
-    	if (accion=="crearesquema"){
-    		String respuesta=cliente.crearEsquema("Esquema1,dato1:STRING:6,dato2:INT:3");//newValue
-    		System.out.println(respuesta);return respuesta;}
-	    else if (accion=="crearindice"){
-	    	String respuesta=cliente.crearindice(e.getNombre(), columna, i);
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="eliminardatos"){
-	    	String respuesta=cliente.eliminardatos(e.getNombre(), e.getID());
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="eliminarEsquema"){
-	    	String respuesta=cliente.eliminarEsquema(e.getNombre());
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="eliminarindice"){
-	    	String respuesta=cliente.eliminarindice(e.getNombre(), columna, i);
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="insertardatos"){
-	    	String respuesta=cliente.insertardatos(e.getNombre(), newvalue);
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="cambiarnombreesquema"){
-	    	String respuesta=cliente.cambiarnombreesquema(e.getNombre(), newvalue);
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="cambiardato"){
-	    	String respuesta=cliente.cambiardato(e.getNombre(), e.getID(), columna, newvalue);
-	    	System.out.println(respuesta);return respuesta;}
-		return null;
-    }
-    
-    public Datos acciones(Cliente cliente, Esquema e, String accion, String newvalue, String columna, String index)throws IOException{
-    	if (accion=="recibiresquemas") {
-    		Datos respuesta=cliente.recibirEsquemas();
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="buscardatos"){
-	    	Datos respuesta=cliente.buscardatos(e.getNombre(), newvalue, columna);
-	    	System.out.println(respuesta);return respuesta;}
-	    else if (accion=="buscardatosporindice"){
-	    	Datos respuesta=cliente.buscardatosporindice(e.getNombre(), newvalue, columna, index);
-	    	System.out.println(respuesta); return respuesta;}
-//	    else if (accion=="buscardatosporjoin"){
-//	    	Datos respuesta=cliente.buscardatosporjoin(e.getNombre(), newvalue, columna, String nombreEsquemajoin);
-//	    	System.out.println(respuesta); return respuesta;}
-    	return null;
-    }
 }

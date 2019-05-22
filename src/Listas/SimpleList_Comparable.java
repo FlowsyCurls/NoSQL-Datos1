@@ -1,8 +1,13 @@
 package Listas;
 
 public class SimpleList_Comparable <T extends Comparable<T>> {
-    static int largo;
+    int largo=0;
     Nodo<T> head= null;
+
+    public SimpleList_Comparable() {
+        largo=0;
+        head=null;
+    }
 
 
     public void addLast (T e){
@@ -139,14 +144,14 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
         for (int i = 1; i < largo; ++i) { 
             T key = get(i); 
             int j = i-1;
-            System.out.println("\n\n\n-----------------------------");
-        	System.out.println("Parto en -->   i|"+i+" - dato|"+get(i));print();
+//            System.out.println("\n\n\n-----------------------------");
+//        	System.out.println("Parto en -->   i|"+i+" - dato|"+get(i));print();
             while (j >= 0 && key.compareTo(get(j)) < 0) {
-            	System.out.println("\t"+get(j)+" mayor que "+key);
+//            	System.out.println("\t"+get(j)+" mayor que "+key);
                 set(j+1, get(j)); 
                 j = j-1;
             }print();
-            System.out.println("\rSorted, ahora insertar -> "+key);
+//            System.out.println("\rSorted, ahora insertar -> "+key);
             set(j+1,key);
             print();
         }
@@ -165,12 +170,12 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
 		while (i <= j) {
 			//casos que no se hace nada, solo subir el contador de inicio.
 			while (get(i).compareTo(pivot) < 0) {
-				print();
+//				print();
 				i++;
 			}
 			//casos que no se hace nada, solo bajar el contador de final.
-			while (get(i).compareTo(pivot) > 0) {
-				print();
+			while (get(j).compareTo(pivot) > 0) {
+//				print();
 				j--;
 			}
 			//caso de swap.
@@ -212,8 +217,7 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
         for (i=0; i<A.getLargo(); i++){
             B.addLast(null);
         }
-        //array auxiliar
-        for (i=izq; i<=der; i++){ //copia ambas mitades en el array auxiliar
+        for (i=izq; i<=der; i++){ //copia ambas mitades en la lista auxiliar
             B.change(i,A.get(i));}
 
         i=izq; j=m+1; k=izq;
@@ -242,7 +246,7 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
     }
 
     public void setLargo(int largo) {
-        SimpleList_Comparable.largo = largo;
+        this.largo = largo;
     }
 
     public Nodo <T> getHead() {

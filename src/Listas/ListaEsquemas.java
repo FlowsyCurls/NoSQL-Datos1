@@ -23,12 +23,7 @@ public class ListaEsquemas {
             largo++;
         }
     }
-    public void addFirst(Esquema e) {
-        Nodo<Esquema> n = new Nodo<>(e);
-        n.next=this.head;
-        head=n;
-        largo++;
-    }
+
 
     public Esquema buscar (int n){
         Nodo<Esquema>tmp=this.head;
@@ -121,16 +116,6 @@ public class ListaEsquemas {
         return contiene;
     }
 
-    public ListaString obtenerconstructores(){
-        ListaString constructores=new ListaString();
-        int cont=this.largo-1;
-        while (cont>=0){
-            String constructor=this.buscar(cont).crearconstructor();
-            constructores.addFirst(constructor);
-            cont--;
-        }
-        return constructores;
-    }
     public void cambiarnombreEsquema(String nombre, String nuevonombre){
         this.buscar(nombre).setNombre(nuevonombre);
         int cont=0;
@@ -203,15 +188,5 @@ public class ListaEsquemas {
     
     public void emptyList() {
     	this.head = null; this.largo = 0;
-    }
-	public ArrayList<Esquema> getArrayesquemas(ListaEsquemas le) {
-    	ArrayList<Esquema> array =  new ArrayList<>();
-    	Nodo<Esquema> e = le.getHead();
-    	while (e!=null) {
-    		array.add(e.getNodo());
-    		e = e.getNext();
-    		continue;
-    	}
-		return array;
     }
 }

@@ -371,21 +371,6 @@ public class Esquema {
 
 
 
-    public ArrayTuple getDatosArray() throws EsquemaNuloException{
-        ArrayTuple tuple = new ArrayTuple();
-        ArrayList<String> keys = this.obtenercolumnas().getArraycolumnas(this.obtenercolumnas());
-        String[] cadena = this.buscartodos().split(",");
-        for (int i=0; i<cadena.length; i++) {
-            String nombre = keys.get(0);
-            String dato=cadena[i].split(":")[0];
-            tuple.addAll(nombre, dato);
-        }
-        return tuple;
-    }
-
-
-
-
     public Boolean existe(String dato,String nombre){
         return this.filas.existe(dato,nombre);
     }

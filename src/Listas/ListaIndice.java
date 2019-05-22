@@ -22,32 +22,6 @@ public class ListaIndice {
         }
     }
 
-    public void eliminar(String palabra){
-        if (this.head.getNodo().columna.equals(palabra)){
-            this.head=this.head.next;
-            largo-=1;
-        }
-        else{
-            Nodo<IndiceBoolean> tmp=this.head;
-            while (tmp.next!=null){
-                if (tmp.next.getNodo().columna.equals(palabra)){
-                    tmp.next=tmp.next.next;
-                    largo-=1;
-                    break;
-                }
-                else {
-                    tmp=tmp.next;
-                }
-            }
-        }
-    }
-
-    public void addFirst(IndiceBoolean e) {
-        Nodo<IndiceBoolean> n = new Nodo<>(e);
-        n.next=this.head;
-        head=n;
-        largo++;
-    }
 
     public IndiceBoolean get(int index){
         Nodo<IndiceBoolean> tmp = this.head;
