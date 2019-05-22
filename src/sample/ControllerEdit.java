@@ -182,10 +182,7 @@ public class ControllerEdit {
                     	firstNameCol.setMinWidth(50);
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
                     	return new ReadOnlyStringWrapper(cellValue);
-                    }else if (!esquema.columnasconindice.buscarindice(columnas[index]).Estoyvacio()){
-						firstNameCol.setEditable(false);
-						return new ReadOnlyStringWrapper(cellValue);
-					}
+                    }
                     firstNameCol.setMinWidth(150);
                 	firstNameCol.setResizable(true);
                 	return new ReadOnlyStringWrapper(cellValue);}});
@@ -329,7 +326,6 @@ public class ControllerEdit {
 	@FXML
     void handleButtonDelete(ActionEvent event) throws NullPointerException, IOException {
     	//casilla de nombre de la fila a eliminar.
-		if (esquema.columnasconindice.nohayindices()) {
 			String toDelete_id = deleteBox.getSelectionModel().getSelectedItem();
 			String respuesta = Controller.cliente.eliminardatos(esquema.getNombre(), toDelete_id);
 			if (!respuesta.equals("datos eliminados")) {
@@ -338,10 +334,7 @@ public class ControllerEdit {
 			}
 			log.debug("Se logra editar el esquema --> " + esquema.getNombre());
 			this.setEsquema();
-		}else {
-			UserMessage message = new UserMessage(AlertType.INFORMATION, "\n\r\t" + "no se puede eliminar filas si existen indices", "Sorry..");
-			message.show();
-		}
+
     }
 	
     @FXML
