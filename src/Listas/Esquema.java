@@ -306,6 +306,7 @@ public class Esquema {
 
     public String buscardatos(String dato,String nombre) throws StringIndexOutOfBoundsException, EsquemaNuloException {
         String datos="";
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
         if (nombre.equals(this.ID)){
             if (this.filas.existe(dato,nombre)){datos = crearstring(dato,nombre);}
         }
@@ -321,7 +322,7 @@ public class Esquema {
             }
             datos=datos.substring(0,datos.length()-1);
         }
-        if (!this.tiene_filas){throw new EsquemaNuloException();}
+        
         return datos;
     }
     public String buscardatosjoin(String nombre_join,String nombre,String dato) throws StringIndexOutOfBoundsException, EsquemaNuloException {//usado si el parametro de busqueda es por el de un dato en un join que no sea el ID
@@ -329,6 +330,7 @@ public class Esquema {
         int i=0;
         Esquema esquema=Server.esquemas.buscar(nombre_join);
         ListaString IDs= new ListaString();
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
         while (i<esquema.filas.getLargo()){
             Hashtable linea=esquema.filas.buscar(i);
             if (linea.get(nombre).toString().equals(dato)){
@@ -347,7 +349,7 @@ public class Esquema {
             datos = datos.concat(";");
             cont++;
         }
-        if (!this.tiene_filas){throw new EsquemaNuloException();}
+       
         datos=datos.substring(0,datos.length()-1);
         System.out.println(datos);
         return datos;
@@ -356,6 +358,7 @@ public class Esquema {
     public String buscartodos() throws EsquemaNuloException {
         String datos="";
         int cont=0;
+        if (!this.tiene_filas){throw new EsquemaNuloException();}
         while (cont<this.filas.getLargo()){
             System.out.println("entro aca");
             Hashtable fila=this.filas.buscar(cont);
@@ -364,7 +367,7 @@ public class Esquema {
             cont++;
         }
         datos=datos.substring(0,datos.length()-1);
-        if (!this.tiene_filas){throw new EsquemaNuloException();}
+      
         return datos;
     }
 

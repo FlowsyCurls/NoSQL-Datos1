@@ -672,7 +672,7 @@ public class Controller {
                     	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
                     	return new ReadOnlyStringWrapper(cellValue);
                     }
-                    firstNameCol.setMinWidth(100);
+                    firstNameCol.setMinWidth(200);
                 	firstNameCol.setResizable(true);
                 	return new ReadOnlyStringWrapper(cellValue);}});
             firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
