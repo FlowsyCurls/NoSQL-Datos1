@@ -202,7 +202,7 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
         tmp.setNodo(value);
     }
 
-    public void mergesort(SimpleList_Comparable<T> nodoList){
+    public void mergeSort(SimpleList_Comparable<T> nodoList){
         mergesort(nodoList,0,nodoList.getLargo()-1);
     }
     private void mergesort(SimpleList_Comparable<T> A, int izq, int der){
