@@ -38,7 +38,7 @@ public class Esquema {
             String nombre = partes[cont].split(":")[0];
             String tipo = partes[cont].split(":")[1];
             int tamano = Math.abs(Integer.parseInt(partes[cont].split(":")[2]));
-            if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
+            if ("STRING,INTEGER,DOUBLE,LONG,FLOAT".contains(tipo)) {
                 this.getTamanos().addLast(new Tamano(nombre, tamano));
                 System.out.println(getTamanos().largo);
             } else {
@@ -173,7 +173,7 @@ public class Esquema {
             if (!fila.containsKey(nombre)) {
                 if (tipo.equals("STRING")) {
                     fila.put(nombre, "");
-                } else if (tipo.equals("INT")) {
+                } else if (tipo.equals("INTEGER")) {
                     fila.put(nombre, -1);
                 } else if (tipo.equals("DOUBLE")) {
                     fila.put(nombre, (double) -1);
@@ -182,7 +182,7 @@ public class Esquema {
                 } else if (tipo.equals("FLOAT")) {
                     fila.put(nombre, (float) -1);
                 }
-                if ("STRING,INT,DOUBLE,LONG,FLOAT".contains(tipo)) {
+                if ("STRING,INTEGER,DOUBLE,LONG,FLOAT".contains(tipo)) {
                     this.getTamanos().addLast(new Tamano(nombre, tamano));
                     System.out.println(getTamanos().largo);
                 }
@@ -636,7 +636,7 @@ public class Esquema {
             tipo="STRING";
         }
         else if (base instanceof Integer) {
-            tipo="INT";
+            tipo="INTEGER";
         }
         else if (base instanceof Double) {
             tipo="DOUBLE";
