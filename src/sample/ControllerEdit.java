@@ -180,7 +180,7 @@ public class ControllerEdit {
 //            			System.out.println("\nC-# editable"+columnas[index]);
                     	firstNameCol.setEditable(false);
                     	firstNameCol.setMinWidth(50);
-                    	firstNameCol.setMaxWidth(Control.USE_COMPUTED_SIZE);
+                    	firstNameCol.setMaxWidth(70);
                     	return new ReadOnlyStringWrapper(cellValue);
                     }
                     firstNameCol.setMinWidth(150);
