@@ -11,17 +11,18 @@ public class ArbolBPlus<t extends Comparable<t>, v>{
 	public static enum RangePolicy {
 		EXCLUSIVE, INCLUSIVE
 	}
-	private static final int DEFAULT_BRANCHING_FACTOR = 128;//el valor base que le declaro en el constructor 
+	private static final int FactorDeriv = 128;//el valor base que le de claro en el constructor 
 	private int branchingFactor;//el factor de derivacion que me maneja la capacidad de nodos internos del arbol
 	private Node root;
+	
 	public ArbolBPlus() {
-		this(DEFAULT_BRANCHING_FACTOR);//le damos al constructor el valor base
+		this(FactorDeriv);//le damos al constructor el valor base
 	}
-	public ArbolBPlus(int branchingFactor) {
-		if (branchingFactor <= 2)
-			throw new IllegalArgumentException("Illegal branching factor: "+ branchingFactor);
-		this.branchingFactor = branchingFactor;
-		root = new LeafNode();
+	public ArbolBPlus(int FactDerivacion) {
+		if (FactDerivacion <= 2)//Siempre tiene que ser mayor que 2
+			throw new IllegalArgumentException("Error con el factor de derivacion: "+ FactDerivacion);
+		this.branchingFactor = FactDerivacion;
+		root = new NodoHoja();
 	}
 	public v search(t key) {
 		return root.getValue(key);
@@ -29,150 +30,68 @@ public class ArbolBPlus<t extends Comparable<t>, v>{
 	public void insert(t key, v refe) {
 		root.insertValue(key, refe);
 	}
-	public void delete(t key) {
-		root.deleteValue(key);
-	}
-	public String toString() {
-		Queue<List<Node>> queue = new LinkedList<List<Node>>();
-		queue.add(Arrays.asList(root));
-		StringBuilder sb = new StringBuilder();
-		while (!queue.isEmpty()) {
-			Queue<List<Node>> nextQueue = new LinkedList<List<Node>>();
-			while (!queue.isEmpty()) {
-				List<Node> nodes = queue.remove();
-				sb.append('{');
-				Iterator<Node> it = nodes.iterator();
-				while (it.hasNext()) {
-					Node node = it.next();
-					sb.append(node.toString());
-					if (it.hasNext())
-						sb.append(", ");
-					if (node instanceof ArbolBPlus.InternalNode)
-						nextQueue.add(((InternalNode) node).children);
-				}
-				sb.append('}');
-				if (!queue.isEmpty())
-					sb.append(", ");
-				else
-					sb.append('\n');
-			}
-			queue = nextQueue;
-		}
-
-		return sb.toString();
-	}
-
-	private abstract class Node {
-		List<t> keys;
+	private abstract class Node {//por que lo hacemos abstract? para que sean redefinidos por las clases de nodoInterno y NodoHoja
+		List<t> keys;//y tambien por que el mae del video lo explicaba asi :v
 
 		int keyNumber() {
 			return keys.size();
 		}
-
 		abstract v getValue(t key);
-
-		abstract void deleteValue(t key);
-
 		abstract void insertValue(t key, v value);
-
-		abstract t getFirstLeafKey();
-
+		abstract t getPrimerHoja();//getPrimerHoja
 		abstract List<v> getRange(t key1, RangePolicy policy1, t key2,RangePolicy policy2);
-
-		abstract void merge(Node sibling);
-
-		abstract Node split();
-
-		abstract boolean isOverflow();
-
-		abstract boolean isUnderflow();
-
-		public String toString() {
-			return keys.toString();
-		}
+		abstract void merge(Node sibling);//unir nodo
+		abstract Node split();//corte del nodo
+		abstract boolean isOverflow();//si esta sobre cargado
+		abstract boolean isUnderflow();//si le falta
 	}
 
-	private class InternalNode extends Node {
+	private class NodoInterno extends Node {
 		List<Node> children;
 
-		InternalNode() {
+		NodoInterno() {
 			this.keys = new ArrayList<t>();
 			this.children = new ArrayList<Node>();
 		}
 
 		@Override
-		v getValue(t key) {
-			return getChild(key).getValue(key);
-		}
-
-		@Override
-		void deleteValue(t key) {
-			Node child = getChild(key);
-			child.deleteValue(key);
-			if (child.isUnderflow()) {
-				Node childLeftSibling = getChildLeftSibling(key);
-				Node childRightSibling = getChildRightSibling(key);
-				Node left = childLeftSibling != null ? childLeftSibling : child;
-				Node right = childLeftSibling != null ? child
-						: childRightSibling;
-				left.merge(right);
-				deleteChild(right.getFirstLeafKey());
-				if (left.isOverflow()) {
-					Node sibling = left.split();
-					insertChild(sibling.getFirstLeafKey(), sibling);
-				}
-				if (root.keyNumber() == 0)
-					root = left;
-			}
-		}
-
-		@Override
 		void insertValue(t key, v value) {
-			Node child = getChild(key);
-			child.insertValue(key, value);
+			Node child = getChild(key);//insertamos el nodo en el hijo
+			child.insertValue(key, value);//pero tenenmos que ver si no se sobrecarga
 			if (child.isOverflow()) {
 				Node sibling = child.split();
-				insertChild(sibling.getFirstLeafKey(), sibling);
+				insertChild(sibling.getPrimerHoja(), sibling);
 			}
-			if (root.isOverflow()) {
-				Node sibling = split();
-				InternalNode newRoot = new InternalNode();
-				newRoot.keys.add(sibling.getFirstLeafKey());
+			if (root.isOverflow()) {//si se nos sobrecarga el array entero, hay que hacerle un corte
+				Node cortado = split();
+				NodoInterno newRoot = new NodoInterno();
+				newRoot.keys.add(cortado.getPrimerHoja());
 				newRoot.children.add(this);
-				newRoot.children.add(sibling);
+				newRoot.children.add(cortado);
 				root = newRoot;
 			}
 		}
-
 		@Override
-		t getFirstLeafKey() {
-			return children.get(0).getFirstLeafKey();
+		t getPrimerHoja() {
+			return children.get(0).getPrimerHoja();
 		}
-
+		@Override
+		v getValue(t key) {
+			return getChild(key).getValue(key);
+		}
 		@Override
 		List<v> getRange(t key1, RangePolicy policy1, t key2,RangePolicy policy2) {
 			return getChild(key1).getRange(key1, policy1, key2, policy2);
 		}
-
-		@Override
-		void merge(Node sibling) {
-			@SuppressWarnings("unchecked")
-			InternalNode node = (InternalNode) sibling;
-			keys.add(node.getFirstLeafKey());
-			keys.addAll(node.keys);
-			children.addAll(node.children);
-		}
 		@Override
 		Node split() {
 			int from = keyNumber() / 2 + 1, to = keyNumber();
-			InternalNode sibling = new InternalNode();
-			sibling.keys.addAll(keys.subList(from, to));
-			sibling.children.addAll(children.subList(from, to + 1));
-
+			NodoInterno cortado = new NodoInterno();
+			cortado.keys.addAll(keys.subList(from, to));
+			cortado.children.addAll(children.subList(from, to + 1));
 			keys.subList(from - 1, to).clear();
 			children.subList(from, to + 1).clear();
-
-			return sibling;
+			return cortado;
 		}
 
 		@Override
@@ -184,21 +103,20 @@ public class ArbolBPlus<t extends Comparable<t>, v>{
 		boolean isUnderflow() {
 			return children.size() < (branchingFactor + 1) / 2;
 		}
+		@Override
+		void merge(Node cortado) {
+			@SuppressWarnings("unchecked")
+			NodoInterno node = (NodoInterno) cortado;
+			keys.add(node.getPrimerHoja());
+			keys.addAll(node.keys);
+			children.addAll(node.children);
+		}
 
 		Node getChild(t key) {
 			int loc = Collections.binarySearch(keys, key);
 			int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
 			return children.get(childIndex);
 		}
-
-		void deleteChild(t key) {
-			int loc = Collections.binarySearch(keys, key);
-			if (loc >= 0) {
-				keys.remove(loc);
-				children.remove(loc + 1);
-			}
-		}
-
 		void insertChild(t key, Node child) {
 			int loc = Collections.binarySearch(keys, key);
 			int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
@@ -209,31 +127,14 @@ public class ArbolBPlus<t extends Comparable<t>, v>{
 				children.add(childIndex + 1, child);
 			}
 		}
-
-		Node getChildLeftSibling(t key) {
-			int loc = Collections.binarySearch(keys, key);
-			int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
-			if (childIndex > 0)
-				return children.get(childIndex - 1);
-
-			return null;
-		}
-
-		Node getChildRightSibling(t key) {
-			int loc = Collections.binarySearch(keys, key);
-			int childIndex = loc >= 0 ? loc + 1 : -loc - 1;
-			if (childIndex < keyNumber())
-				return children.get(childIndex + 1);
-
-			return null;
-		}
 	}
+	
 
-	private class LeafNode extends Node {
+	private class NodoHoja extends Node {
 		List<v> values;
-		LeafNode next;
+		NodoHoja next;
 
-		LeafNode() {
+		NodoHoja() {
 			keys = new ArrayList<t>();
 			values = new ArrayList<v>();
 		}
@@ -243,49 +144,39 @@ public class ArbolBPlus<t extends Comparable<t>, v>{
 			int loc = Collections.binarySearch(keys, key);
 			return loc >= 0 ? values.get(loc) : null;
 		}
-
 		@Override
-		void deleteValue(t key) {
-			int loc = Collections.binarySearch(keys, key);
-			if (loc >= 0) {
-				keys.remove(loc);
-				values.remove(loc);
-			}
-		}
-
-		@Override
-		void insertValue(t key, v value) {
+		void insertValue(t key, v refe) {
 			int loc = Collections.binarySearch(keys, key);
 			int valueIndex = loc >= 0 ? loc : -loc - 1;
 			if (loc >= 0) {
-				values.set(valueIndex, value);
+				values.set(valueIndex, refe);
 			} else {
 				keys.add(valueIndex, key);
-				values.add(valueIndex, value);
+				values.add(valueIndex, refe);
 			}
 			if (root.isOverflow()) {
-				Node sibling = split();
-				InternalNode newRoot = new InternalNode();
-				newRoot.keys.add(sibling.getFirstLeafKey());
+				Node cortado = split();
+				NodoInterno newRoot = new NodoInterno();
+				newRoot.keys.add(cortado.getPrimerHoja());
 				newRoot.children.add(this);
-				newRoot.children.add(sibling);
+				newRoot.children.add(cortado);
 				root = newRoot;
 			}
 		}
 
 		@Override
-		t getFirstLeafKey() {
+		t getPrimerHoja() {
 			return keys.get(0);
 		}
 
 		@Override
 		List<v> getRange(t key1, RangePolicy policy1, t key2,RangePolicy policy2) {
 			List<v> result = new LinkedList<v>();
-			LeafNode node = this;
+			NodoHoja node = this;
 			while (node != null) {
 				Iterator<t> kIt = node.keys.iterator();
 				Iterator<v> vIt = node.values.iterator();
-				while (kIt.hasNext()) {
+				while (kIt.hasNext()) {//mae esta vara si la si esta bien fumada
 					t key = kIt.next();
 					v value = vIt.next();
 					int cmp1 = key.compareTo(key1);
@@ -302,24 +193,24 @@ public class ArbolBPlus<t extends Comparable<t>, v>{
 			return result;
 		}
 		@Override
-		void merge(Node sibling) {
+		void merge(Node cortado) {
 			@SuppressWarnings("unchecked")
-			LeafNode node = (LeafNode) sibling;
+			NodoHoja node = (NodoHoja) cortado;
 			keys.addAll(node.keys);
 			values.addAll(node.values);
 			next = node.next;
 		}
 		@Override
 		Node split() {
-			LeafNode sibling = new LeafNode();
+			NodoHoja cortado = new NodoHoja();
 			int from = (keyNumber() + 1) / 2, to = keyNumber();
-			sibling.keys.addAll(keys.subList(from, to));
-			sibling.values.addAll(values.subList(from, to));
+			cortado.keys.addAll(keys.subList(from, to));
+			cortado.values.addAll(values.subList(from, to));
 			keys.subList(from, to).clear();
 			values.subList(from, to).clear();
-			sibling.next = next;
-			next = sibling;
-			return sibling;
+			cortado.next = next;
+			next = cortado;
+			return cortado;
 		}
 		@Override
 		boolean isOverflow() {
