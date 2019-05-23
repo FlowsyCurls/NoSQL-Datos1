@@ -208,7 +208,7 @@ public class ControllerEdit {
         tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
 		tableview.prefWidthProperty().bind(screen.widthProperty()); 
         tableview.prefHeightProperty().bind(screen.heightProperty()); 
-        tableview.setStyle("-fx-control-inner-background:  black;");
+//        tableview.setStyle("-fx-control-inner-background:  black;");
         tableview.setFocusTraversable(false);
 		screen.getChildren().add(tableview); 
 		log.debug("TableColumns Finished --> "+"table cargado..."); 
