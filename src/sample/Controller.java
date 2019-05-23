@@ -356,7 +356,7 @@ public class Controller {
 	    /*buscando con columnas...*/
 			filasbuscadas = SearchAtributes(detail, selectedChoice, datos, usedDiagram);
 			Timer(System.nanoTime()-initial);
-			if (filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
+			if ( filasbuscadas==null || filasbuscadas.isEmpty()) {this.messenger("No matches for ", detail); return;} 
 			else {this.setCxF(datos, filasbuscadas);}
 			return;
 
@@ -398,7 +398,7 @@ public class Controller {
 		System.out.println(datos);
 		filasbuscadas=SearchAtributes(detail,selectedChoice,datos,usedDiagram);
 		//verificar que por lo menos haya algun coincidencia.
-		if (filasbuscadas.isEmpty()) {
+		if (filasbuscadas == null || filasbuscadas.isEmpty()) {
 			this.messenger("No matches for ", detail);
 			return;
 		} else {
@@ -447,6 +447,7 @@ public class Controller {
     }
  
 	private ArrayList<Integer> SearchAtributes(String detail, String selectedChoice, String datos, Esquema usedDiagram){
+		if (datos.equals("")) return null;
 		ArrayList<Integer> filas = new ArrayList<> (); //filas por mostrar
 		for (int i=0; i< columnas.length; i++){
 			if (columnas[i].equals(selectedChoice)) {
@@ -580,8 +581,8 @@ public class Controller {
     private void setCxF(String datos, ArrayList<Integer> filasbuscadas) throws EsquemaNuloException{
     	this.clean();
     	/*Si no hay datos*/
-    	if (datos == null) {
-   			this.jdata.add(new String[columnas.length-1]);
+    	if (datos == null || datos.equals("")) {
+//   			this.jdata.add(new String[columnas.length-1]);
    			showTable(); return;}
     	//agregar numeros.
     	datos = Controller.addnumber(datos);
@@ -682,8 +683,9 @@ public class Controller {
       tableview.getItems().addAll(this.datosObservable); 
       tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
       tableview.prefWidthProperty().bind(screen.widthProperty()); 
-      tableview.prefHeightProperty().bind(screen.heightProperty()); 
-      tableview.setStyle("-fx-control-inner-background: #192251; -fx-background-insets: 1; -fx-border-width: 0;"
+      tableview.prefHeightProperty().bind(screen.heightProperty());
+      tableview.setStyle("-fx-control-inner-background: #192251;"); 
+      tableview.setStyle("-fx-background-insets: 1; -fx-border-width: 0;"
 				+ " -fx-border-color: #192251; -fx-focus-color: transparent;");
 		screen.getChildren().add(tableview); 
 		log.debug("TableColumns Finished --> "+"table cargado...");         
@@ -692,7 +694,7 @@ public class Controller {
 		nothing.setText("Nothing Displayed"); nothing.setTextFill(Color.GHOSTWHITE); nothing.setFont(new Font("Arial", 25)); 
 		stack.prefWidthProperty().bind(screen.widthProperty());  
 		stack.prefHeightProperty().bind(screen.heightProperty());  
-		stack.setAlignment(Pos.CENTER);  
+		stack.setAlignment(Pos.CENTER);
 		stack.getChildren().add(nothing); 
 	    screen.getChildren().add(stack);
 	}private void clean() {
