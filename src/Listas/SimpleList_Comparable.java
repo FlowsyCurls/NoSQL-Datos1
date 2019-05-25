@@ -215,27 +215,27 @@ public class SimpleList_Comparable <T extends Comparable<T>> {
     	for (int i=0;n>i;i++)//agarra una lista y le hace "n" cantidad de nodos null
     		lista.addLast(null);	
     } 
-    public static void radixsort(SimpleList_Comparable<Integer> lista){
+    public void radixsort(SimpleList_Comparable<Integer> lista){
     	int largo=lista.getLargo(); 
         int m = getMax(lista);//aqui sacamos el numero mayor de la lista, para saber cuantas pasadas hay que hacer
-        for (int exp = 1; m/exp > 0; exp *= 10){//donde exp sera nuestro divisor (nos dicta cuantas pasadas hay que hacer)
+        for (int division = 1; m/division > 0; division*= 10){//donde exp sera nuestro divisor (nos dicta cuantas pasadas hay que hacer)
         	//lista.print();
-            countSort(lista, largo, exp);//y tambien para dividirlo y obtener los diferentes numeros que ocupemos
+            countSort(lista, largo, division);//y tambien para dividirlo y obtener los diferentes numeros que ocupemos
         }    
     }  
-    private static void countSort(SimpleList_Comparable<Integer> lista, int largo, int exp){ 
+    private void countSort(SimpleList_Comparable<Integer> lista, int largo, int division){ 
     	SimpleList_Comparable<Integer> aux=new SimpleList_Comparable(); // necesitamos una lista igual de larga que la original, para poner los datos temporalmente
     	hacernull(aux, largo);//aqui hacemos la lista de ayuda igual de larga que la original
         int count[] = new int[10];//aqui es el array donde se pondran la cantidad de 0,1,2,3.... que aparesacan en cada pasada
         for (int i = 0; i < largo; i++) { 
-            count[ (lista.get(i)/exp)%10 ]++;//donde si su numero es 1, se mete en el array en la posicion 1, y se aumenta 
+            count[ (lista.get(i)/division)%10 ]++;//donde si su numero es 1, se mete en el array en la posicion 1, y se aumenta 
         }for (int i = 1; i < 10; i++){
             count[i] += count[i - 1];//donde aqui se le suma lo que tenia y de su anterior (la posicion 0 no cuenta por eso inicia en 1) 
         }for (int i = largo - 1; i >= 0; i--){
-            aux.set(count[ (lista.get(i)/exp)%10 ]- 1,lista.get(i));//aqui se complica, ya que en aux ponemos en la cantidad que tiene cont del proceso anterior
-            count[(lista.get(i)/exp)%10]--; //el valor "i" de la lista original, donde en esta posicion se le resta 1, "con el ejemplo del profe se entiende mejor"
+            aux.set(count[ (lista.get(i)/division)%10 ]- 1,lista.get(i));//aqui se complica, ya que en aux ponemos en la cantidad que tiene cont del proceso anterior
+            count[(lista.get(i)/division%10)]--; //el valor "i" de la lista original, donde en esta posicion se le resta 1, "con el ejemplo del profe se entiende mejor"
         }for (int i = 0; i < largo; i++) {
-        	lista.set(i,aux.get(i));//y ya se mete el la posicion de la lista original el valor de la aux
+        	lista.set(i,aux.get(i));//y ya se mete el la posicion de la lista original
        }
     } 
     public void mergeSort(SimpleList_Comparable<T> nodoList){
