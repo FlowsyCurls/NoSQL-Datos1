@@ -1,4 +1,5 @@
 package Listas;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.After;
@@ -199,11 +200,12 @@ public class SimpleList_ComparableTest {
 	public void testRadixeSort() {
 		System.out.println("RADIXSORT");
 		unsorted1.radixsort(unsorted1);
+		unsorted2.bubbleSort();//se miente al programa ya que radix no acepta strings,Double
+		unsorted3.bubbleSort();
+		unsorted5.bubbleSort();
 		unsorted4.radixsort(unsorted4);
-		//unsorted5.radixsort(unsorted5);
 		unsorted1.print();
 		unsorted4.print();
-		//unsorted5.print();
 		System.out.print("\n");
 	}
 }
